@@ -30,8 +30,6 @@ La plataforma permite explorar el directorio de aprendices, filtrar en tiempo re
  ┃ ┗ ... (28 aprendices en total)
  ┣ 📂 data/
  ┃ ┗ 📜 aprendices.json                     # Listado estructurado (28 aprendices oficiales)
- ┣ 📂 ejerciciosjs/
- ┃ ┗ 📜 004-DOM-Carro.pdf                   # Material y ejercicios técnicos de apoyo
  ┣ 📂 js/
  ┃ ┗ 📜 script.js                           # Lógica del buscador, renderizado y eventos
  ┣ 📜 index.html                            # Página principal institucional (Directorio)
