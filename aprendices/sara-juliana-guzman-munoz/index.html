@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARA JULIANA GUZMAN MUÑOZ | Portafolio Personal ADSO 3293992</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sena-green': '#39A900',
+                        'sena-green-dark': '#2e8500',
+                        'sena-blue': '#00324D',
+                        'sena-blue-light': '#0a496d',
+                        'sena-gray': '#F4F6F8'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Barra de navegación institucional -->
+    <header class="bg-sena-blue text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-sena-green flex items-center justify-center font-bold text-white text-xl shadow">
+                    S
+                </div>
+                <div>
+                    <span class="block text-xs uppercase tracking-wider text-emerald-300 font-semibold">SENA | Ficha 3293992</span>
+                    <h1 class="text-lg font-bold leading-tight">Portafolio de Aprendiz</h1>
+                </div>
+            </div>
+            
+            <a href="../../index.html" 
+               class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all border border-white/10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver al Portafolio General
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+        <!-- Tarjeta de Identificación del Aprendiz -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="h-28 bg-gradient-to-r from-sena-blue via-sena-blue-light to-sena-green"></div>
+            <div class="px-6 pb-6 relative">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-14 mb-4 gap-4">
+                    <div class="flex items-end space-x-4">
+                        <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-lg">
+                            <div class="w-full h-full rounded-xl bg-gradient-to-br from-sena-green to-sena-blue flex items-center justify-center text-white font-extrabold text-3xl shadow-inner">
+                                S
+                            </div>
+                        </div>
+                        <div class="mb-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-sena-green border border-emerald-200">
+                                    En Formación
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                                    ID #12
+                                </span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-sena-blue mt-1">SARA JULIANA GUZMAN MUÑOZ</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datos formativos -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-100 text-sm">
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <span class="text-xs text-slate-500 block uppercase tracking-wide font-medium">Programa de Formación</span>
+                        <span class="font-semibold text-slate-700">Análisis y Desarrollo de Software (ADSO)</span>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <span class="text-xs text-slate-500 block uppercase tracking-wide font-medium">Ficha de Caracterización</span>
+                        <span class="font-semibold text-slate-700">3293992</span>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <span class="text-xs text-slate-500 block uppercase tracking-wide font-medium">Centro de Formación</span>
+                        <span class="font-semibold text-slate-700">SENA</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Bitácora de Commits y Evidencias -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div>
+                    <h3 class="text-xl font-bold text-sena-blue flex items-center gap-2">
+                        <svg class="w-6 h-6 text-sena-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        Bitácora de Commits y Evidencias de Aprendizaje
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Registro continuo de actividades, avances en Git y entregas formativas desarrolladas por el aprendiz.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs font-semibold">
+                    <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                        Total Evidencias: <strong class="text-sena-green">2</strong>
+                    </span>
+                </div>
+            </div>
+
+            <!-- =============================================================
+                 GUÍA PARA EL APRENDIZ:
+                 Para agregar una nueva evidencia o commit:
+                 1. Duplica una de las filas <tr> dentro de <tbody>.
+                 2. Actualiza la fecha, el código/hash de tu commit en Git.
+                 3. Escribe la fase y el nombre de la evidencia.
+                 4. Asigna el estado (Entregado, En Revisión o Aprobado).
+                 5. Enlaza tu evidencia a un archivo local de tu carpeta o a tu repo.
+                 ============================================================= -->
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-xs uppercase text-slate-700 font-semibold border-b border-slate-200">
+                        <tr>
+                            <th class="py-3.5 px-4">#</th>
+                            <th class="py-3.5 px-4">Fecha</th>
+                            <th class="py-3.5 px-4">Commit Git</th>
+                            <th class="py-3.5 px-4">Fase / Guía</th>
+                            <th class="py-3.5 px-4">Evidencia / Actividad</th>
+                            <th class="py-3.5 px-4">Estado</th>
+                            <th class="py-3.5 px-4 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-4 px-4 font-semibold text-slate-900">01</td>
+                            <td class="py-4 px-4 whitespace-nowrap text-slate-500">2026-03-01</td>
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                <code class="bg-slate-100 text-sena-blue px-2 py-1 rounded text-xs font-mono font-bold border border-slate-200">
+                                    init-repo
+                                </code>
+                            </td>
+                            <td class="py-4 px-4 text-xs font-medium text-slate-500">Fase Inducción</td>
+                            <td class="py-4 px-4 font-medium text-slate-800">
+                                Estructuración inicial de espacio de trabajo y vinculación al portafolio institucional de la ficha.
+                            </td>
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                    Aprobado
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-center whitespace-nowrap">
+                                <span class="text-xs text-slate-400">En curso</span>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-4 px-4 font-semibold text-slate-900">02</td>
+                            <td class="py-4 px-4 whitespace-nowrap text-slate-500">2026-03-05</td>
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                <code class="bg-slate-100 text-sena-blue px-2 py-1 rounded text-xs font-mono font-bold border border-slate-200">
+                                    004-dom
+                                </code>
+                            </td>
+                            <td class="py-4 px-4 text-xs font-medium text-slate-500">Fase Desarrollo</td>
+                            <td class="py-4 px-4 font-medium text-slate-800">
+                                Ejercicio Práctico 004: Manipulación de eventos y DOM en JavaScript (Simulador Carro).
+                            </td>
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                                    Entregado
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-center whitespace-nowrap">
+                                <a href="../../ejerciciosjs/004-DOM-Carro.pdf" 
+                                   target="_blank" 
+                                   class="inline-flex items-center gap-1 text-xs font-semibold text-sena-green hover:text-sena-green-dark hover:underline">
+                                    <span>Ver Guía</span>
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Caja de instrucciones de apoyo para el aprendiz -->
+            <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-4 flex items-start gap-3 text-xs text-emerald-900">
+                <svg class="w-5 h-5 text-sena-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="space-y-1">
+                    <p class="font-bold">Instrucción para el aprendiz:</p>
+                    <p>
+                        Este archivo representa tu portada personal de evidencias. En cada entrega solicitada por el instructor, debes registrar el hash del commit generado en tu repositorio Git, el nombre de la evidencia técnica y enlazar el entregable correspondiente para que quede centralizado y auditable.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer institucional -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 space-y-1">
+            <p class="font-semibold text-slate-700">Servicio Nacional de Aprendizaje - SENA</p>
+            <p>Programa Análisis y Desarrollo de Software (ADSO) | Ficha 3293992 - Año 2026</p>
+        </div>
+    </footer>
+
+</body>
+</html>

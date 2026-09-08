@@ -1,0 +1,29 @@
+# Dependencias y entornos
+node_modules/
+.pnp
+.pnp.js
+
+# Archivos de datos sensibles y reportes internos
+*.xls
+*.xlsx
+Reporte de Aprendices*
+
+# Archivos temporales de Office / Excel
+~$*
+
+# Sistema Operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs y temporales
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
