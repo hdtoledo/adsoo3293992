@@ -1,16 +1,17 @@
 /**
  * ============================================================================
- * Proyecto: Portafolio Institucional de Aprendices ADSO 3293992 - SENA
+ * Proyecto: Portal Institucional de Aprendices ADSO 3293992 - SENA
  * Archivo: js/script.js
- * Descripción: Orquestación de carga asíncrona de datos, renderizado dinámico
- *              de tarjetas con TailwindCSS, y filtrado reactivo en tiempo real.
+ * Descripción: Carga de datos, navegación por pestañas (Directorio, Guía Git,
+ *              Plan de Sesiones), filtrado reactivo y renderizado institucional.
  * ============================================================================
  */
 
-// Ruta relativa al archivo JSON para garantizar compatibilidad con GitHub Pages y servidores locales
+// Rutas relativas para compatibilidad universal con GitHub Pages y localhost
 const RUTA_APRENDICES_JSON = './data/aprendices.json';
+const RUTA_PLAN_JSON = './data/plan_sesiones.json';
 
-// Referencias a los elementos clave del DOM
+// Referencias del DOM
 const contenedorGrilla = document.getElementById('portfolioGrid');
 const inputBusqueda = document.getElementById('inputBusqueda');
 const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
@@ -18,51 +19,78 @@ const contadorResultados = document.getElementById('contadorResultados');
 const sinResultados = document.getElementById('sinResultados');
 const btnResetFiltro = document.getElementById('btnResetFiltro');
 const kpiTotal = document.getElementById('kpiTotal');
+const contenedorPlanSesiones = document.getElementById('contenedorPlanSesiones');
 
-// Estado en memoria de los aprendices cargados
+// Estado en memoria
 let todosLosAprendices = [];
+let todasLasSemanas = [];
+let semanaFiltroActual = 0; // 0 = todas
 
 /**
- * Inicializa la aplicación cargando los datos desde el archivo JSON.
+ * Inicializa la aplicación al cargar el DOM.
  */
-async function inicializarPortafolio() {
+async function inicializarPortal() {
+    configurarNavegacionPorHash();
+    await Promise.all([
+        cargarAprendices(),
+        cargarPlanSesiones()
+    ]);
+}
+
+/**
+ * Carga y renderiza el listado de aprendices.
+ */
+async function cargarAprendices() {
     try {
         const respuesta = await fetch(RUTA_APRENDICES_JSON);
-        
-        if (!respuesta.ok) {
-            throw new Error(`Error HTTP al cargar datos: Código ${respuesta.status}`);
-        }
+        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
 
         todosLosAprendices = await respuesta.json();
 
-        // Actualizar el KPI total si existe en pantalla
         if (kpiTotal) {
             kpiTotal.textContent = todosLosAprendices.length;
         }
 
-        // Renderizar inicialmente la lista completa
         renderizarTarjetas(todosLosAprendices);
-
-        // Configurar los listeners de eventos para búsqueda interactiva
         configurarBuscador();
 
     } catch (error) {
-        console.error('Error al inicializar el portafolio:', error);
+        console.error('Error al cargar aprendices:', error);
         mostrarErrorCarga();
     }
 }
 
 /**
- * Renderiza la lista de aprendices en tarjetas estilizadas con TailwindCSS.
- * @param {Array<Object>} lista - Colección de aprendices a mostrar
+ * Carga y renderiza el cronograma de 40 sesiones técnicas.
+ */
+async function cargarPlanSesiones() {
+    try {
+        const respuesta = await fetch(RUTA_PLAN_JSON);
+        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+
+        todasLasSemanas = await respuesta.json();
+        renderizarPlanSesiones(semanaFiltroActual);
+
+    } catch (error) {
+        console.error('Error al cargar plan de sesiones:', error);
+        if (contenedorPlanSesiones) {
+            contenedorPlanSesiones.innerHTML = `
+                <div class="p-6 bg-white border border-red-200 rounded-xl text-center text-xs text-red-700">
+                    No fue posible cargar el plan de sesiones desde <code>data/plan_sesiones.json</code>.
+                </div>
+            `;
+        }
+    }
+}
+
+/**
+ * Renderiza las tarjetas de los aprendices con diseño sobrio institucional SENA.
+ * @param {Array<Object>} lista - Aprendices a presentar
  */
 function renderizarTarjetas(lista) {
     if (!contenedorGrilla) return;
-
-    // Vaciamos el contenedor antes de inyectar las tarjetas
     contenedorGrilla.innerHTML = '';
 
-    // Manejo de estado vacío si la búsqueda no arroja resultados
     if (lista.length === 0) {
         if (sinResultados) sinResultados.classList.remove('hidden');
         if (contadorResultados) contadorResultados.textContent = '0 aprendices';
@@ -74,72 +102,59 @@ function renderizarTarjetas(lista) {
         contadorResultados.textContent = `${lista.length} ${lista.length === 1 ? 'aprendiz' : 'aprendices'}`;
     }
 
-    // Creación dinámica de cada tarjeta
     lista.forEach(aprendiz => {
         const tarjeta = document.createElement('article');
         tarjeta.className = `
-            bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden 
-            flex flex-col justify-between card-hover cursor-pointer group transition-all duration-300
+            bg-white rounded-xl border border-slate-200 hover:border-emerald-500 
+            p-5 flex flex-col justify-between transition-all duration-200 
+            hover:shadow-sm cursor-pointer group
         `;
 
-        // Extraer la inicial del nombre para el avatar
         const inicial = (aprendiz.nombre && aprendiz.nombre.trim().length > 0) 
             ? aprendiz.nombre.trim().charAt(0).toUpperCase() 
             : 'A';
 
-        // Estructura semántica con Tailwind CSS e identidad visual SENA
         tarjeta.innerHTML = `
             <div>
-                <!-- Franja decorativa superior con degradado institucional -->
-                <div class="h-16 bg-gradient-to-r from-sena-blue via-sena-blue-light to-sena-green relative">
-                    <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white backdrop-blur-xs border border-white/20">
-                        #${String(aprendiz.id).padStart(2, '0')}
+                <!-- Encabezado sutil de tarjeta -->
+                <div class="flex items-center justify-between text-[11px] pb-3 border-b border-slate-100">
+                    <span class="font-mono text-slate-400 font-medium">#${String(aprendiz.id).padStart(2, '0')}</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-[#2e8500] border border-emerald-100">
+                        En Formación
                     </span>
                 </div>
 
-                <div class="px-5 pb-4 text-center -mt-8">
-                    <!-- Avatar con inicial del aprendiz -->
-                    <div class="w-16 h-16 rounded-2xl bg-white p-1 mx-auto shadow-md mb-3 group-hover:scale-105 transition-transform duration-300">
-                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-sena-green to-sena-blue flex items-center justify-center text-white font-extrabold text-xl shadow-inner">
-                            ${inicial}
-                        </div>
+                <!-- Cuerpo de tarjeta: Avatar centrado e información -->
+                <div class="py-4 text-center">
+                    <div class="w-14 h-14 rounded-full bg-emerald-50 border-2 border-emerald-100 text-[#2e8500] flex items-center justify-center font-bold text-lg mx-auto mb-3 group-hover:bg-emerald-100 transition-colors">
+                        ${inicial}
                     </div>
 
-                    <!-- Nombres y Apellidos -->
-                    <h3 class="text-base font-bold text-sena-blue leading-snug group-hover:text-sena-green transition-colors">
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#2e8500] transition-colors leading-snug">
                         ${aprendiz.nombre}
                     </h3>
                     <p class="text-xs font-semibold text-slate-500 mt-0.5">
                         ${aprendiz.apellido}
                     </p>
-
-                    <!-- Rol y badge de estado formativo -->
-                    <div class="mt-3 flex items-center justify-center gap-1.5 flex-wrap">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-sena-green border border-emerald-200">
-                            En Formación
-                        </span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600">
-                            ADSO 3293992
-                        </span>
-                    </div>
+                    <p class="text-[11px] text-slate-400 mt-2 font-medium">
+                        Tecnólogo ADSO • Ficha 3293992
+                    </p>
                 </div>
             </div>
 
-            <!-- Botón de acción para ingresar al directorio personal -->
-            <div class="p-4 pt-0 mt-auto border-t border-slate-100 bg-slate-50/50">
+            <!-- Botón institucional de acción directa -->
+            <div class="pt-3 border-t border-slate-100">
                 <a href="./${aprendiz.carpeta}/index.html" 
-                   class="w-full mt-3 inline-flex items-center justify-center gap-2 bg-sena-blue group-hover:bg-sena-green text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-xs transition-all duration-200">
-                    <span>Ver Portafolio y Evidencias</span>
-                    <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                   class="w-full py-2 px-3 rounded-lg text-xs font-semibold text-white bg-[#39A900] hover:bg-[#2e8500] text-center inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs">
+                    <span>Ver Portafolio Personal</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </a>
             </div>
         `;
 
-        // Navegación intuitiva: hacer clic en cualquier parte de la tarjeta redirige al portafolio
         tarjeta.addEventListener('click', (evento) => {
-            // Si no se hizo clic directo en la etiqueta <a>, redireccionamos igualmente
             if (!evento.target.closest('a')) {
                 window.location.href = `./${aprendiz.carpeta}/index.html`;
             }
@@ -150,7 +165,168 @@ function renderizarTarjetas(lista) {
 }
 
 /**
- * Configura la búsqueda reactiva en tiempo real por nombre y apellido.
+ * Renderiza el cronograma de sesiones filtrado por semana.
+ * @param {number} semanaNum - 0 para todas, o 1..8
+ */
+function renderizarPlanSesiones(semanaNum) {
+    if (!contenedorPlanSesiones) return;
+    contenedorPlanSesiones.innerHTML = '';
+
+    const semanasAMostrar = (semanaNum === 0) 
+        ? todasLasSemanas 
+        : todasLasSemanas.filter((_, idx) => idx + 1 === semanaNum);
+
+    if (semanasAMostrar.length === 0) {
+        contenedorPlanSesiones.innerHTML = `
+            <div class="p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500">
+                No hay sesiones para mostrar en esta semana.
+            </div>
+        `;
+        return;
+    }
+
+    semanasAMostrar.forEach((semana, indexSemana) => {
+        const tarjetaSemana = document.createElement('article');
+        tarjetaSemana.className = 'bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4';
+
+        // Estilos para el badge según el eje temático
+        const getBadgeEje = (eje) => {
+            if (eje.includes('BD')) {
+                return 'bg-blue-50 text-blue-700 border-blue-200';
+            } else if (eje.includes('Backend')) {
+                return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            } else if (eje.includes('Frontend')) {
+                return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+            } else {
+                return 'bg-amber-50 text-amber-700 border-amber-200';
+            }
+        };
+
+        const filasSesiones = semana.sesiones.map(sesion => `
+            <div class="p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 hover:bg-slate-50 transition-colors space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-200 text-slate-700">
+                            Día ${String(sesion.dia).padStart(2, '0')} • Sesión ${String(sesion.sesion).padStart(2, '0')}
+                        </span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${getBadgeEje(sesion.eje)}">
+                            ${sesion.eje}
+                        </span>
+                    </div>
+
+                    <span class="text-[11px] font-mono text-slate-400 font-medium flex items-center gap-1">
+                        <svg class="w-3 h-3 text-sena-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                        </svg>
+                        carpeta: <strong class="text-sena-dark">${sesion.carpeta_sugerida}/</strong>
+                    </span>
+                </div>
+
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-sena-dark">
+                        ${sesion.titulo}
+                    </h4>
+                    ${sesion.detalles ? `
+                        <p class="text-[11px] sm:text-xs text-slate-600 mt-1 leading-relaxed">
+                            ${sesion.detalles}
+                        </p>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+
+        tarjetaSemana.innerHTML = `
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-sm sm:text-base font-extrabold text-sena-dark flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-sena-green"></span>
+                    ${semana.titulo}
+                </h3>
+                <span class="text-[11px] text-sena-muted font-medium">5 Sesiones técnicas</span>
+            </div>
+            <div class="grid grid-cols-1 gap-3">
+                ${filasSesiones}
+            </div>
+        `;
+
+        contenedorPlanSesiones.appendChild(tarjetaSemana);
+    });
+}
+
+/**
+ * Filtra el cronograma por semana (0 a 8).
+ * @param {number} numSemana 
+ */
+function filtrarSemana(numSemana) {
+    semanaFiltroActual = numSemana;
+
+    // Actualizar estilos de los botones de filtro
+    for (let i = 0; i <= 8; i++) {
+        const btn = document.getElementById(`filtroSemana-${i}`);
+        if (btn) {
+            if (i === numSemana) {
+                btn.className = 'btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-bold bg-sena-green text-white shadow-xs';
+            } else {
+                btn.className = 'btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200';
+            }
+        }
+    }
+
+    renderizarPlanSesiones(numSemana);
+}
+
+/**
+ * Control de cambio entre las 3 pestañas principales.
+ * @param {'directorio' | 'instructivo' | 'plan'} pestana 
+ */
+function cambiarPestana(pestana) {
+    const secDirectorio = document.getElementById('seccionDirectorio');
+    const secInstructivo = document.getElementById('seccionInstructivo');
+    const secPlan = document.getElementById('seccionPlan');
+
+    const tabDirectorio = document.getElementById('tabBtnDirectorio');
+    const tabInstructivo = document.getElementById('tabBtnInstructivo');
+    const tabPlan = document.getElementById('tabBtnPlan');
+
+    // Ocultar todas
+    if (secDirectorio) secDirectorio.classList.add('hidden');
+    if (secInstructivo) secInstructivo.classList.add('hidden');
+    if (secPlan) secPlan.classList.add('hidden');
+
+    // Reset estilos botones
+    [tabDirectorio, tabInstructivo, tabPlan].forEach(btn => {
+        if (btn) {
+            btn.className = 'tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark';
+        }
+    });
+
+    // Activar seleccionada
+    if (pestana === 'directorio') {
+        if (secDirectorio) secDirectorio.classList.remove('hidden');
+        if (tabDirectorio) tabDirectorio.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
+        window.location.hash = 'directorio';
+    } else if (pestana === 'instructivo') {
+        if (secInstructivo) secInstructivo.classList.remove('hidden');
+        if (tabInstructivo) tabInstructivo.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
+        window.location.hash = 'instructivo';
+    } else if (pestana === 'plan') {
+        if (secPlan) secPlan.classList.remove('hidden');
+        if (tabPlan) tabPlan.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
+        window.location.hash = 'plan';
+    }
+}
+
+/**
+ * Detecta si el usuario cargó la página con un hash específico (#directorio, #instructivo, #plan).
+ */
+function configurarNavegacionPorHash() {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'instructivo' || hash === 'plan' || hash === 'directorio') {
+        cambiarPestana(hash);
+    }
+}
+
+/**
+ * Configuración del filtro de búsqueda reactiva en vivo para aprendices.
  */
 function configurarBuscador() {
     if (!inputBusqueda) return;
@@ -158,7 +334,6 @@ function configurarBuscador() {
     inputBusqueda.addEventListener('input', (e) => {
         const query = normalizarTexto(e.target.value);
 
-        // Mostrar u ocultar botón de limpiar
         if (btnLimpiarBusqueda) {
             if (query.length > 0) {
                 btnLimpiarBusqueda.classList.remove('hidden');
@@ -169,7 +344,6 @@ function configurarBuscador() {
             }
         }
 
-        // Filtrar sobre el arreglo en memoria
         const filtrados = todosLosAprendices.filter(aprendiz => {
             const nombreCompleto = normalizarTexto(`${aprendiz.nombre} ${aprendiz.apellido}`);
             return nombreCompleto.includes(query);
@@ -178,7 +352,6 @@ function configurarBuscador() {
         renderizarTarjetas(filtrados);
     });
 
-    // Acción del botón limpiar búsqueda
     if (btnLimpiarBusqueda) {
         btnLimpiarBusqueda.addEventListener('click', () => {
             inputBusqueda.value = '';
@@ -189,7 +362,6 @@ function configurarBuscador() {
         });
     }
 
-    // Acción del botón para restablecer filtro cuando no hay resultados
     if (btnResetFiltro) {
         btnResetFiltro.addEventListener('click', () => {
             if (inputBusqueda) inputBusqueda.value = '';
@@ -203,9 +375,7 @@ function configurarBuscador() {
 }
 
 /**
- * Normaliza cadenas de texto eliminando tildes y caracteres diacríticos para búsqueda flexible.
- * @param {string} texto 
- * @returns {string} Texto normalizado en minúsculas y sin acentos
+ * Normaliza cadenas de texto para búsqueda flexible.
  */
 function normalizarTexto(texto) {
     return (texto || '')
@@ -216,22 +386,19 @@ function normalizarTexto(texto) {
 }
 
 /**
- * Despliega un mensaje amigable en la interfaz en caso de fallo de red o lectura de datos.
+ * Mensaje de error si falla la carga del JSON de aprendices.
  */
 function mostrarErrorCarga() {
     if (!contenedorGrilla) return;
     contenedorGrilla.innerHTML = `
-        <div class="col-span-full bg-red-50 border border-red-200 rounded-2xl p-8 text-center text-red-800 my-8">
-            <svg class="w-12 h-12 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            <h3 class="text-base font-bold">No fue posible cargar el listado de aprendices</h3>
-            <p class="text-xs text-red-600 mt-1 max-w-md mx-auto">
-                Verifica que el archivo de datos exista en <code>data/aprendices.json</code> y que la aplicación se ejecute a través de un servidor HTTP (ej: Live Server o GitHub Pages).
+        <div class="col-span-full bg-white border border-red-200 rounded-xl p-8 text-center text-slate-700 my-4">
+            <h3 class="text-sm font-bold text-red-700">No fue posible cargar el listado de aprendices</h3>
+            <p class="text-xs text-slate-500 mt-1">
+                Verifica la existencia del archivo <code>data/aprendices.json</code> y asegúrate de ejecutar el proyecto desde un servidor local o GitHub Pages.
             </p>
         </div>
     `;
 }
 
-// Iniciar la carga al completar el parseo del DOM
-document.addEventListener('DOMContentLoaded', inicializarPortafolio);
+// Iniciar al cargar el documento
+document.addEventListener('DOMContentLoaded', inicializarPortal);

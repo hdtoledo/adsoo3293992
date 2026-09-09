@@ -1,20 +1,23 @@
 # Portafolio Institucional ADSO 3293992 - SENA
 
-Aplicación web interactiva desarrollada para centralizar y presentar de forma profesional el talento de los aprendices del programa **Análisis y Desarrollo de Software (ADSO) - Ficha 3293992** del Servicio Nacional de Aprendizaje (SENA).
+Aplicación web institucional desarrollada para centralizar y coordinar el trabajo formativo de los aprendices del programa **Análisis y Desarrollo de Software (ADSO) - Ficha 3293992** del Servicio Nacional de Aprendizaje (SENA), Regional Huila.
 
-La plataforma permite explorar el directorio de aprendices, filtrar en tiempo real y acceder al espacio personal de cada uno de ellos, donde se registran de forma continua sus **commits y evidencias de aprendizaje**.
+El portal integra tres componentes estratégicos:
+1. **Directorio Oficial de Aprendices:** Directorio con las fichas personales de los 28 aprendices y acceso directo a sus portafolios de evidencias.
+2. **Instructivo Oficial Git & Buenas Prácticas:** Protocolo de colaboración directa para desarrolladores (sin Pull Requests), comandos obligatorios y centro de solución de errores de Git.
+3. **Plan de Sesiones Técnicas (40 Días / 8 Semanas):** Currículo intensivo Full Stack MERN con el detalle de las entregas requeridas día por día.
 
 ---
 
 ## 🚀 Tecnologías y Estándares
 
-- **HTML5 Semántico:** Estructuración limpia, accesible y estándar (`<header>`, `<main>`, `<section>`, `<article>`, `<footer>`).
-- **Tailwind CSS:** Framework de utilidades CSS integrado con paleta y estilo visual institucional del SENA (Verde SENA `#39A900`, Azul Oscuro `#00324D`).
-- **JavaScript Moderno (ES6+):** Programación asíncrona (`async/await`), consumo reactivo de API/JSON local mediante `fetch()`, y filtrado en tiempo real sin dependencias.
-- **Arquitectura Segura y Despliegue en GitHub Pages:**
-  - Estructura 100% compatible con **GitHub Pages** mediante rutas relativas universales.
-  - Protección de privacidad: sin exposición de documentos de identidad, números telefónicos ni correos personales en repositorios públicos.
-  - Reglas `.gitignore` para omitir reportes internos y archivos de ofimática.
+- **HTML5 Semántico:** Estructura institucional accesible y estandarizada.
+- **Tailwind CSS:** Diseño sobrio ajustado a la paleta institucional oficial del SENA (Verde SENA `#39A900`, Azul `#00324D`).
+- **JavaScript Moderno (ES6+):** Programación asíncrona (`async/await`), consumo reactivo de datos en formato JSON (`aprendices.json` y `plan_sesiones.json`), filtrado en vivo y navegación por pestañas (`#directorio`, `#instructivo`, `#plan`).
+- **Arquitectura Segura y Compatible con GitHub Pages:**
+  - Rutas relativas universales sin necesidad de procesos de compilación o servidor Node.js.
+  - Protección de privacidad: sin exposición de documentos de identidad, números telefónicos ni correos personales.
+  - Archivo `.gitignore` con exclusión de reportes internos y archivos de ofimática.
 
 ---
 
@@ -28,64 +31,71 @@ La plataforma permite explorar el directorio de aprendices, filtrar en tiempo re
  ┃ ┣ 📂 juan-esteban-villarreal-ramirez/
  ┃ ┃ ┗ 📜 index.html
  ┃ ┗ ... (28 aprendices en total)
+ ┣ 📂 assets/
+ ┃ ┗ 🖼️ logo_green.png                      # Logotipo institucional oficial SENA
  ┣ 📂 data/
- ┃ ┗ 📜 aprendices.json                     # Listado estructurado (28 aprendices oficiales)
+ ┃ ┣ 📜 aprendices.json                     # Listado oficial de 28 aprendices (sanitizado)
+ ┃ ┗ 📜 plan_sesiones.json                  # Estructura curricular de 40 sesiones (8 semanas)
  ┣ 📂 js/
- ┃ ┗ 📜 script.js                           # Lógica del buscador, renderizado y eventos
- ┣ 📜 index.html                            # Página principal institucional (Directorio)
- ┣ 📜 .gitignore                            # Protección de archivos del sistema y datos sensibles
- ┗ 📜 README.md                             # Documentación oficial del proyecto
+ ┃ ┗ 📜 script.js                           # Control de pestañas, buscador y renderizado
+ ┣ 📜 index.html                            # Portal principal (Directorio, Guía Git y Plan)
+ ┣ 📜 planSesiones.md                       # Documento fuente curricular de las sesiones
+ ┣ 📜 .gitignore                            # Protección de archivos de entorno y datos sensibles
+ ┗ 📜 README.md                             # Documentación oficial del repositorio
 ```
 
 ---
 
-## 📋 Guía para el Aprendiz: ¿Cómo registrar tus Commits y Evidencias?
+## 🛠️ Protocolo Git para Aprendices (Colaboración Directa)
 
-Cada aprendiz cuenta con su propio archivo `index.html` ubicado dentro de `aprendices/<tu-nombre-slug>/index.html`.
+Todos los aprendices cuentan con permisos de colaborador directo sobre el repositorio. Para garantizar una convivencia técnica armónica y sin conflictos de código, se debe seguir estrictamente este protocolo:
 
-Para registrar una nueva actividad o entrega:
+### Las 4 Reglas de Oro:
+1. **Aislamiento Estricto:** Trabaja **únicamente** dentro de tu carpeta asignada `aprendices/tu-nombre-slug/`. Nunca edites ni borres archivos de otros compañeros ni archivos de la raíz.
+2. **Sincronización Previa:** Ejecuta siempre `git pull origin master` antes de comenzar a trabajar en tu equipo local.
+3. **Staging Selectivo:** Prepara solo tu carpeta con `git add aprendices/tu-nombre-slug/` para evitar subir archivos no deseados.
+4. **Commits Profesionales:** Redacta mensajes descriptivos siguiendo el formato `git commit -m "feat(evidencia): sesion-XX - <tema>"`.
 
-1. Abre tu archivo `aprendices/<tu-nombre-slug>/index.html` en tu editor de código (ej. Visual Studio Code).
-2. Ubica la sección `<tbody>` dentro de la tabla **Bitácora de Commits y Evidencias de Aprendizaje**.
-3. Duplica una de las filas `<tr>` y completa los datos:
-   - **#**: Número consecutivo de la evidencia.
-   - **Fecha**: Fecha de desarrollo o entrega (formato `AAAA-MM-DD`).
-   - **Commit Git**: El hash corto o etiqueta del commit en Git (ej. `feat-login`, `a1b2c3d`).
-   - **Fase / Guía**: Fase del proyecto formativo (Inducción, Análisis, Diseño, Desarrollo, etc.).
-   - **Evidencia / Actividad**: Título y descripción breve del entregable.
-   - **Estado**: Badge con estado (`Aprobado`, `Entregado`, `En Revisión`).
-   - **Acción / Enlace**: Enlace a la carpeta o archivo de tu evidencia en tu proyecto.
-4. Guarda los cambios, realiza el commit en Git y sube tu avance al repositorio:
-   ```bash
-   git add .
-   git commit -m "docs(evidencia): registro de evidencia 004 DOM Carro"
-   git push origin master
-   ```
+### Flujo de Trabajo para cada Evidencia:
+```bash
+# 1. Sincronizar cambios remotos
+git pull origin master
+
+# 2. (Desarrollar tu evidencia en tu carpeta aprendices/tu-slug/ y actualizar tu index.html)
+
+# 3. Preparar tus archivos
+git add aprendices/tu-nombre-slug/
+
+# 4. Registrar el commit
+git commit -m "feat(evidencia): sesion-01 modelo relacional y ddl"
+
+# 5. Sincronizar y publicar en GitHub
+git pull origin master
+git push origin master
+```
+
+---
+
+## 🆘 Solución a Errores Típicos de Git
+
+- **Error `[rejected - non-fast-forward]`:** Ocurre si otro aprendiz subió un commit antes que tú.  
+  *Solución:* Ejecuta `git pull origin master` y luego `git push origin master`.
+- **Error `Your local changes would be overwritten by merge`:** Ocurre si haces pull teniendo cambios locales sin guardar.  
+  *Solución:* Haz `git add aprendices/tu-slug/` y `git commit -m "..."` primero, y luego haz `git pull origin master`.
+- **Error de Conflicto (`Merge conflict`):** Ocurre si dos personas tocaron el mismo archivo.  
+  *Solución:* Abre el archivo en Visual Studio Code, presiona **Accept Both Changes** (o conserva lo correcto), guarda, ejecuta `git add .`, haz `git commit -m "fix: resolver conflicto"` y finalmente `git push origin master`.
 
 ---
 
 ## 🌐 Despliegue en GitHub Pages
 
-Este proyecto está diseñado para funcionar de manera inmediata en **GitHub Pages** sin compilación:
-
-1. Ve a tu repositorio en **GitHub**.
-2. Dirígete a **Settings** > **Pages** (en el menú lateral izquierdo).
-3. En **Build and deployment** > **Source**, selecciona `Deploy from a branch`.
-4. Elige la rama `master` (o `main`) y la carpeta `/ (root)`.
-5. Haz clic en **Save**. En un par de minutos, tu portafolio estará disponible públicamente en:
+1. En el repositorio de **GitHub**, ingresa a **Settings** > **Pages**.
+2. En **Source**, selecciona `Deploy from a branch`.
+3. Selecciona la rama `master` (o `main`) y la carpeta raíz `/ (root)`.
+4. Guarda los cambios. El portal estará en línea en:
    ```text
-   https://<tu-usuario>.github.io/<nombre-del-repositorio>/
+   https://<usuario-o-organizacion>.github.io/<nombre-repo>/
    ```
-
----
-
-## 💻 Ejecución en Entorno Local
-
-Para probar la plataforma en tu equipo:
-
-1. Abre la carpeta del proyecto en **Visual Studio Code**.
-2. Con la extensión **Live Server** instalada, haz clic derecho sobre [index.html](file:///c:/Users/hdtol/OnehDrive/Documents/2026/SENA/Formacion/ADSO%203293992/adso3293992/index.html) y selecciona **Open with Live Server**.
-3. La aplicación se abrirá en `http://127.0.0.1:5500/` cargando dinámicamente los datos vía `fetch()`.
 
 ---
 
@@ -93,6 +103,6 @@ Para probar la plataforma en tu equipo:
 
 **Servicio Nacional de Aprendizaje (SENA)**  
 Regional Huila • Centro de Formación  
-Programa: **Análisis y Desarrollo de Software (ADSO)**  
+Programa: **Tecnólogo en Análisis y Desarrollo de Software (ADSO)**  
 Ficha de Caracterización: **3293992**  
 Año: **2026**

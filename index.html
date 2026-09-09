@@ -3,229 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio Institucional de Aprendices | ADSO Ficha 3293992 - SENA</title>
+    <title>SENA | Portal ADSO 3293992 - Directorio y Guía de Evidencias</title>
     
-    <!-- Metaetiquetas para SEO y compatibilidad -->
-    <meta name="description" content="Portafolio oficial y directorio de aprendices del programa Análisis y Desarrollo de Software (ADSO) - Ficha 3293992 del SENA.">
-    <meta name="theme-color" content="#00324D">
+    <!-- Metaetiquetas institucionales -->
+    <meta name="description" content="Portal oficial del programa Análisis y Desarrollo de Software (ADSO) - Ficha 3293992, SENA. Directorio de aprendices, guía de trabajo con Git y plan de sesiones técnicas.">
+    <meta name="theme-color" content="#39A900">
 
-    <!-- Tailwind CSS (Play CDN para compatibilidad directa sin build step en GitHub Pages) -->
+    <!-- Tailwind CSS (Play CDN oficial) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'sena-green': '#39A900',
-                        'sena-green-dark': '#2e8500',
-                        'sena-green-light': '#e8f5e9',
-                        'sena-blue': '#00324D',
-                        'sena-blue-dark': '#002235',
-                        'sena-blue-light': '#0a496d',
-                        'sena-bg': '#f8fafc',
+                        sena: {
+                            green: '#39A900',
+                            'green-hover': '#2e8500',
+                            'green-light': '#F2F9EE',
+                            'green-border': '#D3ECC7',
+                            dark: '#00324D',
+                            text: '#0F172A',
+                            muted: '#64748B',
+                            bg: '#F8FAFC'
+                        }
                     }
                 }
             }
         }
     </script>
 
-    <!-- Fuente oficial Inter de Google Fonts -->
+    <!-- Tipografía institucional Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Transiciones suaves para tarjetas y elementos interactivos */
-        .card-hover {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Clase para pestañas activas */
+        .tab-btn-active {
+            color: #39A900;
+            border-bottom: 2px solid #39A900;
+            font-weight: 700;
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -10px rgba(0, 50, 77, 0.15), 0 4px 6px -2px rgba(57, 169, 0, 0.1);
+        .tab-btn-inactive {
+            color: #64748B;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
         }
     </style>
 </head>
-<body class="bg-sena-bg text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="bg-sena-bg text-sena-text min-h-screen flex flex-col antialiased">
 
     <!-- =========================================================================
-         Encabezado Institucional SENA (Header)
+         Barra Superior Institucional SENA (Gobierno de Colombia)
          ========================================================================= -->
-    <header class="bg-sena-blue text-white shadow-lg sticky top-0 z-50 border-b-4 border-sena-green">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="bg-[#00324D] text-white text-[11px] py-1.5 px-4 sm:px-8 border-b border-[#002235]">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="font-medium tracking-wide">República de Colombia • Servicio Nacional de Aprendizaje SENA</span>
+            <span class="hidden sm:inline-block text-slate-300">Regional Huila • Centro de Formación</span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         Encabezado Principal con Navegación por Pestañas
+         ========================================================================= -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="py-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-100">
                 
-                <!-- Logo institucional y título -->
-                <div class="flex items-center space-x-3.5 text-center sm:text-left">
-                    <!-- Símbolo Institucional SENA -->
-                    <div class="w-12 h-12 rounded-xl bg-sena-green flex items-center justify-center font-extrabold text-white text-2xl shadow-md flex-shrink-0 tracking-tight">
-                        S
+                <!-- Logotipo Oficial SENA y Título -->
+                <div class="flex items-center space-x-3.5">
+                    <div class="h-11 flex-shrink-0 flex items-center justify-center">
+                        <img src="./assets/logo_green.png" alt="Logo SENA" class="h-10 w-auto object-contain">
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 justify-center sm:justify-start flex-wrap">
-                            <span class="text-xs font-bold uppercase tracking-widest text-emerald-300">
-                                SENA | Formación Titulada
-                            </span>
-                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-sena-green"></span>
-                            <span class="text-xs text-slate-300 font-medium">Regional Huila</span>
+
+                    <div class="border-l border-slate-200 pl-3.5">
+                        <div class="text-[10px] uppercase tracking-wider text-sena-muted font-semibold">
+                            Servicio Nacional de Aprendizaje
                         </div>
-                        <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
-                            ADSO <span class="text-sena-green font-bold">3293992</span>
-                        </h1>
+                        <div class="text-base sm:text-lg font-extrabold text-sena-dark leading-tight flex items-center gap-1.5">
+                            <span>ADSO</span>
+                            <span class="text-sena-green">• Ficha 3293992</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Enlaces y Badges -->
-                <div class="flex items-center gap-3">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 text-emerald-300 border border-white/10 backdrop-blur-sm">
-                        <span class="w-2 h-2 rounded-full bg-sena-green animate-pulse"></span>
+                <!-- Estado Formativo y Enlace Rápido -->
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-sena-green-light text-[#236800] border border-sena-green-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-sena-green"></span>
                         En Ejecución (2026)
                     </span>
                 </div>
 
             </div>
+
+            <!-- Menú de Pestañas Principales -->
+            <nav class="flex items-center space-x-1 sm:space-x-8 overflow-x-auto py-2 text-xs sm:text-sm">
+                <button 
+                    id="tabBtnDirectorio" 
+                    onclick="cambiarPestana('directorio')" 
+                    class="tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span>Directorio de Aprendices</span>
+                </button>
+
+                <button 
+                    id="tabBtnInstructivo" 
+                    onclick="cambiarPestana('instructivo')" 
+                    class="tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark">
+                    <svg class="w-4 h-4 text-sena-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    <span>Instructivo Git & Evidencias</span>
+                </button>
+
+                <button 
+                    id="tabBtnPlan" 
+                    onclick="cambiarPestana('plan')" 
+                    class="tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Plan de Sesiones (40 Días)</span>
+                </button>
+            </nav>
         </div>
     </header>
 
     <!-- =========================================================================
-         Hero Banner & Métricas de la Ficha
+         PESTAÑA 1: DIRECTORIO DE APRENDICES
          ========================================================================= -->
-    <section class="bg-gradient-to-b from-sena-blue to-sena-blue-dark text-white py-12 px-4 sm:px-6 lg:px-8 shadow-inner">
-        <div class="max-w-7xl mx-auto space-y-6">
-            <div class="text-center max-w-3xl mx-auto space-y-3">
-                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-sena-green/20 text-emerald-300 border border-sena-green/30">
-                    Portafolio Centralizado de Aprendices
+    <section id="seccionDirectorio" class="block">
+        <!-- Resumen institucional y barra de búsqueda -->
+        <div class="bg-white border-b border-slate-200 py-6 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto space-y-4">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sena-green block mb-1">
+                            Directorio Oficial de Aprendices
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-sena-dark tracking-tight">
+                            Análisis y Desarrollo de Software
+                        </h2>
+                        <p class="text-xs sm:text-sm text-sena-muted mt-1 max-w-2xl">
+                            Accede a la carpeta y portafolio individual de cada aprendiz para revisar su bitácora de commits y avance en las 40 sesiones formativas.
+                        </p>
+                    </div>
+
+                    <!-- Métricas breves -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <div class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                            <span class="text-sena-muted block text-[10px] uppercase font-semibold">Aprendices</span>
+                            <strong class="text-sena-dark text-sm font-bold" id="kpiTotal">28</strong>
+                        </div>
+                        <div class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                            <span class="text-sena-muted block text-[10px] uppercase font-semibold">Ficha</span>
+                            <strong class="text-sena-dark text-sm font-bold">3293992</strong>
+                        </div>
+                        <div class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                            <span class="text-sena-muted block text-[10px] uppercase font-semibold">Sesiones</span>
+                            <strong class="text-sena-dark text-sm font-bold">40 Días</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de búsqueda en vivo -->
+                <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="relative w-full sm:max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input 
+                            type="search" 
+                            id="inputBusqueda" 
+                            placeholder="Buscar aprendiz por nombre o apellido..." 
+                            class="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-sena-green focus:border-sena-green transition-all"
+                        >
+                        <button 
+                            id="btnLimpiarBusqueda" 
+                            class="absolute inset-y-0 right-0 pr-2.5 items-center text-slate-400 hover:text-slate-600 hidden"
+                            title="Limpiar búsqueda"
+                            type="button">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="text-xs text-sena-muted flex items-center gap-1.5 self-end sm:self-center">
+                        <span>Mostrando:</span>
+                        <strong id="contadorResultados" class="text-sena-dark font-semibold">28 aprendices</strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Grilla de Tarjetas de Aprendices -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <section 
+                id="portfolioGrid" 
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+                aria-label="Tarjetas de Aprendices">
+                <div class="col-span-full py-12 text-center text-sena-muted text-sm">
+                    <div class="inline-block w-7 h-7 border-2 border-sena-green border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-2.5 font-medium">Cargando directorio de aprendices...</p>
+                </div>
+            </section>
+
+            <!-- Sin resultados -->
+            <div id="sinResultados" class="hidden text-center py-16 bg-white rounded-xl border border-slate-200 my-4">
+                <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-sm font-bold text-sena-dark">No se encontraron resultados</h3>
+                <p class="text-xs text-sena-muted mt-1">No hay aprendices que coincidan con la búsqueda.</p>
+                <button 
+                    id="btnResetFiltro" 
+                    class="mt-3 px-3 py-1.5 text-xs font-semibold text-sena-green hover:underline">
+                    Ver todos los aprendices
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         PESTAÑA 2: INSTRUCTIVO GIT Y SUBIDA DE EVIDENCIAS
+         ========================================================================= -->
+    <section id="seccionInstructivo" class="hidden max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        
+        <!-- Banner de Bienvenida y Protocolo -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
+            <div class="flex items-center gap-2.5">
+                <span class="p-2 rounded-lg bg-emerald-50 text-sena-green border border-emerald-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                    Análisis y Desarrollo de Software
-                </h2>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Directorio institucional que presenta los portafolios individuales y las bitácoras de evidencias de aprendizaje desarrolladas por los aprendices de la ficha 3293992.
+                <div>
+                    <span class="text-xs font-bold text-sena-green uppercase tracking-wider">Protocolo Técnico SENA</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-sena-dark">Guía Oficial de Subida de Evidencias con Git</h2>
+                </div>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Como aprendices en formación de <strong>Análisis y Desarrollo de Software</strong>, operamos bajo los estándares de la industria del software. Cada aprendiz cuenta con permisos de <strong>colaborador directo</strong> en el repositorio. Para mantener el proyecto estable, <strong>no utilizaremos Pull Requests por ahora</strong>, sino commits y push directos respetando estrictamente el aislamiento de carpetas.
+            </p>
+
+            <!-- 4 Reglas de Oro -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                    <span class="font-bold text-sena-dark flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-sena-green"></span>
+                        1. Aislamiento Estricto
+                    </span>
+                    <p class="text-slate-500">
+                        Trabaja <strong>únicamente</strong> dentro de tu carpeta: <code class="text-sena-dark bg-white px-1 py-0.5 rounded border border-slate-200">aprendices/tu-nombre-slug/</code>. Nunca toques carpetas de otros compañeros.
+                    </p>
+                </div>
+                
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                    <span class="font-bold text-sena-dark flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-sena-green"></span>
+                        2. Actualizar Antes de Trabajar
+                    </span>
+                    <p class="text-slate-500">
+                        Ejecuta siempre <code class="text-sena-dark bg-white px-1 py-0.5 rounded border border-slate-200">git pull origin master</code> antes de empezar tu jornada para descargar los cambios del equipo.
+                    </p>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                    <span class="font-bold text-sena-dark flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-sena-green"></span>
+                        3. Staging Específico
+                    </span>
+                    <p class="text-slate-500">
+                        Evita el <code class="text-red-700 bg-white px-1 py-0.5 rounded border border-slate-200">git add .</code> indiscriminado. Prepara solo tu carpeta: <code class="text-sena-dark bg-white px-1 py-0.5 rounded border border-slate-200">git add aprendices/tu-carpeta/</code>.
+                    </p>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                    <span class="font-bold text-sena-dark flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-sena-green"></span>
+                        4. Commits Descriptivos
+                    </span>
+                    <p class="text-slate-500">
+                        Usa mensajes claros: <code class="text-sena-dark bg-white px-1 py-0.5 rounded border border-slate-200">git commit -m "feat(evidencia): sesion-01 modelo relacional"</code>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flujo de Trabajo Paso a Paso -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
+            <h3 class="text-lg font-bold text-sena-dark flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-sena-dark text-white text-xs flex items-center justify-center font-bold">i</span>
+                Flujo Paso a Paso para Subir tu Evidencia del Día
+            </h3>
+
+            <div class="space-y-6 text-xs sm:text-sm">
+                
+                <!-- Paso 1 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-sena-green flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                        1
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Sincronizar el repositorio local</h4>
+                        <p class="text-slate-500 text-xs">
+                            Abre la terminal en la raíz del proyecto en Visual Studio Code y descarga los últimos commits subidos por tus compañeros:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                            git pull origin master
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-sena-green flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                        2
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Crear los archivos de la evidencia y actualizar tu bitácora</h4>
+                        <p class="text-slate-500 text-xs">
+                            Dentro de tu carpeta personal <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">aprendices/tu-nombre-slug/</code>, crea la subcarpeta de la sesión (ej. <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">sesion-01/</code>) y guarda allí tus archivos técnicos. Luego, abre tu <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">index.html</code> personal y añade una fila <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">&lt;tr&gt;</code> en la tabla con la fecha, nombre de la actividad y estado.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-sena-green flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                        3
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Preparar tus cambios (Staging)</h4>
+                        <p class="text-slate-500 text-xs">
+                            Agrega únicamente tu carpeta al área de preparación de Git:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                            git add aprendices/tu-nombre-slug/
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-sena-green flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                        4
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Confirmar el commit con mensaje profesional</h4>
+                        <p class="text-slate-500 text-xs">
+                            Registra el commit indicando el número de sesión y el tema:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                            git commit -m "feat(evidencia): sesion-01 modelo relacional y ddl"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-sena-green flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                        5
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Hacer Pull y Push final a GitHub</h4>
+                        <p class="text-slate-500 text-xs">
+                            Por seguridad, haz un <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">pull</code> antes del <code class="bg-slate-100 px-1 py-0.5 rounded border border-slate-200">push</code> para verificar si alguien subió un commit en ese instante, y luego publica tu evidencia:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto space-y-1">
+                            <div>git pull origin master</div>
+                            <div class="text-emerald-400">git push origin master</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Guía de Solución a Errores Típicos de Git -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
+            <div>
+                <span class="text-xs font-bold text-red-600 uppercase tracking-wider">Centro de Diagnóstico</span>
+                <h3 class="text-lg font-bold text-sena-dark">Solución a Errores Típicos al hacer Pull o Push</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Si la terminal te muestra un mensaje en rojo, no entres en pánico. Ubica aquí el error exacto y aplica la solución:
                 </p>
             </div>
 
-            <!-- Indicadores clave (KPIs) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 max-w-4xl mx-auto">
-                <div class="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
-                    <span class="text-2xl sm:text-3xl font-extrabold text-sena-green block" id="kpiTotal">28</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wide font-medium">Aprendices Activos</span>
-                </div>
-                <div class="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
-                    <span class="text-2xl sm:text-3xl font-extrabold text-white block">3293992</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wide font-medium">Código de Ficha</span>
-                </div>
-                <div class="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
-                    <span class="text-2xl sm:text-3xl font-extrabold text-white block">2026</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wide font-medium">Año Lectivo</span>
-                </div>
-                <div class="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
-                    <span class="text-2xl sm:text-3xl font-extrabold text-emerald-400 block">100%</span>
-                    <span class="text-xs text-slate-300 uppercase tracking-wide font-medium">En Formación</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =========================================================================
-         Barra de Búsqueda y Filtros
-         ========================================================================= -->
-    <section class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-6 z-20">
-        <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            <!-- Input de búsqueda en vivo -->
-            <div class="relative w-full md:max-w-lg">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-                <input 
-                    type="search" 
-                    id="inputBusqueda" 
-                    placeholder="Buscar aprendiz por nombre o apellido..." 
-                    class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-sena-green focus:border-transparent transition-all"
-                >
-                <button 
-                    id="btnLimpiarBusqueda" 
-                    class="absolute inset-y-0 right-0 pr-3 items-center text-slate-400 hover:text-slate-600 hidden"
-                    title="Limpiar búsqueda"
-                    type="button">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Contador de resultados -->
-            <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 self-end md:self-center">
-                <span>Resultados:</span>
-                <span id="contadorResultados" class="px-2.5 py-1 rounded-full bg-sena-green-light text-sena-green-dark border border-emerald-200">
-                    28 aprendices
-                </span>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- =========================================================================
-         Grilla Principal de Tarjetas de Aprendices
-         ========================================================================= -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        
-        <!-- Contenedor dinámico generado por JavaScript -->
-        <section 
-            id="portfolioGrid" 
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            aria-label="Listado de Aprendices ADSO">
-            <!-- Spinner / Cargando -->
-            <div class="col-span-full py-12 text-center">
-                <div class="inline-block w-8 h-8 border-4 border-sena-green border-t-transparent rounded-full animate-spin"></div>
-                <p class="mt-3 text-sm text-slate-500 font-medium">Cargando aprendices de la ficha 3293992...</p>
-            </div>
-        </section>
-
-        <!-- Mensaje de no resultados (oculto por defecto) -->
-        <div id="sinResultados" class="hidden text-center py-16 px-4">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-            <h3 class="text-base font-bold text-slate-700">No se encontraron aprendices</h3>
-            <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">No hay ningún aprendiz que coincida con el criterio de búsqueda ingresado.</p>
-            <button 
-                id="btnResetFiltro" 
-                class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sena-blue hover:bg-sena-blue-light text-white text-xs font-semibold transition-colors">
-                Restablecer lista completa
-            </button>
-        </div>
-
-    </main>
-
-    <!-- =========================================================================
-         Pie de Página Institucional (Footer)
-         ========================================================================= -->
-    <footer class="bg-white border-t border-slate-200 py-8 text-slate-600 text-xs mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+            <div class="space-y-4 text-xs">
                 
-                <div class="space-y-1">
-                    <p class="font-bold text-sena-blue text-sm">Servicio Nacional de Aprendizaje - SENA</p>
-                    <p class="text-slate-500">Programa de Formación: Análisis y Desarrollo de Software (ADSO) • Ficha 3293992</p>
+                <!-- Error 1 -->
+                <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/60 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold">
+                        <span class="text-sm">⚠️ Error 1:</span>
+                        <code>[rejected - non-fast-forward] Updates were rejected because the remote contains work...</code>
+                    </div>
+                    <p class="text-slate-600">
+                        <strong>¿Por qué ocurre?</strong> Otro compañero subió un commit a GitHub antes que tú y tu copia local está desactualizada.
+                    </p>
+                    <p class="text-slate-700 font-semibold">Solución inmediata:</p>
+                    <div class="bg-slate-900 text-slate-100 p-3 rounded-lg font-mono">
+                        git pull origin master<br>
+                        git push origin master
+                    </div>
+                    <p class="text-[11px] text-slate-500">
+                        Como cada aprendiz trabaja en su propia carpeta, Git integrará los cambios de forma transparente y te permitirá hacer push inmediatamente.
+                    </p>
                 </div>
 
-                <div class="text-slate-400 text-[11px]">
-                    <p>&copy; 2026 SENA. Todos los derechos reservados.</p>
-                    <p>Desplegable compatible con GitHub Pages</p>
+                <!-- Error 2 -->
+                <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/60 space-y-2">
+                    <div class="flex items-center gap-2 text-blue-900 font-bold">
+                        <span class="text-sm">⚠️ Error 2:</span>
+                        <code>error: Your local changes to the following files would be overwritten by merge</code>
+                    </div>
+                    <p class="text-slate-600">
+                        <strong>¿Por qué ocurre?</strong> Ejecutaste <code class="bg-white px-1 py-0.5 rounded border">git pull</code> teniendo archivos modificados en tu máquina sin guardar en un commit.
+                    </p>
+                    <p class="text-slate-700 font-semibold">Solución inmediata:</p>
+                    <div class="bg-slate-900 text-slate-100 p-3 rounded-lg font-mono">
+                        git add aprendices/tu-nombre-slug/<br>
+                        git commit -m "feat(evidencia): guardar avance antes de sincronizar"<br>
+                        git pull origin master<br>
+                        git push origin master
+                    </div>
                 </div>
 
+                <!-- Error 3 -->
+                <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/60 space-y-2">
+                    <div class="flex items-center gap-2 text-rose-900 font-bold">
+                        <span class="text-sm">⚠️ Error 3:</span>
+                        <code>CONFLICT (content): Merge conflict in &lt;archivo&gt;</code>
+                    </div>
+                    <p class="text-slate-600">
+                        <strong>¿Por qué ocurre?</strong> Ocurre si dos personas modificaron las mismas líneas del mismo archivo (por ejemplo, si alguien editó accidentalmente un archivo fuera de su carpeta).
+                    </p>
+                    <p class="text-slate-700 font-semibold">Solución paso a paso:</p>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-600 pl-1">
+                        <li>Abre el archivo señalado con conflicto en <strong>Visual Studio Code</strong>.</li>
+                        <li>Verás resaltadas las opciones: <em>Accept Current Change</em>, <em>Accept Incoming Change</em> o <em>Accept Both Changes</em>.</li>
+                        <li>Elige la opción correcta (generalmente <strong>Accept Both Changes</strong> para conservar ambos aportes).</li>
+                        <li>Guarda el archivo (<code>Ctrl + S</code>) y ejecuta en la terminal:</li>
+                    </ol>
+                    <div class="bg-slate-900 text-slate-100 p-3 rounded-lg font-mono">
+                        git add .<br>
+                        git commit -m "fix(merge): resolver conflicto de integracion"<br>
+                        git push origin master
+                    </div>
+                </div>
+
+                <!-- Error 4 -->
+                <div class="p-4 rounded-xl border border-purple-200 bg-purple-50/60 space-y-2">
+                    <div class="flex items-center gap-2 text-purple-900 font-bold">
+                        <span class="text-sm">⚠️ Error 4:</span>
+                        <code>fatal: Authentication failed for 'https://github.com/...'</code>
+                    </div>
+                    <p class="text-slate-600">
+                        <strong>¿Por qué ocurre?</strong> GitHub ya no admite contraseñas de cuenta por terminal; requiere un <strong>Personal Access Token (PAT)</strong> o inicio de sesión mediante el navegador (Git Credential Manager).
+                    </p>
+                    <p class="text-slate-700 font-semibold">Solución:</p>
+                    <p class="text-slate-600">
+                        En GitHub ve a: <em>Settings &gt; Developer settings &gt; Personal access tokens &gt; Tokens (classic)</em>, genera un token con permiso <code class="bg-white px-1 py-0.5 rounded border">repo</code>, cópialo y pégalo como contraseña cuando Git te la solicite en la terminal.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- =========================================================================
+         PESTAÑA 3: PLAN DE SESIONES (40 DÍAS FORMATIVOS)
+         ========================================================================= -->
+    <section id="seccionPlan" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        
+        <!-- Encabezado del Plan -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-sena-green block mb-1">
+                        Currículo Técnico Intensivo
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-black text-sena-dark">
+                        Distribución Curricular Sesión por Sesión (40 Sesiones)
+                    </h2>
+                    <p class="text-xs sm:text-sm text-sena-muted mt-1 max-w-3xl">
+                        Plan intensivo de 8 semanas para el dominio de Desarrollo Full Stack (MERN) y Despliegue en Producción. Cada día de clase requiere una entrega técnica en tu carpeta individual.
+                    </p>
+                </div>
+
+                <!-- Filtro rápido por semanas -->
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-xs text-slate-400 font-medium mr-1">Filtrar:</span>
+                    <button onclick="filtrarSemana(0)" id="filtroSemana-0" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-bold bg-sena-green text-white">Todas</button>
+                    <button onclick="filtrarSemana(1)" id="filtroSemana-1" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S1</button>
+                    <button onclick="filtrarSemana(2)" id="filtroSemana-2" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S2</button>
+                    <button onclick="filtrarSemana(3)" id="filtroSemana-3" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S3</button>
+                    <button onclick="filtrarSemana(4)" id="filtroSemana-4" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S4</button>
+                    <button onclick="filtrarSemana(5)" id="filtroSemana-5" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S5</button>
+                    <button onclick="filtrarSemana(6)" id="filtroSemana-6" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S6</button>
+                    <button onclick="filtrarSemana(7)" id="filtroSemana-7" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S7</button>
+                    <button onclick="filtrarSemana(8)" id="filtroSemana-8" class="btn-filtro-semana px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">S8</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor dinámico de las 8 semanas y 40 sesiones -->
+        <div id="contenedorPlanSesiones" class="space-y-6">
+            <div class="py-12 text-center text-sena-muted text-sm">
+                <div class="inline-block w-7 h-7 border-2 border-sena-green border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-2.5 font-medium">Cargando cronograma de 40 sesiones...</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- =========================================================================
+         Pie de Página Institucional SENA
+         ========================================================================= -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-xs text-sena-muted mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+                <p class="font-bold text-sena-dark">Servicio Nacional de Aprendizaje - SENA</p>
+                <p class="text-slate-500">Programa ADSO • Ficha de caracterización 3293992 • 40 Sesiones Formativas</p>
+            </div>
+            <div class="text-slate-400 text-[11px]">
+                &copy; 2026 SENA. Portal institucional y repositorio de evidencias.
             </div>
         </div>
     </footer>
 
-    <!-- Lógica JavaScript optimizada -->
+    <!-- Lógica de renderizado, navegación de pestañas y plan -->
     <script src="js/script.js"></script>
 </body>
 </html>
