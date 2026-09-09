@@ -130,7 +130,7 @@ git config user.email "tu-correo-registrado-en-github@misena.edu.co"
 
 ### 2. Genera tu llave SSH personal:
 ```bash
-ssh-keygen -t ed25519 -C "tu-correo@misena.edu.co"
+ssh-keygen -t ed25519 -C "tu-correo@correo.com"
 ```
 - Presiona **Enter** para guardar en la ruta por defecto (`~/.ssh/id_ed25519`).
 - Asigna una contraseña (*passphrase*) personal recomendada para proteger tu clave en el equipo compartido.
