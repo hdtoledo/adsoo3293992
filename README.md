@@ -14,20 +14,22 @@ Plataforma web institucional y repositorio centralizado desarrollado para el seg
 2. [Estructura del Repositorio](#-estructura-del-proyecto)
 3. [Protocolo Git para Aprendices (Colaboración Directa)](#-protocolo-git-para-aprendices-colaboración-directa)
 4. [¿Cómo Registrar y Subir Evidencias Técnicas?](#-cómo-registrar-y-subir-evidencias-técnicas)
-5. [Solución a Errores Típicos de Git](#-solución-a-errores-típicos-de-git-centro-de-diagnóstico)
-6. [Resumen del Plan Curricular (40 Sesiones / 8 Semanas)](#-resumen-del-plan-curricular-40-sesiones--8-semanas)
-7. [Tecnologías y Estándares](#-tecnologías-y-estándares)
-8. [Despliegue en GitHub Pages](#-despliegue-en-github-pages)
-9. [Ejecución en Entorno Local](#-ejecución-en-entorno-local)
+5. [Configuración de Llaves SSH (Equipos Compartidos en Salas SENA)](#-configuración-de-llaves-ssh-equipos-compartidos-en-salas-sena)
+6. [Solución a Errores Típicos de Git](#-solución-a-errores-típicos-de-git-centro-de-diagnóstico)
+7. [Resumen del Plan Curricular (40 Sesiones / 8 Semanas)](#-resumen-del-plan-curricular-40-sesiones--8-semanas)
+8. [Tecnologías y Estándares](#-tecnologías-y-estándares)
+9. [Despliegue en GitHub Pages](#-despliegue-en-github-pages)
+10. [Ejecución en Entorno Local](#-ejecución-en-entorno-local)
 
 ---
 
 ## 🌐 Componentes del Portal
 
-La aplicación web principal ([index.html](file:///c:/Users/hdtol/OnehDrive/Documents/2026/SENA/Formacion/ADSO%203293992/adso3293992/index.html)) cuenta con un sistema de navegación por pestañas con soporte de anclas URL:
+La aplicación web principal ([index.html](file:///c:/Users/hdtol/OnehDrive/Documents/2026/SENA/Formacion/ADSO%203293992/adso3293992/index.html)) cuenta con un sistema de navegación por 4 pestañas con soporte de anclas URL:
 
 * **👥 Directorio de Aprendices (`#directorio`):** Visualización de las tarjetas institucionales de los 28 aprendices, buscador en tiempo real insensible a acentos/mayúsculas y enlace a cada portafolio individual.
-* **🚀 Instructivo Git & Evidencias (`#instructivo`):** Manual paso a paso para el flujo de trabajo colaborativo profesional sin Pull Requests, reglas de convivencia y guía de resolución de incidentes de sincronización.
+* **🚀 Instructivo Git & Evidencias (`#instructivo`):** Manual paso a paso para el flujo de trabajo colaborativo profesional sin Pull Requests, reglas de convivencia y ciclo de entrega.
+* **🔑 Configuración Llave SSH (`#ssh`):** Guía específica para salas de cómputo compartidas con estudiantes de diferentes jornadas, explicando cómo generar claves Ed25519 e impedir interferencias de credenciales.
 * **📅 Plan de Sesiones (`#plan`):** Desglose modular de las 40 sesiones de clase organizadas por semanas con botones de filtrado interactivo (S1 a S8) y nomenclatura sugerida para las evidencias.
 
 ---
@@ -53,7 +55,6 @@ La aplicación web principal ([index.html](file:///c:/Users/hdtol/OnehDrive/Docu
  ┣ 📂 js/
  ┃ ┗ 📜 script.js                           # Control de navegación por pestañas, buscador y renderizado
  ┣ 📜 index.html                            # Portal principal institucional
- ┣ 📜 planSesiones.md                       # Plan curricular formativo día por día
  ┣ 📜 .gitignore                            # Protección de archivos de sistema, entorno y reportes
  ┗ 📜 README.md                             # Documentación técnica general
 ```
@@ -106,7 +107,60 @@ git commit -m "feat(evidencia): sesion-01 modelo relacional y sentencias ddl"
 
 # PASO 5: Sincronizar y publicar en GitHub
 git pull origin master
-git push origin master
+```
+
+---
+
+## 🔑 Configuración de Llaves SSH (Equipos Compartidos en Salas SENA)
+
+En las salas de cómputo del SENA, los equipos son compartidos diariamente por aprendices de diferentes jornadas y programas. 
+
+> [!IMPORTANT]
+> **¿Por qué NO usar HTTPS en salas compartidas?**
+> Al iniciar sesión con HTTPS, Windows guarda las credenciales en el *Administrador de Credenciales*, provocando que tus commits se registren con el nombre del usuario anterior o fallen por permisos.
+> **La solución profesional es configurar una Llave SSH Ed25519 propia en tu cuenta de GitHub.**
+
+### 1. Configura tu identidad Git local (Sin `--global`):
+Abre la terminal en la raíz del proyecto y ejecuta:
+```bash
+git config user.name "TU NOMBRE COMPLETO"
+git config user.email "tu-correo-registrado-en-github@misena.edu.co"
+```
+*(No uses `--global` para no alterar la configuración de los aprendices de otros turnos)*.
+
+### 2. Genera tu llave SSH personal:
+```bash
+ssh-keygen -t ed25519 -C "tu-correo@misena.edu.co"
+```
+- Presiona **Enter** para guardar en la ruta por defecto (`~/.ssh/id_ed25519`).
+- Asigna una contraseña (*passphrase*) personal recomendada para proteger tu clave en el equipo compartido.
+
+### 3. Copia tu llave pública:
+```bash
+# En PowerShell:
+Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
+
+# En Git Bash:
+clip < ~/.ssh/id_ed25519.pub
+```
+
+### 4. Regístrala en GitHub:
+1. Entra a [github.com](https://github.com) > Clic en tu foto de perfil > **Settings**.
+2. Selecciona **SSH and GPG keys** > Botón verde **New SSH key**.
+3. **Title:** Escribe el nombre del equipo (ej: `PC-Sala-SENA-ADSO`).
+4. **Key type:** `Authentication Key`.
+5. **Key:** Pega el texto copiado y presiona **Add SSH key**.
+
+### 5. Verifica la conexión segura:
+```bash
+ssh -T git@github.com
+```
+*(Si pregunta si deseas continuar conectándote, escribe `yes` y presiona Enter)*.  
+Debe responder: `Hi <tu-usuario>! You've successfully authenticated...`
+
+### 6. Asegura que el repositorio use la URL SSH oficial:
+```bash
+git remote set-url origin git@github.com:hdtoledo/adsoo3293992.git
 ```
 
 ---

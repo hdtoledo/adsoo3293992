@@ -123,6 +123,16 @@
                 </button>
 
                 <button 
+                    id="tabBtnSSH" 
+                    onclick="cambiarPestana('ssh')" 
+                    class="tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    <span>Configuración Llave SSH</span>
+                </button>
+
+                <button 
                     id="tabBtnPlan" 
                     onclick="cambiarPestana('plan')" 
                     class="tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark">
@@ -481,6 +491,209 @@
                     </p>
                 </div>
 
+            </div>
+        </div>
+
+    </section>
+
+    <!-- =========================================================================
+         PESTAÑA: CONFIGURACIÓN DE LLAVE SSH (EQUIPOS COMPARTIDOS EN SALAS SENA)
+         ========================================================================= -->
+    <section id="seccionSSH" class="hidden max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        
+        <!-- Banner Explicativo -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
+            <div class="flex items-center gap-2.5">
+                <span class="p-2 rounded-lg bg-amber-50 text-amber-700 border border-amber-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                </span>
+                <div>
+                    <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Ciberseguridad & Convivencia Técnica</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-sena-dark">Configuración de Llaves SSH en Equipos Compartidos</h2>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                En los centros de formación del SENA, los computadores de las salas de desarrollo son compartidos diariamente por aprendices de diferentes fichas y jornadas (mañana, tarde y noche).
+                Si intentas conectarte por HTTPS, Windows almacena las credenciales globales en el sistema, ocasionando que tus commits se registren a nombre de otro aprendiz o sean rechazados por permisos. 
+                <strong>Configurar tu propia Llave SSH Ed25519 en tu cuenta personal de GitHub resuelve este problema de raíz</strong> y te identifica como el autor legítimo de cada evidencia.
+            </p>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 space-y-1">
+                <span class="font-bold flex items-center gap-1.5 text-amber-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Regla esencial para salas compartidas:
+                </span>
+                <p>
+                    <strong>Nunca uses la bandera <code class="bg-white/80 px-1 py-0.5 rounded border border-amber-300">--global</code></strong> para configurar tu nombre o correo en equipos de las salas de cómputo, ya que alterarías la configuración de los aprendices de las otras jornadas. Usa siempre configuración local en la carpeta del proyecto.
+                </p>
+            </div>
+        </div>
+
+        <!-- Guía Paso a Paso SSH -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
+            <h3 class="text-lg font-bold text-sena-dark flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-sena-green text-white text-xs flex items-center justify-center font-bold">1-6</span>
+                Paso a Paso: De Cero a Conexión SSH Verificada
+            </h3>
+
+            <div class="space-y-6 text-xs sm:text-sm">
+
+                <!-- Paso 1 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        1
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Configurar tu identidad Git local (Solo en este proyecto)</h4>
+                        <p class="text-slate-500 text-xs">
+                            Abre la terminal en la raíz de tu proyecto en Visual Studio Code y asigna tu nombre y correo institucional:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto space-y-1">
+                            <div>git config user.name "TU NOMBRE COMPLETO"</div>
+                            <div>git config user.email "tu-correo@misena.edu.co"</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        2
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Generar una nueva llave SSH con algoritmo Ed25519</h4>
+                        <p class="text-slate-500 text-xs">
+                            Ejecuta el generador de claves criptográficas con tu correo registrado en GitHub:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                            ssh-keygen -t ed25519 -C "tu-correo@misena.edu.co"
+                        </div>
+                        <ul class="list-disc list-inside text-slate-500 text-xs space-y-1 pl-1">
+                            <li>Cuando pregunte <em>"Enter file in which to save the key"</em>, presiona <strong>Enter</strong> para aceptar la ruta predeterminada.</li>
+                            <li>Cuando pregunte <em>"Enter passphrase"</em>, es <strong>altamente recomendable</strong> ingresar una contraseña personal para que nadie en la sala pueda usar tu llave sin tu autorización.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        3
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Copiar tu llave pública al portapapeles</h4>
+                        <p class="text-slate-500 text-xs">
+                            Copia el contenido del archivo público (<code class="bg-slate-100 px-1 py-0.5 rounded border">.pub</code>). Nunca compartas el archivo privado sin extensión.
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto space-y-1">
+                            <div class="text-slate-400"># En PowerShell:</div>
+                            <div>Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard</div>
+                            <div class="text-slate-400 pt-1"># En Git Bash:</div>
+                            <div>clip &lt; ~/.ssh/id_ed25519.pub</div>
+                            <div class="text-slate-400 pt-1"># O para verla en pantalla y seleccionarla:</div>
+                            <div>cat ~/.ssh/id_ed25519.pub</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        4
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Agregar la llave SSH en tu cuenta de GitHub</h4>
+                        <ol class="list-decimal list-inside space-y-1.5 text-slate-600 text-xs pl-1">
+                            <li>Ingresa a tu cuenta en <strong><a href="https://github.com" target="_blank" class="text-sena-green hover:underline">github.com</a></strong>.</li>
+                            <li>Haz clic en tu foto de perfil (arriba a la derecha) y entra a <strong>Settings</strong>.</li>
+                            <li>En el menú de la izquierda, haz clic en <strong>SSH and GPG keys</strong>.</li>
+                            <li>Haz clic en el botón verde <strong>New SSH key</strong>.</li>
+                            <li>En <strong>Title</strong>, coloca un nombre reconocible (ej: <code>SENA-SalaComputo-PC05</code>).</li>
+                            <li>En <strong>Key type</strong>, deja seleccionada la opción <code>Authentication Key</code>.</li>
+                            <li>En el campo <strong>Key</strong>, pega el texto que copiaste en el Paso 3 (debe iniciar con <code>ssh-ed25519 AAAA...</code>).</li>
+                            <li>Haz clic en <strong>Add SSH key</strong> y confirma con tu contraseña o aplicación de GitHub si te lo solicita.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        5
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Comprobar la conexión segura con GitHub</h4>
+                        <p class="text-slate-500 text-xs">
+                            Valida en tu terminal que GitHub reconoce tu llave SSH:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto">
+                            ssh -T git@github.com
+                        </div>
+                        <p class="text-slate-500 text-xs">
+                            Si te muestra el mensaje <em>"The authenticity of host 'github.com' can't be established. Are you sure you want to continue connecting (yes/no)?"</em>, escribe <strong>yes</strong> y presiona Enter.
+                        </p>
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900">
+                            <strong>Respuesta de éxito esperada:</strong><br>
+                            <code>Hi tu-usuario! You've successfully authenticated, but GitHub does not provide shell access.</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 6 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-full bg-slate-100 text-sena-dark flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-slate-300">
+                        6
+                    </div>
+                    <div class="space-y-2 flex-1">
+                        <h4 class="font-bold text-slate-800">Verificar que el repositorio use la dirección SSH oficial</h4>
+                        <p class="text-slate-500 text-xs">
+                            Revisa cómo está configurado tu remote origin y cámbialo a la URL SSH del repositorio:
+                        </p>
+                        <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono text-xs overflow-x-auto space-y-1">
+                            <div class="text-slate-400"># 1. Comprobar la dirección remota actual:</div>
+                            <div>git remote -v</div>
+                            <div class="text-slate-400 pt-1"># 2. Si empieza por https://, cámbiala a la URL SSH oficial:</div>
+                            <div class="text-emerald-400">git remote set-url origin git@github.com:hdtoledo/adsoo3293992.git</div>
+                        </div>
+                        <p class="text-slate-500 text-xs">
+                            ¡Listo! A partir de este momento podrás hacer <code class="bg-slate-100 px-1 py-0.5 rounded border">git pull</code> y <code class="bg-slate-100 px-1 py-0.5 rounded border">git push</code> de forma transparente, segura y sin conflictos con otros aprendices de la sala.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Consejos de Seguridad al Salir de Clase -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
+            <h3 class="text-base font-bold text-sena-dark flex items-center gap-2">
+                <svg class="w-5 h-5 text-sena-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                Buenas Prácticas de Cierre de Sesión en el SENA
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                    <strong class="text-slate-800 block">Descargar llaves de la memoria al salir:</strong>
+                    <p class="text-slate-500">
+                        Si no le pusiste contraseña a tu llave SSH y quieres que nadie la use después de ti, descarga las llaves de la memoria de sesión ejecutando:
+                    </p>
+                    <code class="block bg-white p-1.5 rounded border border-slate-200 text-sena-dark font-mono font-bold mt-1">ssh-add -D</code>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                    <strong class="text-slate-800 block">Si te sale "Permission denied (publickey)":</strong>
+                    <p class="text-slate-500">
+                        Verifica que el agente SSH esté activo y que tu llave esté añadida:
+                    </p>
+                    <code class="block bg-white p-1.5 rounded border border-slate-200 text-sena-dark font-mono font-bold mt-1">ssh-add ~/.ssh/id_ed25519</code>
+                </div>
             </div>
         </div>
 

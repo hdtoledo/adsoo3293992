@@ -275,31 +275,34 @@ function filtrarSemana(numSemana) {
 }
 
 /**
- * Control de cambio entre las 3 pestañas principales.
- * @param {'directorio' | 'instructivo' | 'plan'} pestana 
+ * Control de cambio entre las 4 pestañas principales.
+ * @param {'directorio' | 'instructivo' | 'ssh' | 'plan'} pestana 
  */
 function cambiarPestana(pestana) {
     const secDirectorio = document.getElementById('seccionDirectorio');
     const secInstructivo = document.getElementById('seccionInstructivo');
+    const secSSH = document.getElementById('seccionSSH');
     const secPlan = document.getElementById('seccionPlan');
 
     const tabDirectorio = document.getElementById('tabBtnDirectorio');
     const tabInstructivo = document.getElementById('tabBtnInstructivo');
+    const tabSSH = document.getElementById('tabBtnSSH');
     const tabPlan = document.getElementById('tabBtnPlan');
 
-    // Ocultar todas
+    // Ocultar todas las secciones
     if (secDirectorio) secDirectorio.classList.add('hidden');
     if (secInstructivo) secInstructivo.classList.add('hidden');
+    if (secSSH) secSSH.classList.add('hidden');
     if (secPlan) secPlan.classList.add('hidden');
 
-    // Reset estilos botones
-    [tabDirectorio, tabInstructivo, tabPlan].forEach(btn => {
+    // Reset estilos de todos los botones
+    [tabDirectorio, tabInstructivo, tabSSH, tabPlan].forEach(btn => {
         if (btn) {
             btn.className = 'tab-btn-inactive pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors hover:text-sena-dark';
         }
     });
 
-    // Activar seleccionada
+    // Activar pestaña seleccionada
     if (pestana === 'directorio') {
         if (secDirectorio) secDirectorio.classList.remove('hidden');
         if (tabDirectorio) tabDirectorio.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
@@ -308,6 +311,10 @@ function cambiarPestana(pestana) {
         if (secInstructivo) secInstructivo.classList.remove('hidden');
         if (tabInstructivo) tabInstructivo.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
         window.location.hash = 'instructivo';
+    } else if (pestana === 'ssh') {
+        if (secSSH) secSSH.classList.remove('hidden');
+        if (tabSSH) tabSSH.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
+        window.location.hash = 'ssh';
     } else if (pestana === 'plan') {
         if (secPlan) secPlan.classList.remove('hidden');
         if (tabPlan) tabPlan.className = 'tab-btn-active pb-2.5 px-3 flex items-center gap-2 whitespace-nowrap transition-colors';
@@ -316,11 +323,11 @@ function cambiarPestana(pestana) {
 }
 
 /**
- * Detecta si el usuario cargó la página con un hash específico (#directorio, #instructivo, #plan).
+ * Detecta si el usuario cargó la página con un hash específico (#directorio, #instructivo, #ssh, #plan).
  */
 function configurarNavegacionPorHash() {
     const hash = window.location.hash.replace('#', '');
-    if (hash === 'instructivo' || hash === 'plan' || hash === 'directorio') {
+    if (hash === 'instructivo' || hash === 'plan' || hash === 'directorio' || hash === 'ssh') {
         cambiarPestana(hash);
     }
 }
