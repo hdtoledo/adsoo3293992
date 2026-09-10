@@ -20,7 +20,7 @@
 -- ------------------------------------------------------------------------------
 
 -- [TODO 1.1]: Escriba la sentencia para eliminar la base de datos 'taller_ventas_adso' si ya existe.
-
+DROP DATABASE IF EXISTS taller_ventas_adso;
 
 -- [TODO 1.2]: Cree la base de datos 'taller_ventas_adso' con codificación UTF8MB4.
 CREATE DATABASE IF NOT EXISTS taller_ventas_adso
