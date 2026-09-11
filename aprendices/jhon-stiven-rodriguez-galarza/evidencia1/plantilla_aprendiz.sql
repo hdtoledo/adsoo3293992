@@ -94,19 +94,18 @@ CREATE TABLE if not exists  productos (
 -- ------------------------------------------------------------------------------
 
 -- [TODO 3.1]: Inserte al menos 3 usuarios (1 ADMIN, 1 VENDEDOR, 1 CLIENTE).
-INSERT INTO usuarios (documento, nombres, email, rol, activo) VALUES
-('11175718', 'Carlos ', 'carlos.admin@gmail.com', 'ADMIN', TRUE),
-('10906543', 'eliana ', 'eliana.vendedora@gmail.com', 'VENDEDOR', TRUE),
-('10909874', 'jhosman ', 'jhosman.cliente@gmail.com', 'CLIENTE', TRUE);
+INSERT INTO usuarios (documento, nombres, email, rol, ) VALUES
+('11175718', 'Carlos ', 'carlos.admin@gmail.com', 'ADMIN', ),
+('10906543', 'eliana ', 'eliana.vendedora@gmail.com', 'VENDEDOR', ),
+('10909874', 'jhosman ', 'jhosman.cliente@gmail.com', 'CLIENTE', );
 
 -- [TODO 3.2]: Inserte al menos 3 categorías (ej. Ferretería, Hogar, Calzado, etc.).
-INSERT INTO categorias (nombre, descripcion, activo) VALUES
-('Ferretería', 'Herramientas y materiales de construcción', TRUE),
-('Hogar', 'Artículos para el aseo y decoración del hogar', TRUE),
-('Calzado', 'Zapatos deportivos y formales', TRUE);
+INSERT INTO categorias (nombre, descripcion, ) VALUES
+('Ferretería', 'Herramientas y materiales de construcción', ),
+('Hogar', 'Artículos para el aseo y decoración del hogar', ),
+('Calzado', 'Zapatos deportivos y formales', );
 
 -- [TODO 3.3]: Inserte al menos 4 productos vinculados a categorías existentes.
-INSERT INTO productos (codigo_barras, nombre, precio, stock, categorias_id) VALUES
 ('PROD001', 'Martillo', 35.000, 15, 1),
 ('PROD002', 'Taladro', 50.000, 8, 1),
 ('PROD003', 'Juego de sábanas', 40.000, 12, 2),
@@ -119,7 +118,7 @@ INSERT INTO productos (codigo_barras, nombre, precio, stock, categorias_id) VALU
 
 -- [TODO 4.1]: Modifique el precio de un producto específico usando su código de barras en el WHERE.
 UPDATE productos 
-SET precio = 38000.00 
+SET precio = 38.000
 WHERE codigo_barras = 'PROD001';
 
 -- [TODO 4.2]: Cambie el estado de un usuario a inactivo (activo = FALSE) mediante su documento en el WHERE.
