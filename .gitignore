@@ -1,3 +1,4 @@
+#CARPETAS QUE NO NECESITAN SER SUBIDAS AL RESPOSITORIO
 # Dependencias y entornos
 node_modules/
 .pnp
