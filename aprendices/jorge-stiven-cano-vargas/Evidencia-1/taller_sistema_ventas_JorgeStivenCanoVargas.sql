@@ -99,16 +99,36 @@ create table productos (
 INSERT INTO usuarios (documento, nombres, email, rol) 
 VALUES ('1001', 'Carlos Administrador', 'carlos@admin.com', 'ADMIN');
 
+INSERT INTO usuarios (documento, nombres, email, rol) 
+VALUES ('1002', 'Cano Vendedor', 'cano@vendedor.com', 'VENDEDOR');
+
+INSERT INTO usuarios (documento, nombres, email, rol) 
+VALUES ('1003', 'Juan Cliente', 'juan@cliente.com', 'CLIENTE');
+
 -- [TODO 3.2]: Inserte al menos 3 categorías (ej. Ferretería, Hogar, Calzado, etc.).
 
 INSERT INTO categorias (nombre, descripcion) 
 VALUES ('Ferretería', 'Herramientas y materiales de construcción');
 
+INSERT INTO categorias (nombre, descripcion) 
+VALUES ('Hogar', 'Electrodomesticos de ultima generación');
+
+INSERT INTO categorias (nombre, descripcion) 
+VALUES ('Calzado', 'Las mejores zapatillas las encontraras en este lugar');
+
 -- [TODO 3.3]: Inserte al menos 4 productos vinculados a categorías existentes.
 
 INSERT INTO productos (codigo_barras, nombre, precio, stock, categoria_id) 
-VALUES ('BAR001', 'Martillo de Acero', 45000.00, 15, 1);
+VALUES ('BAR001', 'Martillo de Acero', 45.000, 15, 1);
 
+INSERT INTO productos (codigo_barras, nombre, precio, stock, categoria_id) 
+VALUES ('MOP452', 'Zapatillas NIKE', 200.000, 10, 1);
+
+INSERT INTO productos (codigo_barras, nombre, precio, stock, categoria_id) 
+VALUES ('NUI965', 'Cucharero Plastico', 24.000, 20, 1);
+
+INSERT INTO productos (codigo_barras, nombre, precio, stock, categoria_id) 
+VALUES ('SDF251', 'Mesa Plastico', 86.000, 8, 1);
 -- ------------------------------------------------------------------------------
 -- FASE 4: MANIPULACIÓN CON CLÁUSULA WHERE ESTRICTA (DML)
 -- ------------------------------------------------------------------------------
@@ -145,6 +165,8 @@ ALTER TABLE usuarios ADD COLUMN telefono VARCHAR(20) UNIQUE;
 -- Escriba su respuesta técnica en este comentario:
 /*
   Respuesta: El motor arroja un error de violación de llave foránea (Restricción de Integridad Referencial). 
-  La base de datos se niega a borrarlo debido a la regla ON DELETE RESTRICT, la cual protege los datos 
-  bloqueando la eliminación de un registro padre si todavía tiene registros hijos (productos) vinculados a él.
+  La base rechaza la operación de borrado para evitar dejar registros "huérfanos" en el sistema de datos debido a la regla 
+  ON DELETE RESTRICT, la cual protege los datos bloqueando la eliminación de un registro padre si todavía tiene registros 
+  hijos (productos) vinculados a él.
+ .
 */
