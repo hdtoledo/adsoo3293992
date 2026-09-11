@@ -4,9 +4,9 @@
 -- SESIÓN: Lunes 7 Sep | BD: Modelo Relacional y SQL DDL/DML desde Cero
 -- TALLER PRÁCTICO EN CLASE (8:40 – 9:50 PM)
 -- ==============================================================================
--- Nombre del Aprendiz: ___Nikol Fernanda Yuco Vargas_____________________________________________________
--- Número de Ficha:     ____________3293992____________________________________________
--- Fecha:  09 de Septiembre
+-- Nombre del Aprendiz: Sara Milena Avila Garcia__________________________________
+-- Número de Ficha: 3293992  _____________________________________________________
+-- Fecha:              9 de Septiembre
 -- ==============================================================================
 
 -- INSTRUCCIONES:
@@ -18,18 +18,19 @@
 -- ------------------------------------------------------------------------------
 -- FASE 1: CREACIÓN DE LA BASE DE DATOS (DDL)
 -- ------------------------------------------------------------------------------
-
+ 
 -- [TODO 1.1]: Escriba la sentencia para eliminar la base de datos 'taller_ventas_adso' si ya existe.
 
 
 -- [TODO 1.2]: Cree la base de datos 'taller_ventas_adso' con codificación UTF8MB4.
 create database IF NOT EXISTS taller_ventas_adso
-CHARACTER SET UTF8MB4
-COLLATE utf8mb4_unicode_ci;
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_0900_ai_ci;
 
 -- [TODO 1.3]: Ponga en uso la base de datos creada.
 
 USE taller_ventas_adso;
+
 
 -- ------------------------------------------------------------------------------
 -- FASE 2: DEFINICIÓN DE TABLAS Y RESTRICCIONES (DDL)
@@ -43,9 +44,6 @@ USE taller_ventas_adso;
 --   - rol: Solo puede ser 'ADMIN', 'VENDEDOR' o 'CLIENTE'. Por defecto 'CLIENTE'.
 --   - activo: Booleano, obligatorio, por defecto TRUE (1).
 --   - creado_en: Fecha y hora actual por defecto.
-
-USE taller_ventas_adso;
-
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     documento VARCHAR(20) NOT NULL UNIQUE,
@@ -56,18 +54,20 @@ CREATE TABLE usuarios (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+
 -- [TODO 2.2]: Crear la tabla 'categorias':
 --   - id: Entero autoincremental, Llave primaria.
 --   - nombre: Cadena hasta 60 caracteres, obligatorio y ÚNICO.
 --   - descripcion: Texto o cadena descriptiva, opcional (puede ser NULL).
 --   - activo: Booleano, por defecto TRUE.
-
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombres VARCHAR(60) NOT NULL UNIQUE,
-    descripcion VARCHAR(225) NULL,
-    activo BOOLEAN DEFAULT TRUE
+    descripcion VARCHAR(255) NULL,
+    activo BOOLEAN, DEFAULT TRUE
 )
+
+
 
 -- [TODO 2.3]: Crear la tabla 'productos':
 --   - id: Entero autoincremental, Llave primaria.
@@ -78,26 +78,22 @@ CREATE TABLE categorias (
 --   - categoria_id: Entero, obligatorio.
 --   - RESTRICCIÓN FK: 'categoria_id' debe referenciar a 'id' de la tabla 'categorias'.
 --                     Regla al eliminar: RESTRICT. Regla al actualizar: CASCADE.
-
 CREATE TABLE productos (
-      id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     codigo_barras VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(120) NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
     categoria_id INT NOT NULL,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_productos_categorias
+    
+     CONSTRAINT fk_productos_categorias
         FOREIGN KEY (categoria_id) 
         REFERENCES categorias(id)
-        ON UPDATE CASCADE     
-        ON DELETE RESTRICT,   
-        
-    CONSTRAINT chk_precio_positivo CHECK (precio >= 0),
+        ON UPDATE CASCADE      
+        ON DELETE RESTRICT
+CONSTRAINT chk_precio_positivo CHECK (precio >= 0),
     CONSTRAINT chk_stock_positivo CHECK (stock >= 0)
 ) ENGINE=InnoDB;
-
 
 
 -- ------------------------------------------------------------------------------
@@ -105,50 +101,41 @@ CREATE TABLE productos (
 -- ------------------------------------------------------------------------------
 
 -- [TODO 3.1]: Inserte al menos 3 usuarios (1 ADMIN, 1 VENDEDOR, 1 CLIENTE).
-
-INSERT INTO usuarios (documento, nombres, email, rol ) VALUES
-('1077843562', 'Camila Ramirez', 'camila23@gmail.com', 'ADMIN'),
-('1077843561', 'Maria Jose', 'majo564@gmail.com', 'VENDEDOR' ),
-('1077876034', 'Carlos Perez', 'Carlosperez@gmail.com', 'CLIENTE');
+INSERT INTO usuarios (documento, nombres, email, rol,) VALUES
+('1077851234', 'sara', 'sara@gmail.com', 'ADMIN', ),
+('1077851235', 'valeria', 'valeria@gmail.com', 'VENDEDOR'),
+('1077851236', 'ana', 'ana@gmail.com', 'CLIENTE');
 
 -- [TODO 3.2]: Inserte al menos 3 categorías (ej. Ferretería, Hogar, Calzado, etc.).
-INSERT INTO categorias ( nombres, descripcion ) VALUES
-('electrodomesticos', 'Facilitan las tareas del dia a dia'),
-('maquillaje', 'para verte y sentirte mejor' ),
-('tecnologia', 'lo mejor en tecnologias para ti');
+INSERT INTO categorias (nombres, descripcion) VALUES
+('Tecnología', 'Dispositivos electrónicos y periféricos'),
+('Papelería', 'Útiles de oficina y cuadernos')
+('peluche', 'suave y lindo para un ragalo');
 
 -- [TODO 3.3]: Inserte al menos 4 productos vinculados a categorías existentes.
-
-INSERT INTO productos (codigo_barras, nombres, precio, stock, categoria_id) VALUES
-('TECH-001', 'Teclado Mecánico RGB', 185000, 15, 1),
-('TECH-002', 'Freidora de aire', 750000, 25, 1),
-('TECH-003', 'mouse', 185000, 15, 1),
-('PAP-004', 'paleta de sombras', 24000, 50, 2);
+INSERT INTO productos (codigo_barras, nombre, precio, stock, categoria_id) VALUES
+('TECH-001', 'Teclado Mecánico RGB', 185000.00, 15, 1),
+('TECH-002', 'Teclado Mecánico', 185000.00, 15, 1),
+('TECH-003', 'Mouse Ergonómico', 75000.00, 25, 1),
+('PAP-001', 'Resma de Papel Carta', 24000.00, 50, 2);
 
 -- ------------------------------------------------------------------------------
 -- FASE 4: MANIPULACIÓN CON CLÁUSULA WHERE ESTRICTA (DML)
 -- ------------------------------------------------------------------------------
 
 -- [TODO 4.1]: Modifique el precio de un producto específico usando su código de barras en el WHERE.
-USE taller_ventas_adso;
-
-DELETE from productos
-SET precio = 25000
-WHERE codigo_barras = '004';
+update productos
+set precio = 200000.00
+where codigo_barras = 'TECH-001';
 
 -- [TODO 4.2]: Cambie el estado de un usuario a inactivo (activo = FALSE) mediante su documento en el WHERE.
-USE taller_ventas_adso;
-
-UPDATE usuarios
-SET activo = FALSE
-WHERE documento = '1077843561';
+update usuarios
+set activo = FALSE
+where documento = '1077851234';
 
 -- [TODO 4.3]: Elimine UN producto específico asegurando condición unívoca en el WHERE.
-USE taller_ventas_adso;
-
-DELETE from productos
-WHERE codigo_barras = '004';
-
+delete from productos
+where codigo_barras = 'TECH-002';
 
 -- ------------------------------------------------------------------------------
 -- FASE 5: PREPARACIÓN PARA SUSTENTACIÓN (9:50 - 10:30 PM)

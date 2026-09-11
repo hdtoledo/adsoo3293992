@@ -4,9 +4,9 @@
 -- SESIÓN: Lunes 7 Sep | BD: Modelo Relacional y SQL DDL/DML desde Cero
 -- TALLER PRÁCTICO EN CLASE (8:40 – 9:50 PM)
 -- ==============================================================================
--- Nombre del Aprendiz: ___Nikol Fernanda Yuco Vargas_____________________________________________________
--- Número de Ficha:     ____________3293992____________________________________________
--- Fecha:  09 de Septiembre
+-- Nombre del Aprendiz: Jairo Alexis Ortiz Calderon
+-- Número de Ficha:     3293992
+-- Fecha:               7 de Septiembre
 -- ==============================================================================
 
 -- INSTRUCCIONES:
@@ -20,16 +20,17 @@
 -- ------------------------------------------------------------------------------
 
 -- [TODO 1.1]: Escriba la sentencia para eliminar la base de datos 'taller_ventas_adso' si ya existe.
-
+  drop database taller_ventas_adso;
 
 -- [TODO 1.2]: Cree la base de datos 'taller_ventas_adso' con codificación UTF8MB4.
-create database IF NOT EXISTS taller_ventas_adso
-CHARACTER SET UTF8MB4
-COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS taller_ventas_adso
+  CHARACTER SET utf8mb4
+
 
 -- [TODO 1.3]: Ponga en uso la base de datos creada.
 
-USE taller_ventas_adso;
+  use taller_ventas_adso;
+
 
 -- ------------------------------------------------------------------------------
 -- FASE 2: DEFINICIÓN DE TABLAS Y RESTRICCIONES (DDL)
@@ -44,17 +45,15 @@ USE taller_ventas_adso;
 --   - activo: Booleano, obligatorio, por defecto TRUE (1).
 --   - creado_en: Fecha y hora actual por defecto.
 
-USE taller_ventas_adso;
-
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     documento VARCHAR(20) NOT NULL UNIQUE,
-    nombres VARCHAR(100) NOT NULL,
+    nombres VARCHAR(100) NOT NULL ,
     email VARCHAR(120) NOT NULL UNIQUE,
     rol ENUM('ADMIN', 'VENDEDOR', 'CLIENTE') DEFAULT 'CLIENTE',
-    activo BOOLEAN NOT NULL DEFAULT TRUE (1),
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+) 
 
 -- [TODO 2.2]: Crear la tabla 'categorias':
 --   - id: Entero autoincremental, Llave primaria.
@@ -62,12 +61,12 @@ CREATE TABLE usuarios (
 --   - descripcion: Texto o cadena descriptiva, opcional (puede ser NULL).
 --   - activo: Booleano, por defecto TRUE.
 
-CREATE TABLE categorias (
+  CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombres VARCHAR(60) NOT NULL UNIQUE,
-    descripcion VARCHAR(225) NULL,
-    activo BOOLEAN DEFAULT TRUE
-)
+    nombre VARCHAR(60) NOT NULL UNIQUE,
+    descripcion VARCHAR(120) NULL,
+    activo BOOLEAN NULL DEFAULT TRUE
+    )
 
 -- [TODO 2.3]: Crear la tabla 'productos':
 --   - id: Entero autoincremental, Llave primaria.
@@ -79,15 +78,15 @@ CREATE TABLE categorias (
 --   - RESTRICCIÓN FK: 'categoria_id' debe referenciar a 'id' de la tabla 'categorias'.
 --                     Regla al eliminar: RESTRICT. Regla al actualizar: CASCADE.
 
-CREATE TABLE productos (
-      id INT AUTO_INCREMENT PRIMARY KEY,
+  CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     codigo_barras VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(120) NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
     categoria_id INT NOT NULL,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+   
+    
     CONSTRAINT fk_productos_categorias
         FOREIGN KEY (categoria_id) 
         REFERENCES categorias(id)
@@ -96,59 +95,51 @@ CREATE TABLE productos (
         
     CONSTRAINT chk_precio_positivo CHECK (precio >= 0),
     CONSTRAINT chk_stock_positivo CHECK (stock >= 0)
-) ENGINE=InnoDB;
-
-
+)
 
 -- ------------------------------------------------------------------------------
 -- FASE 3: POBLAR LA BASE DE DATOS (DML)
 -- ------------------------------------------------------------------------------
 
 -- [TODO 3.1]: Inserte al menos 3 usuarios (1 ADMIN, 1 VENDEDOR, 1 CLIENTE).
+  INSERT INTO usuarios (documento,nombres,email,rol ) VALUES
+('1118367268', 'alexis','azlymariana@gmail.com','ADMIN'),
+('1548332264', 'jhosman','jhosmaN@gmail.com','VENDEDOR'),
+('1628378134', 'josue','joss@gmail.com','CLIENTE');
 
-INSERT INTO usuarios (documento, nombres, email, rol ) VALUES
-('1077843562', 'Camila Ramirez', 'camila23@gmail.com', 'ADMIN'),
-('1077843561', 'Maria Jose', 'majo564@gmail.com', 'VENDEDOR' ),
-('1077876034', 'Carlos Perez', 'Carlosperez@gmail.com', 'CLIENTE');
 
 -- [TODO 3.2]: Inserte al menos 3 categorías (ej. Ferretería, Hogar, Calzado, etc.).
-INSERT INTO categorias ( nombres, descripcion ) VALUES
-('electrodomesticos', 'Facilitan las tareas del dia a dia'),
-('maquillaje', 'para verte y sentirte mejor' ),
-('tecnologia', 'lo mejor en tecnologias para ti');
+  INSERT INTO categorias (nombre,descripcion) VALUES
+( 'calzado','Calzado para niños y niñas'),
+( 'ferreteria','para todo tipo de trabajo'),
+( 'hogar','para un hogar impecable');
 
 -- [TODO 3.3]: Inserte al menos 4 productos vinculados a categorías existentes.
 
-INSERT INTO productos (codigo_barras, nombres, precio, stock, categoria_id) VALUES
-('TECH-001', 'Teclado Mecánico RGB', 185000, 15, 1),
-('TECH-002', 'Freidora de aire', 750000, 25, 1),
-('TECH-003', 'mouse', 185000, 15, 1),
-('PAP-004', 'paleta de sombras', 24000, 50, 2);
+  INSERT INTO productos (codigo_barras,nombre,precio,stock,categoria_id) VALUES
+( '242342332','zapato talla 25', '80000','12','1'),
+( '324234243','camisa talla 22', '120000','25','1'),
+( '567556656','destornillador de pala', '12000','31','2'),
+( '454334534','escoba', '4000','65','3');
 
 -- ------------------------------------------------------------------------------
 -- FASE 4: MANIPULACIÓN CON CLÁUSULA WHERE ESTRICTA (DML)
 -- ------------------------------------------------------------------------------
 
 -- [TODO 4.1]: Modifique el precio de un producto específico usando su código de barras en el WHERE.
-USE taller_ventas_adso;
-
-DELETE from productos
-SET precio = 25000
-WHERE codigo_barras = '004';
+  UPDATE productos 
+SET precio = 4000.00 
+WHERE codigo_barras = '567556656';
 
 -- [TODO 4.2]: Cambie el estado de un usuario a inactivo (activo = FALSE) mediante su documento en el WHERE.
-USE taller_ventas_adso;
 
-UPDATE usuarios
-SET activo = FALSE
-WHERE documento = '1077843561';
-
+  UPDATE usuarios
+SET activo = false
+WHERE documento = '1118367268';
 -- [TODO 4.3]: Elimine UN producto específico asegurando condición unívoca en el WHERE.
-USE taller_ventas_adso;
 
-DELETE from productos
-WHERE codigo_barras = '004';
-
+  DELETE FROM productos
+WHERE codigo_barras = '324234243';
 
 -- ------------------------------------------------------------------------------
 -- FASE 5: PREPARACIÓN PARA SUSTENTACIÓN (9:50 - 10:30 PM)
@@ -156,7 +147,8 @@ WHERE codigo_barras = '004';
 -- PREGUNTA RETO 1:
 -- ¿Cómo agrega con ALTER TABLE una columna 'telefono' de tipo VARCHAR(20) con restricción UNIQUE a usuarios?
 -- Escriba la sentencia aquí:
-
+  ALTER TABLE usuarios
+ADD COLUMN telefono VARCHAR(20) NULL UNIQUE;
 
 -- PREGUNTA RETO 2:
 -- Ejecute mentalmente o en consola: DELETE FROM categorias WHERE id = 1; (asumiendo que tiene productos vinculados).
@@ -164,5 +156,6 @@ WHERE codigo_barras = '004';
 -- Escriba su respuesta técnica en este comentario:
 /*
   Respuesta:
-  
+  0	49	21:32:22	DELETE FROM categorias WHERE id = 1	Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`taller_venta_adso`.`productos`, CONSTRAINT `fk_productos_categorias` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)	0.000 sec;
+  EL error se produce debido que la tabla productos contiene un llave foranea(categoria_id) la cual esta  enlazada con su tabla padre y es categorias, ademas tiene un bloqueo el cual es ON DELETE RESTRICT
 */
