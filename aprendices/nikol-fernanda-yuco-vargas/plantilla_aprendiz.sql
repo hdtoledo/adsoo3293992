@@ -98,8 +98,6 @@ CREATE TABLE productos (
     CONSTRAINT chk_stock_positivo CHECK (stock >= 0)
 ) ENGINE=InnoDB;
 
-
-
 -- ------------------------------------------------------------------------------
 -- FASE 3: POBLAR LA BASE DE DATOS (DML)
 -- ------------------------------------------------------------------------------
