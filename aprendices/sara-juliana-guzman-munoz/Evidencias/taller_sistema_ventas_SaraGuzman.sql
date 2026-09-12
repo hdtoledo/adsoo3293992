@@ -130,7 +130,7 @@ WHERE codigo_barras = 'TECH-001';
 
 -- [TODO 4.2]: Cambie el estado de un usuario a inactivo (activo = FALSE) mediante su documento en el WHERE.
 
-UPDATE usuarios SET activo = 2
+UPDATE usuarios SET activo = 0
 WHERE documento = '1077526845';
 
 -- [TODO 4.3]: Elimine UN producto específico asegurando condición unívoca en el WHERE.
