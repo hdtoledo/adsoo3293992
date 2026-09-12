@@ -4,9 +4,9 @@
 -- SESIÓN: Lunes 7 Sep | BD: Modelo Relacional y SQL DDL/DML desde Cero
 -- TALLER PRÁCTICO EN CLASE (8:40 – 9:50 PM)
 -- ==============================================================================
--- Nombre del Aprendiz: jhon stiven rodriguez galarza________________________________________________________
--- Número de Ficha:     3293992________________________________________________________
--- Fecha:               9 de Septiembre
+-- Nombre del Aprendiz: Samuel Gerardo Chavarro Garcia________________________________________________________
+-- Número de Ficha: 3293992    ________________________________________________________
+-- Fecha:               09 de Septiembre
 -- ==============================================================================
 
 -- INSTRUCCIONES:
@@ -20,15 +20,19 @@
 -- ------------------------------------------------------------------------------
 
 -- [TODO 1.1]: Escriba la sentencia para eliminar la base de datos 'taller_ventas_adso' si ya existe.
-DROP DATABASE IF EXISTS taller_ventas_adso;
+
+drop database taller_ventas_adso
 
 -- [TODO 1.2]: Cree la base de datos 'taller_ventas_adso' con codificación UTF8MB4.
-CREATE DATABASE taller_ventas_adso 
-CHARACTER SET utf8mb4 
-COLLATE utf8mb4_unicode_ci;
+
+create database if not exists taller_ventas_adso
+character set utf8mb4
+collate utf8mb4_unicode_ci
+;
 
 -- [TODO 1.3]: Ponga en uso la base de datos creada.
-USE taller_ventas_adso;
+
+use taller_ventas_adso;
 
 
 -- ------------------------------------------------------------------------------
@@ -43,27 +47,30 @@ USE taller_ventas_adso;
 --   - rol: Solo puede ser 'ADMIN', 'VENDEDOR' o 'CLIENTE'. Por defecto 'CLIENTE'.
 --   - activo: Booleano, obligatorio, por defecto TRUE (1).
 --   - creado_en: Fecha y hora actual por defecto.
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    documento VARCHAR(20) NOT NULL UNIQUE,
-    nombres VARCHAR(100) NOT NULL,
-    email VARCHAR(120) NOT NULL UNIQUE,
-    rol ENUM('ADMIN', 'VENDEDOR', 'CLIENTE') DEFAULT 'CLIENTE',
-    activo BOOLEAN NOT NULL DEFAULT TRUE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
+create table usuarios (
+id int auto_increment primary key,
+documento varchar(20) not null unique,
+nombres varchar(100) not null,
+email varchar(120) not null unique,
+rol enum('ADMIN', 'VENDEDOR', 'CLIENTE') default "CLIENTE",
+activo boolean not null default true, 
+creado_en timestamp default current_timestamp
+)engine=InnoDB;
+
 
 -- [TODO 2.2]: Crear la tabla 'categorias':
 --   - id: Entero autoincremental, Llave primaria.
 --   - nombre: Cadena hasta 60 caracteres, obligatorio y ÚNICO.
 --   - descripcion: Texto o cadena descriptiva, opcional (puede ser NULL).
 --   - activo: Booleano, por defecto TRUE.
-create table if not exists categorias(
-id int auto_increment primary key,
-nombre varchar (60) not null unique,
-descripcion Text  NULL,
-activo Boolean default TRUE);
 
+create table categorias (
+id int auto_increment primary key,
+nombre varchar(60) not null unique,
+descripcion varchar(100) not null,
+activo boolean not null default true
+)
 
 -- [TODO 2.3]: Crear la tabla 'productos':
 --   - id: Entero autoincremental, Llave primaria.
@@ -75,62 +82,71 @@ activo Boolean default TRUE);
 --   - RESTRICCIÓN FK: 'categoria_id' debe referenciar a 'id' de la tabla 'categorias'.
 --                     Regla al eliminar: RESTRICT. Regla al actualizar: CASCADE.
 
-CREATE TABLE if not exists  productos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo_barras VARCHAR(50) NOT NULL UNIQUE,
-    nombre VARCHAR(120) NOT NULL,
-    precio DECIMAL(10, 2) NOT NULL,
-    stock INT NOT NULL DEFAULT 0,
-    categorias_id INT NOT NULL,
-    constraint fk_productos_categorias 
-    foreign key( categorias_id)
-    references categorias (id)
-    on delete restrict
-    on update cascade);
-    
+create table productos (
+id int auto_increment primary key,
+codigo_barra varchar(50) not null unique,
+nombre varchar(120) not null,
+precio decimal(10,2) not null,
+stock int not null default 0,
+categoria_id int not null,
+
+constraint fk_productos_categorias
+foreign key (categoria_id)
+references categorias(id)
+on update cascade
+on delete restrict,
+
+constraint chk_precio_positivo check (precio >= 0),
+constraint chk_stock_positivo check (stock >= 0)
+)
 
 -- ------------------------------------------------------------------------------
 -- FASE 3: POBLAR LA BASE DE DATOS (DML)
 -- ------------------------------------------------------------------------------
 
 -- [TODO 3.1]: Inserte al menos 3 usuarios (1 ADMIN, 1 VENDEDOR, 1 CLIENTE).
-INSERT INTO usuarios (documento, nombres, email, rol, activo) VALUES
-('11175718', 'Carlos ', 'carlos.admin@gmail.com', 'ADMIN', TRUE),
-('10906543', 'eliana ', 'eliana.vendedora@gmail.com', 'VENDEDOR', TRUE),
-('10909874', 'jhosman ', 'jhosman.cliente@gmail.com', 'CLIENTE', TRUE);
+
+INSERT INTO usuarios  (documento, nombres, email, rol, activo) VALUES
+('107701011', 'juan esteban', 'juan@gmail.com', 'ADMIN', 1),
+('107701012', 'jesus erney', 'jesus@gmail.com', 'VENDEDOR', 1),
+('107701013', 'samuel gerardo', 'samuel@gmail.com', 'CLIENTE', 1);
 
 -- [TODO 3.2]: Inserte al menos 3 categorías (ej. Ferretería, Hogar, Calzado, etc.).
-INSERT INTO categorias (nombre, descripcion, activo) VALUES
-('Ferretería', 'Herramientas y materiales de construcción', TRUE),
-('Hogar', 'Artículos para el aseo y decoración del hogar', TRUE),
-('Calzado', 'Zapatos deportivos y formales', TRUE);
+
+INSERT INTO categorias (nombre, descripcion) VALUES
+('ornamentacion', 'hierros y estructuras'),
+('comida', 'deliciosa y nutritiva'),
+('colegio', 'estudiante y utencilios de estudio');
+
 
 -- [TODO 3.3]: Inserte al menos 4 productos vinculados a categorías existentes.
-INSERT INTO productos (codigo_barras, nombre, precio, stock, categorias_id) VALUES
-('PROD001', 'Martillo', 35.000, 15, 1),
-('PROD002', 'Taladro', 50.000, 8, 1),
-('PROD003', 'Juego de sábanas', 40.000, 12, 2),
-('PROD004', 'Zapatos deportivos', 120.000, 20, 3);
 
+INSERT INTO productos (codigo_barra, nombre, precio, stock, categoria_id) VALUES
+('001', 'escuadra', 15000.00, 1, 1),
+('002', 'cuaderno', 4000.00, 8, 3),
+('003', 'amburguesa', 22000.00, 1, 2),
+('004', 'lapiz', 1400.00, 2, 3);
 
 -- ------------------------------------------------------------------------------
 -- FASE 4: MANIPULACIÓN CON CLÁUSULA WHERE ESTRICTA (DML)
 -- ------------------------------------------------------------------------------
 
 -- [TODO 4.1]: Modifique el precio de un producto específico usando su código de barras en el WHERE.
-UPDATE productos 
-SET precio = 38000.00 
-WHERE codigo_barras = 'PROD001';
+
+update productos 
+set precio = '1000.00'
+where codigo_barra = '004';
 
 -- [TODO 4.2]: Cambie el estado de un usuario a inactivo (activo = FALSE) mediante su documento en el WHERE.
-UPDATE usuarios 
-SET activo = FALSE 
-WHERE documento = '10909874';
+
+update usuarios
+set activo = false
+where documento = '107701012';
 
 -- [TODO 4.3]: Elimine UN producto específico asegurando condición unívoca en el WHERE.
-DELETE FROM productos 
-WHERE codigo_barras = 'PROD004';
 
+delete from productos 
+where codigo_barra = '002'
 
 -- ------------------------------------------------------------------------------
 -- FASE 5: PREPARACIÓN PARA SUSTENTACIÓN (9:50 - 10:30 PM)
@@ -138,19 +154,17 @@ WHERE codigo_barras = 'PROD004';
 -- PREGUNTA RETO 1:
 -- ¿Cómo agrega con ALTER TABLE una columna 'telefono' de tipo VARCHAR(20) con restricción UNIQUE a usuarios?
 -- Escriba la sentencia aquí:
-ALTER TABLE usuarios 
-ADD COLUMN telefono VARCHAR(20) UNIQUE;
+
+alter table usuarios
+add telefono varchar(20) unique;
 
 -- PREGUNTA RETO 2:
 -- Ejecute mentalmente o en consola: DELETE FROM categorias WHERE id = 1; (asumiendo que tiene productos vinculados).
 -- ¿Qué error arroja el motor y por qué la base de datos se niega a borrarlo?
 -- Escriba su respuesta técnica en este comentario:
 /*
-Respuesta:
-El motor arroja un error de restricción de llave foránea (Error Code: 1451). 
-Se niega a borrarlo porque al crear la tabla 'productos' configuramos la regla 
-'ON DELETE RESTRICT' en la llave foránea 'fk_productos_categorias'. 
-Esto protege la integridad referencial de la base de datos, impidiendo que 
-se elimine una categoría padre (id = 1) mientras existan productos hijos 
-dependiendo de ella.
+Respuesta: 19:08:08	DELETE FROM categorias WHERE id = 1	Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`taller_ventas_adso`.`productos`, CONSTRAINT `fk_productos_categorias` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)	0.015 sec
+
+El sistema no dejara borrar esa fila porque dejaría datos "huérfanos". si un dato en una tabla depende de otro, no puedes eliminar el original sin decidir antes qué pasará con los demas.
+
 */
