@@ -131,8 +131,8 @@ INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, 
 
 
 -- ==============================================================================
--- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICOfgd (BLOQUE 2)
--- ==============================================================================git
+-- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICObb (BLOQUE 2)
+-- ==============================================================================
 
 -- RETO 1: FILTROS AVANZADOS Y PRECEDENCIA LÓGICA
 -- Enunciado: Listar los aprendices/clientes activos que pertenezcan a las ciudades
