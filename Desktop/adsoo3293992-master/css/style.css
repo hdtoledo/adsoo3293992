@@ -1,0 +1,176 @@
+/* =========================================================================
+   Variables de CSS (Custom Properties) para un diseño consistente
+   ========================================================================= */
+:root {
+    /* Paleta de colores Dark Modern / Glassmorphism */
+    --color-bg: #0f172a;               /* Fondo general oscuro */
+    --color-card-bg: #1e293b;          /* Fondo de las tarjetas */
+    --color-card-hover: #334155;       /* Color de tarjeta al hacer hover */
+    --color-text-main: #f8fafc;        /* Texto principal claro */
+    --color-text-muted: #94a3b8;       /* Texto secundario / gris */
+    --color-accent-1: #3b82f6;         /* Acento primario (Azul vibrante) */
+    --color-accent-2: #8b5cf6;         /* Acento secundario (Violeta brillante) */
+    
+    /* Tipografía y transiciones */
+    --font-primary: 'Inter', sans-serif;
+    --transition-speed: 0.3s;
+}
+
+/* =========================================================================
+   Reset y configuración global
+   ========================================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Asegura un modelo de caja predecible */
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Flexbox para la estructura general de la página */
+}
+
+/* Contenedor centralizado y responsivo */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================================================================
+   Estilos del Header (Encabezado)
+   ========================================================================= */
+.header {
+    padding: 4rem 0 2rem;
+    text-align: center;
+}
+
+.header__title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+}
+
+/* Aplicación de gradiente al texto para un look muy premium */
+.text-gradient {
+    background: linear-gradient(to right, var(--color-accent-1), var(--color-accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; /* Estándar */
+    /* text-fill-color ya no es estándar, se usa vendor prefix arriba */
+}
+
+.header__subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+}
+
+/* =========================================================================
+   Contenido Principal y Grilla (CSS Grid)
+   ========================================================================= */
+.main-content {
+    flex: 1; /* Ocupa el espacio restante para empujar el footer abajo */
+    padding: 2rem 0 4rem;
+}
+
+/* Grid semántico y responsivo automático */
+.portfolio-grid {
+    display: grid;
+    /* Se adapta según el espacio, mínimo 280px para tarjetas */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* =========================================================================
+   Estilos de Tarjeta (Card UI)
+   ========================================================================= */
+.card {
+    background-color: var(--color-card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Borde sutil acristalado */
+    position: relative;
+    overflow: hidden;
+    
+    /* Transiciones suaves para hover effects */
+    transition: transform var(--transition-speed) ease, 
+                background-color var(--transition-speed) ease, 
+                box-shadow var(--transition-speed) ease,
+                border-color var(--transition-speed) ease;
+}
+
+/* Efecto Hover dinámico */
+.card:hover {
+    transform: translateY(-8px);
+    background-color: var(--color-card-hover);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Elemento decorativo de línea superior usando pseudo-elemento */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--color-accent-1), var(--color-accent-2));
+    transform: scaleX(0); /* Oculto inicialmente */
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+/* Animación del pseudo-elemento al hover */
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Avatar circular del aprendiz */
+.card__avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex; /* Flexbox para centrar rápido */
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.card__name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card__role {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+/* =========================================================================
+   Footer (Pie de Página)
+   ========================================================================= */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
