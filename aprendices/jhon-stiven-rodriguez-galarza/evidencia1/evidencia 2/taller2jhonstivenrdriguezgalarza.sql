@@ -131,20 +131,19 @@ INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, 
 
 
 -- ==============================================================================
--- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICOfgd (BLOQUE 2)
--- ==============================================================================git
+-- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICO (BLOQUE 2)
+-- ==============================================================================
 
 -- RETO 1: FILTROS AVANZADOS Y PRECEDENCIA LÓGICA
 -- Enunciado: Listar los aprendices/clientes activos que pertenezcan a las ciudades
 -- de 'Garzón' o 'Neiva', cuyo correo sea institucional de '@misena.edu.co'.
 -- Pista: Usa paréntesis para aislar el OR de las ciudades y combínalo con AND LIKE.
 -- [TODO: Escribe tu consulta aquí]
-SELECT id, nombre, email, ciudad, activo 
+SELECT email, ciudad, activo 
 FROM usuarios
 WHERE activo = 1 
   AND (ciudad = 'Garzón' OR ciudad = 'Neiva')
-  and email like '%@misena.edu.co';
-  
+  AND email LIKE '%@misena.edu.co';
 
 
 -- RETO 2: RANGOS, LISTAS Y NULOS
@@ -152,10 +151,9 @@ WHERE activo = 1
 -- o aquellos que NO tengan asignada ninguna categoría (categoria_id sea nulo).
 -- Mostrar: codigo, nombre, precio y categoria_id ordenados de mayor a menor precio.
 -- [TODO: Escribe tu consulta aquí]
-SELECT codigo, nombre, precio, categoria_id
- 
+SELECT codigo,nombre,precio,categoria_id
 FROM productos
-WHERE (precio BETWEEN 400000 AND 2000000)
+WHERE precio BETWEEN 400000 AND 2000000
 or categoria_id is null
 order by precio desc;
 
@@ -166,14 +164,13 @@ order by precio desc;
 -- Filtrar únicamente los estados cuya suma total supere $1.500.000.
 -- Columnas: estado, total_pedidos, total_recaudado.
 -- [TODO: Escribe tu consulta aquí]
-SELECT
-estado, 
+SELECT 
+  estado, 
   COUNT(id) AS cantidad_pedidos,
-  SUM(total) AS venta_total_global,
-  ROUND(AVG(total), 2) AS ticket_promedio
+  SUM(total) AS total_recaudado
 FROM pedidos
-group by estado
-having sum(total) > 1500000
+GROUP BY estado
+having sum(total) > 1500000.00
 order by total_recaudado desc;
 
 
@@ -184,34 +181,32 @@ order by total_recaudado desc;
 -- Ordenar por fecha de pedido descendente.
 -- [TODO: Escribe tu consulta aquí]
 SELECT 
-  ped.codigo AS codigo_pedido,
-  ped.fecha AS fecha_pedido,
-  usr.nombre AS cliente,
-  prod.nombre AS producto,
-  det.cantidad,
-  det.precio_unitario,
-  det.subtotal
-FROM pedidos ped
-INNER JOIN usuarios usr 
-  ON ped.usuario_id = usr.id
-INNER JOIN detalle_pedidos det 
-  ON ped.id = det.pedido_id
-INNER JOIN productos prod 
-  ON det.producto_id = prod.id
-ORDER BY ped.fecha DESC, det.id ASC;
+    p.codigo AS codigo_pedido,
+    u.nombre AS nombre_cliente,
+    pr.nombre AS nombre_producto,
+    dp.cantidad,
+    dp.precio_unitario,
+    dp.subtotal
+FROM pedidos p
+INNER JOIN usuarios u ON p.usuario_id = u.id
+INNER JOIN detalle_pedidos dp ON p.id = dp.pedido_id
+INNER JOIN productos pr ON dp.producto_id = pr.id
+ORDER BY p.fecha DESC;
+
 
 -- RETO 5: AUDITORÍA DE RELACIONES HUÉRFANAS (LEFT JOIN & IS NULL)
 -- Enunciado 5A: Encontrar los clientes que se registraron pero NUNCA han realizado un pedido.
 -- Enunciado 5B: Encontrar las categorías que NO tienen ningún producto registrado.
 -- [TODO: Escribe tus dos consultas aquí]
-5A
-SELECT u.id, u.nombre, u.email
+
+-- Consulta 5A
+SELECT u.id, u.nombre,u.email
 FROM usuarios u
 LEFT JOIN pedidos p ON u.id = p.usuario_id
-WHERE p.id IS NULL AND u.rol_id = 3;
+WHERE p.id IS NULL and u.rol_id = 3; 
 
-5B
-SELECT a.id, a.nombre, a.descripcion
-FROM categorias a
-LEFT JOIN productos p ON a.id = p.categoria_id
-WHERE p.id IS NULL
+-- Consulta 5B
+SELECT c.id, c.nombre,c.descripcion
+FROM categorias c
+LEFT JOIN productos p ON c.id = p.categoria_id
+WHERE p.id IS NULL;

@@ -131,20 +131,20 @@ INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, 
 
 
 -- ==============================================================================
--- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICOfgd (BLOQUE 2)
--- ==============================================================================git
+-- SECCIÓN 2: RETOS DE CONSULTA Y LABORATORIO PRÁCTICO (BLOQUE 2)
+-- ==============================================================================
 
 -- RETO 1: FILTROS AVANZADOS Y PRECEDENCIA LÓGICA
 -- Enunciado: Listar los aprendices/clientes activos que pertenezcan a las ciudades
 -- de 'Garzón' o 'Neiva', cuyo correo sea institucional de '@misena.edu.co'.
 -- Pista: Usa paréntesis para aislar el OR de las ciudades y combínalo con AND LIKE.
 -- [TODO: Escribe tu consulta aquí]
-SELECT id, nombre, email, ciudad, activo 
+
+SELECT nombre, ciudad, activo 
 FROM usuarios
 WHERE activo = 1 
-  AND (ciudad = 'Garzón' OR ciudad = 'Neiva')
-  and email like '%@misena.edu.co';
-  
+AND email LIKE '%@misena.edu.co'
+AND (ciudad = 'Garzón' OR ciudad = 'Neiva');
 
 
 -- RETO 2: RANGOS, LISTAS Y NULOS
@@ -152,13 +152,12 @@ WHERE activo = 1
 -- o aquellos que NO tengan asignada ninguna categoría (categoria_id sea nulo).
 -- Mostrar: codigo, nombre, precio y categoria_id ordenados de mayor a menor precio.
 -- [TODO: Escribe tu consulta aquí]
+
 SELECT codigo, nombre, precio, categoria_id
- 
 FROM productos
 WHERE (precio BETWEEN 400000 AND 2000000)
-or categoria_id is null
-order by precio desc;
-
+OR categoria_id IS NULL
+ORDER BY precio DESC;   --el parentesis va dentro de la condicion en este caso es entre A y B  
 
 -- RETO 3: AGREGACIONES Y RESÚMENES (GROUP BY + HAVING)
 -- Enunciado: Generar un reporte gerencial con la cantidad de pedidos y la suma
@@ -166,16 +165,14 @@ order by precio desc;
 -- Filtrar únicamente los estados cuya suma total supere $1.500.000.
 -- Columnas: estado, total_pedidos, total_recaudado.
 -- [TODO: Escribe tu consulta aquí]
-SELECT
-estado, 
-  COUNT(id) AS cantidad_pedidos,
-  SUM(total) AS venta_total_global,
-  ROUND(AVG(total), 2) AS ticket_promedio
-FROM pedidos
-group by estado
-having sum(total) > 1500000
-order by total_recaudado desc;
 
+SELECT
+  estado, 
+  COUNT(*) AS cantidad_pedidos,
+  SUM(total) AS total_recaudado
+FROM pedidos
+GROUP BY estado
+HAVING SUM(total) > 1500000; 
 
 -- RETO 4: CRUCE DE TABLAS CON INTERSECCIÓN (INNER JOIN)
 -- Enunciado: Generar el listado detallado de facturación de productos vendidos.
@@ -183,35 +180,42 @@ order by total_recaudado desc;
 -- Mostrar: codigo_pedido, nombre_cliente, nombre_producto, cantidad, precio_unitario, subtotal.
 -- Ordenar por fecha de pedido descendente.
 -- [TODO: Escribe tu consulta aquí]
-SELECT 
-  ped.codigo AS codigo_pedido,
-  ped.fecha AS fecha_pedido,
-  usr.nombre AS cliente,
-  prod.nombre AS producto,
-  det.cantidad,
-  det.precio_unitario,
-  det.subtotal
-FROM pedidos ped
-INNER JOIN usuarios usr 
-  ON ped.usuario_id = usr.id
-INNER JOIN detalle_pedidos det 
-  ON ped.id = det.pedido_id
-INNER JOIN productos prod 
-  ON det.producto_id = prod.id
-ORDER BY ped.fecha DESC, det.id ASC;
+
+select ped.codigo AS codigo_pedido,
+user.nombre AS nombre_cliente,
+prod.nombre AS producto_nombre,
+detalle.cantidad, detalle.precio_unitario, detalle.subtotal 
+from pedidos ped 
+inner join usuarios user      on ped.usuario_id = user.id
+inner join detalle_pedidos detalle on ped.id = detalle.pedido_id
+inner join productos prod   on detalle.producto_id = prod.id
+order by ped.fecha desc;
+
 
 -- RETO 5: AUDITORÍA DE RELACIONES HUÉRFANAS (LEFT JOIN & IS NULL)
 -- Enunciado 5A: Encontrar los clientes que se registraron pero NUNCA han realizado un pedido.
+
+select u.id, u.nombre, u.email
+from usuarios u 
+left join pedidos p on u.id = p.usuario_id
+where p.id is null and u.rol_id = 3;
+
 -- Enunciado 5B: Encontrar las categorías que NO tienen ningún producto registrado.
 -- [TODO: Escribe tus dos consultas aquí]
-5A
-SELECT u.id, u.nombre, u.email
-FROM usuarios u
-LEFT JOIN pedidos p ON u.id = p.usuario_id
-WHERE p.id IS NULL AND u.rol_id = 3;
 
-5B
-SELECT a.id, a.nombre, a.descripcion
-FROM categorias a
-LEFT JOIN productos p ON a.id = p.categoria_id
-WHERE p.id IS NULL
+SELECT c.id, c.nombre, c.descripcion
+FROM categorias c
+LEFT JOIN productos pr ON c.id = pr.categoria_id
+WHERE pr.id IS NULL;
+
+
+
+
+
+
+
+
+
+
+-- resolver lo faltante despues del reto 5 
+--pregunta en desencso limite 1 el cliente q mas comrp 
