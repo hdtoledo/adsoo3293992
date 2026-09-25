@@ -1,0 +1,18 @@
+info:
+  name: get-api-animal-query
+  type: http
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/animal?nombre=elefante"
+  params:
+    - name: nombre
+      value: elefante
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

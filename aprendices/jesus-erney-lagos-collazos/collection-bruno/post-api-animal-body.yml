@@ -1,0 +1,24 @@
+info:
+  name: post-api-animal-body
+  type: http
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/animal"
+  body:
+    type: json
+    data: |-
+      {
+        "especie": "toruginitus",
+        "nombre": "tortuga",
+        "genero": "macho",
+        "edad": 49,
+        "tamano": "mediano"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
