@@ -1,0 +1,24 @@
+info:
+  name: Crear Inválido (POST 400) 1.1
+  type: http
+
+http:
+  method: POST
+  url: "{{BaseURL}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku":"MON-09",
+        "nombre":"Monitor 90 Pulg IPS",
+        "categoria":"PANTALLA",
+        "stock": 42,
+        "precio":6560000
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

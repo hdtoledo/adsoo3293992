@@ -1,0 +1,24 @@
+info:
+  name: Crear Inválido (POST 400) 1
+  type: http
+
+http:
+  method: POST
+  url: "{{BaseURL}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku":"MON-07",
+        "nombre":"Monitor 11 Pulg IPS",
+        "categoria":"PANTALLA",
+        
+        "precio":460000
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
