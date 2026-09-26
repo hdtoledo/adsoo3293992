@@ -1,0 +1,501 @@
+{
+  "version": "1",
+  "name": "prueba-adso",
+  "items": [
+    {
+      "name": "Actualizar stock",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "patch",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Actualizar stock.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Actualizar stock.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00027370452880859375,
+      "depth": 1
+    },
+    {
+      "name": "Bienvenida",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Bienvenida.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Bienvenida.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00017261505126953125,
+      "depth": 1
+    },
+    {
+      "name": "Eliminar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "delete",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Eliminar producto.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Eliminar producto.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.0001964569091796875,
+      "depth": 1
+    },
+    {
+      "name": "error en filtro id",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "error en filtro id.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/error en filtro id.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00023746490478515625,
+      "depth": 1
+    },
+    {
+      "name": "error insertar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "json",
+          "json": "{\n\n  \"precio\": 55000,\n  \"categoria\": \"Mujer\",\n  \"talla\": \"S\",\n  \"stock\": 20\n}",
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "error insertar producto.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/error insertar producto.yml",
+      "draft": null,
+      "size": 0.00034999847412109375,
+      "depth": 1
+    },
+    {
+      "name": "Filtro por id",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos/2",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "none",
+          "json": null,
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "Filtro por id.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Filtro por id.yml",
+      "draft": null,
+      "size": 0.0001983642578125,
+      "depth": 1
+    },
+    {
+      "name": "Insertar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"nombre\": \"Bluza\",\n  \"precio\": 55000,\n  \"categoria\": \"Mujer\",\n  \"talla\": \"S\",\n  \"stock\": 20\n}",
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "Insertar producto.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Insertar producto.yml",
+      "draft": null,
+      "size": 0.00036907196044921875,
+      "depth": 1
+    },
+    {
+      "name": "productos",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "none",
+          "json": null,
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "productos.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/productos.yml",
+      "draft": null,
+      "size": 0.000186920166015625,
+      "depth": 1
+    },
+    {
+      "name": "Ruta desconocida",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Ruta desconocida.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/Ruta desconocida.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00018310546875,
+      "depth": 1
+    },
+    {
+      "name": "status",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/status",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "none",
+          "json": null,
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "status.yml",
+      "pathname": "c:/Users/SISTEMAS/Downloads/bruno/prueba-adso/status.yml",
+      "draft": null,
+      "size": 0.00018978118896484375,
+      "depth": 1
+    }
+  ],
+  "environments": [],
+  "runtimeVariables": {},
+  "brunoConfig": {
+    "opencollection": "1.0.0",
+    "name": "prueba-adso",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "proxy": {
+      "inherit": true,
+      "config": {
+        "protocol": "http",
+        "hostname": "",
+        "port": "",
+        "auth": {
+          "username": "",
+          "password": ""
+        },
+        "bypassProxy": ""
+      }
+    }
+  },
+  "securityConfig": {
+    "jsSandboxMode": "safe"
+  },
+  "settingsSelectedTab": "overview",
+  "folderLevelSettingsSelectedTab": {},
+  "allTags": [],
+  "format": "yml",
+  "importedAt": 1790305659768,
+  "lastAction": null,
+  "root": {
+    "meta": null,
+    "request": null,
+    "docs": null
+  },
+  "isLoading": false,
+  "globalEnvironmentVariables": {
+    "baseUrl": "http://localhost:3000"
+  },
+  "globalEnvSecrets": [],
+  "exportedAt": "2026-09-25T03:07:40.659Z",
+  "exportedUsing": "Bruno VS Code Extension"
+}
