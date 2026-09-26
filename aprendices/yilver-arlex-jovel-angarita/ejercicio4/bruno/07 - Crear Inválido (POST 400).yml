@@ -1,0 +1,24 @@
+info:
+  name: 07 - Crear Inválido (POST 400)
+  type: http
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/frutas"
+  body:
+    type: json
+    data: |-
+      {
+        "sku": "GRA-06",
+        "nombre": "Granada",
+        "categoria": "Pepe",
+        "stock": "-1",
+        "precio": 2223
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

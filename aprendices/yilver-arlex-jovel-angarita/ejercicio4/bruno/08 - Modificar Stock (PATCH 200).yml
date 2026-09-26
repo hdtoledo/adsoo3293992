@@ -1,0 +1,21 @@
+info:
+  name: 08 - Modificar Stock (PATCH 200)
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/frutas/2/stock"
+  body:
+    type: json
+    data: |-
+      {
+        "nuevoStock": 3
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
