@@ -1,0 +1,20 @@
+info:
+  name: patch-api-animal-id-params-edad-body
+  type: http
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/animal/2/edad"
+  body:
+    type: json
+    data: |-
+      {
+        "edad": 10
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
