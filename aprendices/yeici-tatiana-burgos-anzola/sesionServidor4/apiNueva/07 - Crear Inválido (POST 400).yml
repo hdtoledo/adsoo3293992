@@ -1,0 +1,23 @@
+info:
+  name: 07 - Crear Inválido (POST 400)
+  type: http
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "Mouse Gamer Óptico",
+        "precio": 85000,
+        "categoria": "HARDWARE",
+        "stock": 15
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

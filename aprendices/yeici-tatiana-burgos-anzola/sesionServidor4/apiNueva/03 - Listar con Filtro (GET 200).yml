@@ -1,0 +1,18 @@
+info:
+  name: 03 - Listar con Filtro (GET 200)
+  type: http
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/productos?categoria=papeleria"
+  params:
+    - name: categoria
+      value: papeleria
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
