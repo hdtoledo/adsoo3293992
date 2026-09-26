@@ -1,0 +1,24 @@
+info:
+  name: 06 - Crear Válido (POST 201)
+  type: http
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku": "TECH:001",
+        "nombre": "Mouse Gamer Óptico",
+        "precio": 85000,
+        "categoria": "Tecnologia",
+        "stock": 15
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
