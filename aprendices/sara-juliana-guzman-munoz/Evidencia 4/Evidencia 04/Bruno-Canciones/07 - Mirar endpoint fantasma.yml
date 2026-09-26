@@ -1,0 +1,15 @@
+info:
+  name: 07 - Mirar endpoint fantasma
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{BASEurl}}/api/cuajada"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
