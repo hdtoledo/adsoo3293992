@@ -1,0 +1,43 @@
+{
+  "version": "1",
+  "name": "api_peliculas_cine",
+  "items": [],
+  "environments": [],
+  "runtimeVariables": {},
+  "brunoConfig": {
+    "opencollection": "1.0.0",
+    "name": "api_peliculas_cine",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "proxy": {
+      "inherit": true,
+      "config": {
+        "protocol": "http",
+        "hostname": "",
+        "port": "",
+        "auth": {
+          "username": "",
+          "password": ""
+        },
+        "bypassProxy": ""
+      }
+    }
+  },
+  "securityConfig": {},
+  "settingsSelectedTab": "overview",
+  "folderLevelSettingsSelectedTab": {},
+  "allTags": [],
+  "format": "yml",
+  "importedAt": 1790387345019,
+  "lastAction": null,
+  "globalEnvironmentVariables": {
+    "localUrl": "http://localhost:3000",
+    "baseUrl": "http://localhost:3000"
+  },
+  "globalEnvSecrets": [],
+  "exportedAt": "2026-09-26T01:49:09.308Z",
+  "exportedUsing": "Bruno VS Code Extension"
+}
