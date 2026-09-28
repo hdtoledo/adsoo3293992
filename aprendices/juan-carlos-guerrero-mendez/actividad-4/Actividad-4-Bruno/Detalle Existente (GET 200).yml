@@ -1,0 +1,14 @@
+info:
+  name: Detalle Existente (GET 200)
+  type: http
+
+http:
+  method: GET
+  url: "{{BaseURL}}/api/productos/10"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
