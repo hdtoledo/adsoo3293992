@@ -37,9 +37,8 @@ const PORT = process.env.PORT || 3000;
 // TODO 1.2: Habilita el middleware express.json()
 // app.use(...);
 
-
 // -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
+// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
 // -----------------------------------------------------------------------------
 
 let peliculas = [
@@ -54,7 +53,6 @@ let peliculas = [
     { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
     { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
 ]
-
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -127,7 +125,7 @@ app.get('/api/peliculas/filtro', (req, res) => {
 
     if (edad) {
         resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum /*toUpperCase(): lo convierte en strim*/
+            p.edad_minima === edadnum
         );
     }
 
@@ -135,7 +133,7 @@ app.get('/api/peliculas/filtro', (req, res) => {
         return res.status(404).json({
             ok: false,
             mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        })
+        });
     }
 
     res.status(200).json({
@@ -174,7 +172,7 @@ app.get('/api/peliculas/filtro', (req, res) => {
 // });
 
 app.get('/api/peliculas/:id', (req, res) => {
-    
+
     const idBuscado = Number(req.params.id);
     const pelicula = peliculas.find(p => p.id === idBuscado);
 
