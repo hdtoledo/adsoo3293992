@@ -1,0 +1,15 @@
+info:
+  name: "Detalle Existente "
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{bruno}}/api/productos/1"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
