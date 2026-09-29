@@ -1,0 +1,19 @@
+info:
+  name: " Listar con Filtro"
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{bruno}}/api/productos?categoria=cervezas"
+  params:
+    - name: categoria
+      value: cervezas
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
