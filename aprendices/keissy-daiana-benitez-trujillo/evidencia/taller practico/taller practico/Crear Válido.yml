@@ -1,0 +1,26 @@
+info:
+  name: Crear Válido
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{tallerP}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku":"TEc-01",
+        "nombre":"Habitos atomicos",
+        "categoria":"ciencia",
+        "stock":50,
+        "autor":"daolares",
+        "precio":24300
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
