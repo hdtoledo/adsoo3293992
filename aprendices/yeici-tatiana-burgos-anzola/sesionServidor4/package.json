@@ -1,0 +1,19 @@
+
+{
+  "name": "sena-adso-backend-exress",
+  "version": "1.0.0",
+  "description": "ServidorAdso",
+  "main": "plantilla_aprendiz_4_yeici.js",
+  "scripts": {
+
+    "start": "node --watch plantilla_aprendiz_4_yeici.js",
+    "test:api": "node test_api.js"
+  },
+  "keywords": ["adso", "server"],
+  "author": "Sasueta",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

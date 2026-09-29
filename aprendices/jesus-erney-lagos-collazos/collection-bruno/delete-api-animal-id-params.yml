@@ -1,0 +1,14 @@
+info:
+  name: delete-api-animal-id-params
+  type: http
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/animal/3"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
