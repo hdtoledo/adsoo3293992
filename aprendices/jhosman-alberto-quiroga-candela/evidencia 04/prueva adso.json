@@ -1,0 +1,473 @@
+{
+  "version": "1",
+  "name": "prueva adso",
+  "items": [
+    {
+      "name": "actualizado stock",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos/1/stock",
+        "method": "PATCH",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"nuevostock\": 24\n}",
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "actualizado stock.yml",
+      "pathname": "c:/bruno/prueva adso/actualizado stock.yml",
+      "draft": null,
+      "size": 0.000274658203125,
+      "depth": 1
+    },
+    {
+      "name": "bienvenida",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "bienvenida.yml",
+      "pathname": "c:/bruno/prueva adso/bienvenida.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00015735626220703125,
+      "depth": 1
+    },
+    {
+      "name": "eliminar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "delete",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "eliminar producto.yml",
+      "pathname": "c:/bruno/prueva adso/eliminar producto.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.0001964569091796875,
+      "depth": 1
+    },
+    {
+      "name": "error en filtro id",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos/0",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "none",
+          "json": null,
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "error en filtro id.yml",
+      "pathname": "c:/bruno/prueva adso/error en filtro id.yml",
+      "draft": null,
+      "size": 0.000194549560546875,
+      "depth": 1
+    },
+    {
+      "name": "error insertar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "post",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "error insertar producto.yml",
+      "pathname": "c:/bruno/prueva adso/error insertar producto.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.000339508056640625,
+      "depth": 1
+    },
+    {
+      "name": "filtro por id",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "filtro por id.yml",
+      "pathname": "c:/bruno/prueva adso/filtro por id.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00018978118896484375,
+      "depth": 1
+    },
+    {
+      "name": "insertar producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{{baseUrl}}/api/productos",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"nombre\": \"tacometro\",\n  \"tipoderepuesto\": \"original\",\n  \"stock\": \"4\",\n  \"precio\": \"140000\"\n}",
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "insertar producto.yml",
+      "pathname": "c:/bruno/prueva adso/insertar producto.yml",
+      "draft": null,
+      "size": 0.000354766845703125,
+      "depth": 1
+    },
+    {
+      "name": "productos",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "productos.yml",
+      "pathname": "c:/bruno/prueva adso/productos.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.0001773834228515625,
+      "depth": 1
+    },
+    {
+      "name": "ruta desconocida",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "ruta desconocida.yml",
+      "pathname": "c:/bruno/prueva adso/ruta desconocida.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.000179290771484375,
+      "depth": 1
+    },
+    {
+      "name": "status",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "url": "{baseUrl}",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "auth": {
+          "mode": "inherit",
+          "awsv4": null,
+          "basic": null,
+          "bearer": null,
+          "digest": null,
+          "ntlm": null,
+          "oauth2": null,
+          "wsse": null,
+          "apikey": null,
+          "akamaiEdgegrid": null
+        },
+        "body": {
+          "mode": "none",
+          "json": null,
+          "text": null,
+          "xml": null,
+          "sparql": null,
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "graphql": null,
+          "file": []
+        },
+        "script": {
+          "req": null,
+          "res": null
+        },
+        "vars": {
+          "req": [],
+          "res": []
+        },
+        "assertions": [],
+        "tests": null,
+        "docs": null
+      },
+      "settings": {
+        "encodeUrl": true,
+        "timeout": 0,
+        "followRedirects": true,
+        "maxRedirects": 5
+      },
+      "examples": [],
+      "app": null,
+      "filename": "status.yml",
+      "pathname": "c:/bruno/prueva adso/status.yml",
+      "draft": null,
+      "size": 0.00017452239990234375,
+      "depth": 1
+    }
+  ],
+  "environments": [],
+  "runtimeVariables": {},
+  "brunoConfig": {
+    "opencollection": "1.0.0",
+    "name": "prueva adso",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "proxy": {
+      "inherit": true,
+      "config": {
+        "protocol": "http",
+        "hostname": "",
+        "port": "",
+        "auth": {
+          "username": "",
+          "password": ""
+        },
+        "bypassProxy": ""
+      }
+    }
+  },
+  "securityConfig": {
+    "jsSandboxMode": "safe"
+  },
+  "settingsSelectedTab": "overview",
+  "folderLevelSettingsSelectedTab": {},
+  "allTags": [],
+  "format": "yml",
+  "importedAt": 1790305330611,
+  "lastAction": null,
+  "root": {
+    "meta": null,
+    "request": null,
+    "docs": null
+  },
+  "isLoading": false,
+  "globalEnvironmentVariables": {
+    "baseUrl": "http://localhost:3000"
+  },
+  "globalEnvSecrets": [],
+  "exportedAt": "2026-09-25T03:02:14.103Z",
+  "exportedUsing": "Bruno VS Code Extension"
+}

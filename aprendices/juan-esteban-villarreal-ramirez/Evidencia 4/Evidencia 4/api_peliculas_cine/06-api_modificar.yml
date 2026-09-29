@@ -1,0 +1,21 @@
+info:
+  name: 06-api_modificar
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: "{{localUrl}}/api/peliculas/1/genero"
+  body:
+    type: json
+    data: |-
+      {
+        "nuevoGenero": "comedia"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

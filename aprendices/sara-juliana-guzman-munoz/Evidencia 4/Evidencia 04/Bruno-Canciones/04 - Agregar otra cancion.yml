@@ -1,0 +1,25 @@
+info:
+  name: 04 - Agregar otra cancion
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{BASEurl}}/api/canciones"
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "Blingding Lights",
+        "artista": "The Weekend",
+        "genero": "Electropop",
+        "album": "After Hours",
+        "recaudado": 100000000
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
