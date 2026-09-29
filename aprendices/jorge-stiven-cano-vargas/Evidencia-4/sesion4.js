@@ -229,7 +229,6 @@ app.get("/api/productos/:id", (req, res) => {
 app.post("/api/productos", (req, res) => {
   const { nombre, precio, categoria, stock } = req.body;
 
-  // Validación
   if (!nombre || !precio || precio <= 0) {
     return res.status(400).json({
       ok: false,
@@ -237,12 +236,10 @@ app.post("/api/productos", (req, res) => {
     });
   }
 
-  // Crear nuevo producto
   const nuevo = {
     id: productos.length
       ? Math.max(...productos.map((producto) => producto.id)) + 1
       : 1,
-
     nombre: nombre.trim(),
     precio: Number(precio),
     categoria: (categoria || "GENERAL").toUpperCase(),
