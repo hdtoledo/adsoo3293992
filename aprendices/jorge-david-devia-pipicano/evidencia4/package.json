@@ -1,0 +1,20 @@
+{
+  "name": "api_tienda",
+  "version": "1.0.0",
+  "description": "Servidor de la API de la tienda",
+  "main": "server_ropa.js",
+  "scripts": {
+    "start": "node --watch server_ropa.js",
+    "test:api": "node test_api.js"
+  },
+  "keywords": [],
+  "author": "adso ficha 3293992",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "mysql2": "^3.24.4"
+  }
+}
