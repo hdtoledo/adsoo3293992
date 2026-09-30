@@ -3,7 +3,7 @@
  * SENA - CENTRO AGROEMPRESARIAL Y DESARROLLO PECUARIO DEL HUILA (GARZÓN)
  * PROGRAMA: ANÁLISIS Y DESARROLLO DE SOFTWARE (ADSO)
  * FORMACIÓN: NIVELACIÓN TÉCNICA FULL STACK MERN + SQL
- * SESIÓN 04 | DÍA 4: PROTOCOLO HTTP Y SERVIDOR BASE EN EXPRESS
+ * SESIÓN 04 | DÍA 4: 
  * =============================================================================
  * ARCHIVO: plantilla_servidor.js
  * INSTRUCTOR: Ing. Hector David Toledo Garcia
