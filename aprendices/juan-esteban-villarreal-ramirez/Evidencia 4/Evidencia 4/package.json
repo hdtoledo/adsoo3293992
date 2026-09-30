@@ -1,0 +1,17 @@
+{
+  "name": "Catalogo-de-peliculas-en-un-cine",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --watch Evidencia_4.js",
+    "test:api": "node test_api.js"
+  },
+  "keywords": ["Evidencia_4.js"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

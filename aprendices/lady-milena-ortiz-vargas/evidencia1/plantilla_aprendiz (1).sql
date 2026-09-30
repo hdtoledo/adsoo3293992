@@ -139,11 +139,7 @@ INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, 
 -- de 'Garzón' o 'Neiva', cuyo correo sea institucional de '@misena.edu.co'.
 -- Pista: Usa paréntesis para aislar el OR de las ciudades y combínalo con AND LIKE.
 -- [TODO: Escribe tu consulta aquí]
-SELECT nombre, ciudad, activo 
-FROM usuarios
-WHERE activo = 1 
-  AND (ciudad = 'Garzón' OR ciudad = 'Neiva') AND (email like '%@misena.edu.co'); 
-  
+
 
 
 -- RETO 2: RANGOS, LISTAS Y NULOS
@@ -151,9 +147,7 @@ WHERE activo = 1
 -- o aquellos que NO tengan asignada ninguna categoría (categoria_id sea nulo).
 -- Mostrar: codigo, nombre, precio y categoria_id ordenados de mayor a menor precio.
 -- [TODO: Escribe tu consulta aquí]
-SELECT nombre, precio,codigo
-FROM productos
-WHERE (precio >= 200.0000 AND precio <= 400.000 ) OR (categoria_id IS NULL);
+
 
 
 -- RETO 3: AGREGACIONES Y RESÚMENES (GROUP BY + HAVING)
@@ -163,10 +157,7 @@ WHERE (precio >= 200.0000 AND precio <= 400.000 ) OR (categoria_id IS NULL);
 -- Columnas: estado, total_pedidos, total_recaudado.
 -- [TODO: Escribe tu consulta aquí]
 
-SELECT estado, count(estado) as totalpedidos, sum(total) as totalrecaudado
-from pedidos
-group by estado
-having sum(total) >= 1500000
+
 
 -- RETO 4: CRUCE DE TABLAS CON INTERSECCIÓN (INNER JOIN)
 -- Enunciado: Generar el listado detallado de facturación de productos vendidos.
@@ -174,26 +165,11 @@ having sum(total) >= 1500000
 -- Mostrar: codigo_pedido, nombre_cliente, nombre_producto, cantidad, precio_unitario, subtotal.
 -- Ordenar por fecha de pedido descendente.
 -- [TODO: Escribe tu consulta aquí]
-select ped.codigo, u.nombre, p.nombre, dp.cantidad, dp.precio_unitario, dp.subtotal
-from productos p
-inner join detalle_pedidos dp on p.id =producto_id
-inner join  pedidos ped on dp.pedido_id = ped.id
-inner join usuarios u on ped.usuario_id = u.id
+
 
 
 -- RETO 5: AUDITORÍA DE RELACIONES HUÉRFANAS (LEFT JOIN & IS NULL)
 -- Enunciado 5A: Encontrar los clientes que se registraron pero NUNCA han realizado un pedido.
 -- Enunciado 5B: Encontrar las categorías que NO tienen ningún producto registrado.
 -- [TODO: Escribe tus dos consultas aquí]
-5A
-select u.nombre, count(p.id) as total
-from usuarios u
-left join pedidos p on u.id = p.usuario_id
-group by u.id, u.nombre;
-                
-5B
- SELECT c.id AS Categoria, p.id AS idproducto
-from categorias c
-left join productos p on c.id = p.categoria_id
-where p.id is null
-group by c.id, p.id;
+
