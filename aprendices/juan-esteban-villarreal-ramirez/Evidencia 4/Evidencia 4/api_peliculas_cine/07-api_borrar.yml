@@ -1,0 +1,19 @@
+info:
+  name: 07-api_borrar
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: "{{localUrl}}/api/peliculas/eliminar/"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​

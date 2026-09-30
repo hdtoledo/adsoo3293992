@@ -1,0 +1,25 @@
+info:
+  name: Crear Inválido
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{tallerP}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku":"TEC-01",
+        "nombre":"No me llames loca",
+        "categoria":"Novela romántica",
+        "autor":"Gilraen Eärfalas",
+        "stock":28
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

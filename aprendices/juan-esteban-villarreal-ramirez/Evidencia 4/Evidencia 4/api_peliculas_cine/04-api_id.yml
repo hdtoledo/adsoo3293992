@@ -1,0 +1,16 @@
+info:
+  name: 04-api_id
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{localUrl}}/api/peliculas/"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​
