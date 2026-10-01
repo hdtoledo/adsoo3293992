@@ -1,0 +1,17 @@
+{
+  "name": "ejercicio_servidor",
+  "version": "1.0.0",
+  "description": "taller de servidor",
+  "type": "module",
+  "main": "plantilla_servidor.js",
+  "scripts": {
+    "start": "node --watch plantilla_servidor.js",
+    "dev": "nodemon plantilla_servidor.js"
+  },
+  "keywords": ["server", "js"],
+  "author": "juan stiven",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

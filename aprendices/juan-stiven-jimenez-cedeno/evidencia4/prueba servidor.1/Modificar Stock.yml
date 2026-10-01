@@ -1,0 +1,21 @@
+info:
+  name: "Modificar Stock "
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: "{{bruno}}/api/productos/1/stock"
+  body:
+    type: json
+    data: |-
+      {
+        "nuevoStock": 35
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
