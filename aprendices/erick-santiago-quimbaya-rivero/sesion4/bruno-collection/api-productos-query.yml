@@ -1,0 +1,18 @@
+info:
+  name: api-productos-query
+  type: http
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/productos?categoria=Comidas"
+  params:
+    - name: categoria
+      value: Comidas
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
