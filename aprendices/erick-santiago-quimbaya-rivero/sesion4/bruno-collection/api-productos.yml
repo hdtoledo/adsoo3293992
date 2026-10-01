@@ -1,0 +1,23 @@
+info:
+  name: api-productos
+  type: http
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "cerveza",
+        "categoria": "bebida",
+        "stock": 1,
+        "precio": 10000
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
