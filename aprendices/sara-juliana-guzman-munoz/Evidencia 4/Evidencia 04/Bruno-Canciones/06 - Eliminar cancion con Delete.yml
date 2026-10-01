@@ -1,0 +1,17 @@
+info:
+  name: 06 - Eliminar cancion con Delete
+  type: http
+  seq: 1
+
+http:
+  method: DELETE
+  url: |-
+    
+    {{BASEurl}}}/api/productos/1
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

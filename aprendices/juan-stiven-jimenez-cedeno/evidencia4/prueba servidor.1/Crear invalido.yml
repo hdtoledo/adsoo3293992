@@ -1,0 +1,25 @@
+info:
+  name: Crear invalido
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{bruno}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+        "sku": "TEC-01",
+        "nombre": "cerveza 3 cordilleras", 
+        "categoria": "cervezas",
+        "stock": 100, 
+        "precio": 7000 
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,20 @@
+info:
+  name: 08 - Modificar Stock (PATCH 200)
+  type: http
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/productos/1/stock"
+  body:
+    type: json
+    data: |-
+      {
+        "nuevoStock": 35
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

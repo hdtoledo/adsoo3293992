@@ -1,0 +1,25 @@
+info:
+  name: 06 - Crear Válido (POST 201)
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/frutas"
+  body:
+    type: json
+    data: |-
+      {
+        "sku": "GRA-06",
+        "nombre": "Granada",
+        "categoria": "Pepe",
+        "stock": "2",
+        "precio": 2223
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
