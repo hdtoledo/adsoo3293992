@@ -1,0 +1,25 @@
+info:
+  name: Crear valido
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{bruno}}/api/productos"
+  body:
+    type: json
+    data: |-
+      {
+         "sku": "MON-02",
+        "nombre": "vino_tinto", 
+        "categoria": "vinos", 
+        "stock": 25,
+        "precio": 58000
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

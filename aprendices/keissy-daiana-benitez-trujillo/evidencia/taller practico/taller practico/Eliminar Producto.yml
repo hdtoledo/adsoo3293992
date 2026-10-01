@@ -1,0 +1,15 @@
+info:
+  name: Eliminar Producto
+  type: http
+  seq: 1
+
+http:
+  method: DELETE
+  url: "{{tallerP}}/api/productos/10"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
