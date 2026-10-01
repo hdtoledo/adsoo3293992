@@ -37,22 +37,23 @@ const PORT = process.env.PORT || 3000;
 // TODO 1.2: Habilita el middleware express.json()
 // app.use(...);
 
-// -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
-// -----------------------------------------------------------------------------
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
+// -----------------------------------------------------------------------------
+// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
+// -----------------------------------------------------------------------------
+let ferreteria = [
+  { id: 1, nombre: "tubo 1/2", categoria: "TUBERIA", stock: 8, precio: 12000 },
+  { id: 2, nombre: "chazadora", categoria: "HERRAMIENTA", stock: 9, precio: 500000 },
+  { id: 3, nombre: "clavos", categoria: "ACCESORIOS", stock: 0, precio: 300 },
+  { id: 4, nombre: "tubo 3 pulgadas", categoria: "TUBERIA", stock: 5, precio: 12000 },
+  { id: 5, nombre: "llave 9-16", categoria: "LLAVES", stock: 3, precio: 9000 },
+  { id: 6, nombre: "pulidora", categoria: "HERRAMIENTA", stock: 12, precio: 150000 },
+  { id: 7, nombre: "llave pico de loro", categoria: "LLAVES", stock: 11, precio: 16000 },
+  { id: 8, nombre: "polifusor", categoria: "HERRAMIENTA", stock: 0, precio: 1280000 },
+  { id: 9, nombre: "tubo 2 pulgadas", categoria: "TUBERIA", stock: 10, precio: 10000 },
+  { id: 10, nombre: "llave de dados", categoria: "LLAVES", stock: 1, precio: 28000 },
+];
+
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -78,15 +79,17 @@ let peliculas = [
 // app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
-
-app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+app.get('/api/status', (rep, res) => {
+  //convierte algo en json
+  res.status(200).json({
+    ok: true,
+    mensaje: "Servidor de la ferreteria corriendo",
+    uptime: Math.floor(process.uptime()),
+    timeStamp: new Date().toISOString()
+  });
 });
+
+
 
 // =============================================================================
 // RETO 3: LISTAR PRODUCTOS CON FILTROS DINÁMICOS (GET /api/productos?query)
@@ -117,32 +120,24 @@ app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+app.get('/api/ferreteria/filtro', (req, res) => {
+  const { clase } = req.query;
+  let resultado = ferreteria;
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+  if (clase) {
+    resultado = ferreteria.filter(f =>
+      f.categoria.toUpperCase() === clase.toUpperCase()
+    );
+  }
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
-
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  res.status(200).json({
+    ok: true,
+    total: resultado.length,
+    filtros: { categoria: clase || "todos" },
+    datos: resultado
+  })
 });
+
 
 // =============================================================================
 // RETO 4: CONSULTAR UN PRODUCTO POR ID (GET /api/productos/:id)
@@ -171,23 +166,23 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   // Lógica de búsqueda y validación 404
 // });
 
-app.get('/api/peliculas/:id', (req, res) => {
+app.get('/api/ferreteria/filtrog/:id', (req, res) => {
+  const idBuscado = Number(req.params.id)
 
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+  const objetodelaF = ferreteria.find(f => f.id === idBuscado)
 
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
-
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
+  if (!objetodelaF) {
+    return res.status(404).json({
+      ok: false,
+      error: `producto con id ${idBuscado} no encontrado`
     })
-});
+  }
+
+  res.status(200).json({
+    ok: true,
+    dato: objetodelaF
+  })
+})
 
 // =============================================================================
 // RETO 5: CREAR UN NUEVO PRODUCTO CON VALIDACIÓN (POST /api/productos)
@@ -220,27 +215,25 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/ferreteria', (req, res) => {
+  const { nombre, precio, categoria, stock } = req.body
 
-    const {nombre, genero, precio, edad} = req.body;
+  if (!nombre || !precio || precio <= 0) {
+    return res.status(400).json({
+      ok: false,
+      error: "el nombre y el precio positivo son obligatorios"
+    });
+  }
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
-
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
-
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
+  const nuevo = {
+    id: ferreteria.length ? Math.max(...ferreteria.map(f => f.id)) + 1 : 1,
+    nombre: nombre.trim(),
+    precio: Number(precio),
+    categoria: (categoria || "general").toUpperCase(),
+    stock: Number(stock) || 0
+  };
+  ferreteria.push(nuevo);
+  res.status(201).json({ ok: true, dato: nuevo });
 });
 
 // =============================================================================
@@ -267,40 +260,38 @@ app.post('/api/peliculas/agregar', (req, res) => {
 
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
+app.patch('/api/productos/:id/stock', (req, res) => {
+  const id = Number(req.params.id)
+  const { nuevostock } = req.body
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+  //validar si existe el producto 
+  const objetodelaf = ferreteria.find(p => p.id === id)
+  if (!objetodelaf) {
+    return res.status(404).json({
+      ok: false,
+      error: "producto no encontrado"
+    })
+  }
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  //validar que el stock sea numerico 404 
+  if (typeof nuevostock !== 'number') {
+    return res.status(404).json({
+      ok: false,
+      error: "Nuevo stock debe ser mayor o igual >= a 0"
+    })
+  }
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
+  const anterior = objetodelaf.stock
+  objetodelaf.stock = nuevostock
 
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
+  res.status(200).json({
+    ok: true,
+    mensaje: "stock ha sido actulizado correctamente",
+    stockAnterior: anterior,
+    stockactual: objetodelaf.stock
+  })
+})
 
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
-    });
-});
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -327,26 +318,24 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/productos/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const index = ferreteria.findIndex(p => p.id === id)
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
+  if (index === -1) {
+    return res.status(404).json({
+      ok: false,
+      error: `producto con id ${id} no encontrado para eliminar`
+    })
+  }
 
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
+  const [eliminado] = ferreteria.splice(index, 1);
 
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "producto eliminado exitosamente",
+    dato: eliminado
+  });
 });
 
 // =============================================================================
@@ -355,23 +344,23 @@ app.delete('/api/peliculas/eliminar/:id', (req, res) => {
 // app.use((req, res) => { ... });
 
 app.use((req, res) => {
-    res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
-        rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
+  res.status(404).json({
+    pk: false,
+    error: "Endpoint no encontrado en el servidor ADSO",
+    metodo: req.method,
+    rutaSolicitada: req.originalUrl,
+    sugerencia: "Consulte la documentacion de la API en /api/status"
+  });
 });
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

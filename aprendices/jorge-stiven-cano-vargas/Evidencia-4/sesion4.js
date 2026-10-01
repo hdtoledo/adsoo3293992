@@ -17,7 +17,7 @@
  * =============================================================================
  */
 
-import express from 'express';
+import express from "express";
 
 // =============================================================================
 // RETO 1: INICIALIZACIÓN DE EXPRESS, PUERTO Y MIDDLEWARE JSON
@@ -35,24 +35,50 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // TODO 1.2: Habilita el middleware express.json()
-// app.use(...);
+
+app.use(express.json());
 
 // -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
+// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
 // -----------------------------------------------------------------------------
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
+let productos = [
+  {
+    id: 1,
+    nombre: "Teclado Mecánico RGB",
+    categoria: "HARDWARE",
+    stock: 8,
+    precio: 120000,
+  },
+  {
+    id: 2,
+    nombre: "Monitor 24 pulg IPS",
+    categoria: "PANTALLAS",
+    stock: 3,
+    precio: 580000,
+  },
+  {
+    id: 3,
+    nombre: "Hub USB-C 7 en 1",
+    categoria: "ACCESORIOS",
+    stock: 0,
+    precio: 65000,
+  },
+  {
+    id: 4,
+    nombre: "SSD NVMe 1TB PCIe",
+    categoria: "ALMACENAMIENTO",
+    stock: 5,
+    precio: 320000,
+  },
+  {
+    id: 5,
+    nombre: "Cable Red Cat 6 10m",
+    categoria: "REDES",
+    stock: 12,
+    precio: 28000,
+  },
+];
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -61,7 +87,7 @@ let peliculas = [
  * OBJETIVO:
  * Todo backend profesional debe proveer un endpoint de diagnóstico para verificar
  * que el servidor está encendido y operativo.
- * 
+ *
  * Verbo: GET
  * Ruta: /api/status
  * Respuesta esperada (Status 200 OK):
@@ -75,17 +101,14 @@ let peliculas = [
  */
 
 // TODO 2: Implementa aquí el endpoint GET /api/status
-// app.get('/api/status', (req, res) => {
-//   res.status(200).json({ ... });
-// });
 
-app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+app.get("/api/status", (req, res) => {
+  res.status(200).json({
+    ok: true,
+    mensaje: "Servidor Express ADSO en funcionamiento",
+    uptimeSegundos: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // =============================================================================
@@ -94,13 +117,13 @@ app.get('/api/status', (req, res) => {
 /**
  * OBJETIVO:
  * Retornar el catálogo de productos con capacidad de filtrado mediante req.query.
- * 
+ *
  * Verbo: GET
  * Ruta: /api/productos
  * Parámetros Query soportados:
  * - categoria: Filtrar productos cuya categoría coincida (case-insensitive).
  * - q: Buscar productos cuyo nombre contenga el texto buscado.
- * 
+ *
  * Respuesta esperada (Status 200 OK):
  * {
  *   ok: true,
@@ -111,37 +134,27 @@ app.get('/api/status', (req, res) => {
  */
 
 // TODO 3: Implementa aquí el endpoint GET /api/productos
-// app.get('/api/productos', (req, res) => {
-//   const { categoria, q } = req.query;
-//   // Lógica de filtrado con .filter()
-//   res.status(200).json({ ... });
-// });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+app.get("/api/productos", (req, res) => {
+  const { categoria } = req.query;
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+  let resultado = productos;
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+  if (categoria) {
+    resultado = productos.filter(
+      (producto) =>
+        producto.categoria.toUpperCase() === categoria.toUpperCase(),
+    );
+  }
 
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  res.status(200).json({
+    ok: true,
+    total: resultado.length,
+    filtros: {
+      categoria: categoria || "todos",
+    },
+    datos: resultado,
+  });
 });
 
 // =============================================================================
@@ -150,10 +163,10 @@ app.get('/api/peliculas/filtro', (req, res) => {
 /**
  * OBJETIVO:
  * Buscar y retornar un único producto a partir del parámetro de ruta req.params.id.
- * 
+ *
  * Verbo: GET
  * Ruta: /api/productos/:id
- * 
+ *
  * Reglas de negocio:
  * 1. Convertir req.params.id a número (`Number(req.params.id)`).
  * 2. Buscar en el array `productos` con `.find()`.
@@ -166,27 +179,23 @@ app.get('/api/peliculas/filtro', (req, res) => {
  */
 
 // TODO 4: Implementa aquí el endpoint GET /api/productos/:id
-// app.get('/api/productos/:id', (req, res) => {
-//   const id = Number(req.params.id);
-//   // Lógica de búsqueda y validación 404
-// });
 
-app.get('/api/peliculas/:id', (req, res) => {
+app.get("/api/productos/:id", (req, res) => {
+  const idBuscado = Number(req.params.id);
 
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+  const producto = productos.find((producto) => producto.id === idBuscado);
 
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
+  if (!producto) {
+    return res.status(404).json({
+      ok: false,
+      error: `Producto con ID ${idBuscado} no existe`,
+    });
+  }
 
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
-    })
+  res.status(200).json({
+    ok: true,
+    dato: producto,
+  });
 });
 
 // =============================================================================
@@ -195,10 +204,10 @@ app.get('/api/peliculas/:id', (req, res) => {
 /**
  * OBJETIVO:
  * Recibir un nuevo producto en req.body y agregarlo al array en memoria.
- * 
+ *
  * Verbo: POST
  * Ruta: /api/productos
- * 
+ *
  * Reglas de validación defensiva:
  * 1. Desestructurar de req.body: { sku, nombre, categoria, stock, precio }.
  * 2. Validar que ninguno de los campos venga vacío o indefinido.
@@ -216,31 +225,33 @@ app.get('/api/peliculas/:id', (req, res) => {
  */
 
 // TODO 5: Implementa aquí el endpoint POST /api/productos
-// app.post('/api/productos', (req, res) => {
-//   // Lógica de validación, creación y respuesta 201
-// });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post("/api/productos", (req, res) => {
+  const { nombre, precio, categoria, stock } = req.body;
 
-    const {nombre, genero, precio, edad} = req.body;
+  if (!nombre || !precio || precio <= 0) {
+    return res.status(400).json({
+      ok: false,
+      error: "El nombre y el precio positivo son obligatorios",
+    });
+  }
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
+  const nuevo = {
+    id: productos.length
+      ? Math.max(...productos.map((producto) => producto.id)) + 1
+      : 1,
+    nombre: nombre.trim(),
+    precio: Number(precio),
+    categoria: (categoria || "GENERAL").toUpperCase(),
+    stock: Number(stock) || 0,
+  };
 
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
+  productos.push(nuevo);
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
+  res.status(201).json({
+    ok: true,
+    dato: nuevo,
+  });
 });
 
 // =============================================================================
@@ -254,7 +265,7 @@ app.post('/api/peliculas/agregar', (req, res) => {
  *     - Si el producto no existe -> 404 Not Found.
  *     - Si nuevoStock < 0 o no es número -> 400 Bad Request.
  *     - Si es válido -> Actualizar `producto.stock = nuevoStock` y retornar 200 OK.
- * 
+ *
  * 6.2 Middleware Catch-All para Rutas Inexistentes (404 Global):
  *     Si el cliente hace una petición a una ruta que no existe (ej. /api/usuarios):
  *     app.use((req, res) => {
@@ -266,40 +277,40 @@ app.post('/api/peliculas/agregar', (req, res) => {
  */
 
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
-// app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch("/api/productos/:id/stock", (req, res) => {
+  const id = Number(req.params.id);
+  const { nuevoStock } = req.body;
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  // Buscar producto
+  const producto = productos.find((producto) => producto.id === id);
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
-
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
-
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
+  // Producto inexistente
+  if (!producto) {
+    return res.status(404).json({
+      ok: false,
+      error: "Producto no encontrado",
     });
+  }
+
+  // Validar nuevo stock
+  if (typeof nuevoStock !== "number" || nuevoStock < 0) {
+    return res.status(400).json({
+      ok: false,
+      error: "nuevoStock debe ser >= 0",
+    });
+  }
+
+  const anterior = producto.stock;
+
+  producto.stock = nuevoStock;
+
+  res.status(200).json({
+    ok: true,
+    mensaje: "Stock actualizado correctamente",
+    stockAnterior: anterior,
+    stockActual: producto.stock,
+  });
 });
 
 // =============================================================================
@@ -308,10 +319,10 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 /**
  * OBJETIVO (Pregunta típica en Sustentación en Caliente):
  * Implementar el borrado de un producto a partir de su ID.
- * 
+ *
  * Verbo: DELETE
  * Ruta: /api/productos/:id
- * 
+ *
  * Reglas:
  * 1. Extraer y convertir el id a número (`Number(req.params.id)`).
  * 2. Buscar si el producto existe en el array.
@@ -325,53 +336,57 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
  */
 
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
-// app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete("/api/productos/:id", (req, res) => {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
+  const index = productos.findIndex((producto) => producto.id === id);
 
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
-
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
+  // Producto inexistente
+  if (index === -1) {
+    return res.status(404).json({
+      ok: false,
+      error: `Producto con ID ${id} no encontrado para eliminar`,
     });
+  }
+
+  // Eliminar producto
+  const [eliminado] = productos.splice(index, 1);
+
+  res.status(200).json({
+    ok: true,
+    mensaje: "Producto eliminado exitosamente",
+    dato: eliminado,
+  });
 });
 
 // =============================================================================
 // TODO 6.2: Middleware 404 Global (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 // =============================================================================
-// app.use((req, res) => { ... });
-
 app.use((req, res) => {
-    res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
-        rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
+  res.status(404).json({
+    ok: false,
+    error: "Endpoint no encontrado en el servidor ADSO",
+    metodo: req.method,
+    rutaSolicitada: req.originalUrl,
+    sugerencia: "Consulte la documentación de la API en /api/status",
+  });
 });
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log(
+    "=================================================================",
+  );
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log(
+    "💡 Abre Bruno y carga la colección en: recursos/bruno-collection/",
+  );
+  console.log(
+    "=================================================================",
+  );
 });

@@ -3,7 +3,7 @@
  * SENA - CENTRO AGROEMPRESARIAL Y DESARROLLO PECUARIO DEL HUILA (GARZÓN)
  * PROGRAMA: ANÁLISIS Y DESARROLLO DE SOFTWARE (ADSO)
  * FORMACIÓN: NIVELACIÓN TÉCNICA FULL STACK MERN + SQL
- * SESIÓN 04 | DÍA 4: PROTOCOLO HTTP Y SERVIDOR BASE EN EXPRESS
+ * SESIÓN 04 | DÍA 4: 
  * =============================================================================
  * ARCHIVO: plantilla_servidor.js
  * INSTRUCTOR: Ing. Hector David Toledo Garcia
@@ -17,7 +17,7 @@
  * =============================================================================
  */
 
-import express from 'express';
+import express from "express";
 
 // =============================================================================
 // RETO 1: INICIALIZACIÓN DE EXPRESS, PUERTO Y MIDDLEWARE JSON
@@ -35,24 +35,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // TODO 1.2: Habilita el middleware express.json()
-// app.use(...);
+app.use(express.json());
+
 
 // -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
+// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
 // -----------------------------------------------------------------------------
+let productos = [
+  { id: 1, sku: "FRI-01", nombre: "frijol", categoria: "GRANOS", stock: 25, precio: 3200 },
+  { id: 2, sku: "ACEI-02", nombre: "Aceite", categoria: "ABARROTES", stock: 15, precio: 9500 },
+  { id: 3, sku: "LEC-03", nombre: "Leche", categoria: "LACTEOS", stock: 30, precio: 4200 },
+  { id: 4, sku: "AZU-04", nombre: "Azucar", categoria: "GRANOS", stock: 20, precio: 4000 },
+  { id: 5, sku: "HUE-05", nombre: "Huevos", categoria: "VIVERES", stock: 10, precio: 15000 }
+];
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
+    
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -61,6 +58,7 @@ let peliculas = [
  * OBJETIVO:
  * Todo backend profesional debe proveer un endpoint de diagnóstico para verificar
  * que el servidor está encendido y operativo.
+ * 
  * 
  * Verbo: GET
  * Ruta: /api/status
@@ -73,20 +71,22 @@ let peliculas = [
  *   uptimeSegundos: Math.floor(process.uptime())
  * }
  */
-
 // TODO 2: Implementa aquí el endpoint GET /api/status
 // app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
 app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "Servidor Express ADSO en funcionamiento",
+    entorno: process.env.NODE_ENV || "desarrollo",
+    timestamp: new Date().toISOString(),
+    uptimeSegundos: Math.floor(process.uptime())
+
+  });     
 });
+
 
 // =============================================================================
 // RETO 3: LISTAR PRODUCTOS CON FILTROS DINÁMICOS (GET /api/productos?query)
@@ -110,6 +110,8 @@ app.get('/api/status', (req, res) => {
  * }
  */
 
+
+
 // TODO 3: Implementa aquí el endpoint GET /api/productos
 // app.get('/api/productos', (req, res) => {
 //   const { categoria, q } = req.query;
@@ -117,31 +119,28 @@ app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+app.get('/api/productos', (req, res) => {
+  const { categoria, q } = req.query;
+  let resultado = productos;
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+  if (categoria) {
+    resultado = resultado.filter(p =>
+      p.categoria.toUpperCase() === categoria.toUpperCase()
+    );
+  }
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+  if (q) {
+    resultado = resultado.filter(p =>
+      p.nombre.toUpperCase().includes(q.toUpperCase())
+    );
+  }
 
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  res.status(200).json({
+    ok: true,
+    total: resultado.length,
+    filtrosAplicados: { categoria, q },
+    datos: resultado    
+  });
 });
 
 // =============================================================================
@@ -170,24 +169,22 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   const id = Number(req.params.id);
 //   // Lógica de búsqueda y validación 404
 // });
+app.get('/api/productos/:id', (req, res) => {
+  const idBuscado = Number(req.params.id)
+  const producto = productos.find(p => p.id === idBuscado)
 
-app.get('/api/peliculas/:id', (req, res) => {
-
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
-
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
-
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
+  if(!producto){
+    return res.status(404).json({
+      ok:false,
+      error:`Producto con ID: ${idBuscado} no encontrado`
     })
-});
+  }
+
+  res.status(200).json({
+    ok:true,
+    dato: producto
+  })
+})
 
 // =============================================================================
 // RETO 5: CREAR UN NUEVO PRODUCTO CON VALIDACIÓN (POST /api/productos)
@@ -220,28 +217,45 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/productos', (req, res) => {
+  const { sku, nombre, categoria, stock, precio } = req.body;
 
-    const {nombre, genero, precio, edad} = req.body;
+  // Validación de campos obligatorios
+  if (!sku || !nombre || !categoria || stock === undefined || precio === undefined) {
+    return res.status(409).json({
+      ok: false,
+      error: "Todos los campos (sku, nombre, categoria, stock, precio) son obligatorios"
+    });
+  }
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
+  // Validación de SKU duplicado
+  const skuExistente = productos.find(p => p.sku === sku);
+  if (skuExistente) {
+    return res.status(409).json({
+      ok: false,
+      error: `Ya existe un producto registrado con el SKU '${sku}'`
+    });
+  }
 
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
+  // Creación del nuevo producto
+  const nuevoProducto = {
+    id: Date.now(),
+    sku,
+    nombre,
+    categoria,
+    stock: Number(stock),
+    precio: Number(precio)
+  };
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
+  productos.push(nuevoProducto);
+
+  res.status(201).json({
+    ok: true,
+    mensaje: "Producto registrado exitosamente",
+    datos: nuevoProducto
+  });
 });
+
 
 // =============================================================================
 // RETO 6 [NIVEL PRO]: ACTUALIZACIÓN PARCIAL Y MIDDLEWARE 404 GLOBAL
@@ -268,39 +282,37 @@ app.post('/api/peliculas/agregar', (req, res) => {
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch('/api/productos/:id/precio',(req,res)=>{
+const id =Number(req.params.id);
+const {nuevoPrecio} = req.body;
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+//Validar producto si existe 404
+const cliente = productos.find(p=> p.id === id)
+if(!cliente){
+    return res.status(404).json({
+        ok:false,
+        error: "Producto no encontrado"
+    })
+}
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
+//Validar que el precio sea numerico 404
+if(typeof nuevoPrecio !== 'number' || nuevoPrecio <0){
+    return res.status(404).json({
+        ok:false,
+        error: "El precio debe ser mayor o igual ≥0"
+    })
+}
+const anterior = cliente.precio;
+cliente.precio = nuevoPrecio // Mutación controlada
 
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
+res.status(200).json({
+    ok:true,
+    mensaje: "El precio ha sido actualizado correctamente",
+    precioAnterior: anterior,
+    nuevoPrecio: cliente.precio
+})
+})
 
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
-    });
-});
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -327,26 +339,22 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/productos/:id',(req,res)=>{
+const id = Number(req.params.id);
+const index = productos.findIndex(c=>c.id === id)
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
-
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
-    });
+if(index === -1){
+    return res.status(404).json({
+        ok:false,
+        error: 'Producto con el ID ${id} no encontrado para eliminar'
+    })
+}
+const [eliminado] = productos.splice(index,1)
+res.status(200).json({
+    ok:true,
+    mensaje:"Producto eliminado",
+    datos:eliminado
+})
 });
 
 // =============================================================================
@@ -354,24 +362,24 @@ app.delete('/api/peliculas/eliminar/:id', (req, res) => {
 // =============================================================================
 // app.use((req, res) => { ... });
 
-app.use((req, res) => {
+app.use((req,res)=>{
     res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
+        ok:false,
+        error: "Endpoint no encontrado en el servidor adso",
+        metodo:req.method,
         rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
-});
+        sugerencia: "consulte bien"
+    })
+})
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

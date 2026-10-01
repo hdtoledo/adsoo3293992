@@ -17,7 +17,7 @@
  * =============================================================================
  */
 
-import express from 'express';
+import express, { json } from 'express';
 
 // =============================================================================
 // RETO 1: INICIALIZACIÓN DE EXPRESS, PUERTO Y MIDDLEWARE JSON
@@ -35,24 +35,25 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // TODO 1.2: Habilita el middleware express.json()
-// app.use(...);
+app.use(express.json());
+
 
 // -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
+// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
 // -----------------------------------------------------------------------------
+let productos = [
+  { id: 1, sku: "TEC-01", nombre: "No me llames loca", categoria: "Novela romántica",autor:"Gilraen Eärfalas", stock: 28, precio: 38000 },
+  { id: 2, sku: "MON-02", nombre: "El diablo de los números", categoria: "Divulgación matemática", autor:"",stock: 50, precio: 69000 },
+  { id: 3, sku: "USB-03", nombre: "Boulevard", categoria: "Novela juvenil", autor:"Flor M. Salvador",stock: 67, precio: 70000 },
+  { id: 4, sku: "SSD-04", nombre: "Etéreo", categoria: "Fantasía y romance", autor:"Joana Marcús",stock: 20, precio: 85000},
+  { id: 5, sku: "CAB-05", nombre: "Hermosa rendición", categoria: "Romance oscuro", autor:"Vanesa Osorio",stock: 15, precio: 45000 },
+  { id: 6, sku: "MOU-06", nombre: "El juego de la vida y cómo jugarlo", categoria: "Autoayuda y motivación", autor:"Florence Scovel Shinn",stock: 100, precio: 25000 },
+  { id: 7, sku: "TECL-07", nombre: "El principito", categoria: "Fábula y cuento filosófico", autor:"Antoine de Saint-Exupéry",stock: 80, precio: 15000 },
+  { id: 8, sku: "MON-08", nombre: "El alquimista", categoria: "Novela de aventuras y filosofía", autor:"Paulo Coelho",stock: 60, precio: 40000 },
+  { id: 9, sku: "USB-09", nombre: "Cien años de soledad", categoria: "Realismo mágico y novela histórica", autor:"Gabriel García Márquez",stock: 30, precio: 55000 },
+  { id: 10, sku: "SSD-10", nombre: "1984", categoria: "Distopía y ciencia ficción", autor:"George Orwell",stock: 40, precio: 35000 }
+];
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -78,15 +79,16 @@ let peliculas = [
 // app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
-
 app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "Servidor",
+    entorno:  "desarrollo",
+    timestamp: new Date().toISOString(),
+    uptimeSegundos: Math.floor(process.uptime())
+  });
 });
+
 
 // =============================================================================
 // RETO 3: LISTAR PRODUCTOS CON FILTROS DINÁMICOS (GET /api/productos?query)
@@ -117,31 +119,29 @@ app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+app.get('/api/productos', (req, res) => {
+  const { categoria, q } = req.query;
+  let productosFiltrados = productos;
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+  if (categoria) {
+    productosFiltrados = productosFiltrados.filter(p =>
+      p.categoria.toLowerCase() === categoria.toLowerCase()
+    );
+  }
 
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  if (q) {
+    productosFiltrados = productosFiltrados.filter(p =>
+      p.nombre.toLowerCase().includes(q.toLowerCase())
+    );
+  }
+
+  res.status(200).json({
+    ok:true,
+    total: productosFiltrados.length,
+    filtrosAplicados: { categoria: categoria || null, q: q ||"todos" },
+    datos: productosFiltrados
+  });
 });
 
 // =============================================================================
@@ -171,23 +171,24 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   // Lógica de búsqueda y validación 404
 // });
 
-app.get('/api/peliculas/:id', (req, res) => {
+app.get('/api/productos/:id', (req, res) => {
+  const idbusca = Number (req.params.id);
 
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+  const productoEncontrado = productos.find(p => p.id === idbusca);
 
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
+  if (!productoEncontrado) {
+    return res.status(404).json({
+      ok: false,
+      error: "Producto con ID no encontrado"
+    });
+  }
+  
+  res.status(200).json({ 
+    ok: true, 
+    datos: productoEncontrado
+  });
+})
 
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
-    })
-});
 
 // =============================================================================
 // RETO 5: CREAR UN NUEVO PRODUCTO CON VALIDACIÓN (POST /api/productos)
@@ -220,27 +221,45 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/productos',(req,res)=>{
 
-    const {nombre, genero, precio, edad} = req.body;
+  const { sku, nombre, categoria, stock, autor, precio} = req.body
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
+  if(!sku || !nombre || !categoria || !stock || !autor || !precio || precio <=0){
+  
+    return res.status(400).json({
+      ok:false,
+      error:"Todos los campos (sku, nombre, categoria, stock, precio) son obligatorios"
+    })
+  }
 
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
+  const prodBuscar = productos.find (p => p.sku === sku);
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
+  if(prodBuscar){
+    return res.status(409).json({
+      ok:false,
+      error: `Ya existe un producto registrado con el SKU '${sku}'`
+    })
+  }
+
+  const nuevolibro = {
+    id: productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1,
+    nombre: nombre.trim(),
+    categoria: (categoria || "GENERAL").toUpperCase(),
+    stock: Number(stock) || 0,
+    autor: autor.trim(),
+    precio: Number(precio)
+    
+  };
+
+  productos.push(nuevolibro)
+  res.status(201).json({
+    ok:true,
+    mensaje: "Producto registrado exitosamente",
+    datos: nuevolibro  
+    
+  })
+
 });
 
 // =============================================================================
@@ -268,39 +287,36 @@ app.post('/api/peliculas/agregar', (req, res) => {
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch('/api/productos/:id/stock',(req,res)=>{
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  const id = Number(req.params.id);
+  const nuevoStock = req.body.nuevoStock
+  
+  const producto = productos.find( p => p.id === id);
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
-
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
-
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
+  if(!producto){
+    return res.status(400).json({
+      ok:false,
+      erro:"Producto no entrotrado"
+    })
+  }
+  if (typeof nuevoStock !== 'number' || nuevoStock < 0) {
+    return res.status(400).json({
+        ok: false,
+        error: "nuevoStock debe ser un número >= 0"
+    });
+}
+  const anterior = producto.stock;
+  producto.stock = nuevoStock;
 
     res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
-    });
-});
+    ok: true,
+    mensaje: "Stock actualizado correctamente",
+    stockAnterior: anterior,
+    stockActual: producto.stock
+  });
+
+  })
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -327,51 +343,44 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/productos/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const index = productos.findIndex(p => p.id === id);
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
-
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
+  if (index === -1) {
+    return res.status(404).json({
+      ok: false,
+      error: `Producto con ID ${id} no encontrado para eliminar`
     });
-});
+  }
+  const [eliminado] = productos.splice(index, 1);
+
+  res.status(200).json({
+    ok: true,
+    mensaje: "Producto eliminado exitosamente",
+    dato: eliminado
+  });
+})
 
 // =============================================================================
 // TODO 6.2: Middleware 404 Global (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 // =============================================================================
-// app.use((req, res) => { ... });
-
 app.use((req, res) => {
-    res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
-        rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
-});
+  res.status(404).json({
+    ok: false,
+    error: `La ruta '${req.originalUrl}' con método '${req.method}' no existe en este servidor.`
+  });
+})
+
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

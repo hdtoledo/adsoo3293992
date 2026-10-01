@@ -33,26 +33,26 @@ import express from 'express';
 // TODO 1: Inicializa express aquí
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(express.json())
 // TODO 1.2: Habilita el middleware express.json()
 // app.use(...);
 
-// -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
-// -----------------------------------------------------------------------------
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
+// -----------------------------------------------------------------------------
+// BASE DE DATOS EN MEMORIA (DATASET: TIENDA TECNOLÓGICA SENA CADPH)
+// -----------------------------------------------------------------------------
+const PRODUCTOS = [
+    { id: 1, nombre: "Merienda Clásica", precio: 20000, stock: 4, categoria: "meriendas" },
+    { id: 2, nombre: "Merienda Dulce", precio: 25000, stock: 4, categoria: "meriendas" },
+    { id: 3, nombre: "Mesa Dulce Pequeña", precio: 80000, stock: 4, categoria: "mesas-dulces" },
+    { id: 4, nombre: "Mesa Dulce Mediana", precio: 120000, stock: 4, categoria: "mesas-dulces" },
+    { id: 5, nombre: "Detalle Personalizado", precio: 15000, stock: 4, categoria: "mesas-dulces" },
+    { id: 6, nombre: "Detalle Premium", precio: 18000, stock: 4, categoria: "mesas-dulces" },
+    { id: 7, nombre: "Detalle Especial", precio: 22000, stock: 4, categoria: "mesas-dulces" },
+    { id: 8, nombre: "Detalle Elegante", precio: 16000, stock: 4, categoria: "mesas-dulces" },
+    { id: 9, nombre: "Adicional Flores", precio: 10000, stock: 4, categoria: "detalles" },
+];
+
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -75,18 +75,19 @@ let peliculas = [
  */
 
 // TODO 2: Implementa aquí el endpoint GET /api/status
-// app.get('/api/status', (req, res) => {
-//   res.status(200).json({ ... });
-// });
-
 app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "servidor express arichoc en funcionamiento",
+    entorno: "desarrollo",
+    timestamp: "",
+    uptimeSegundos: Math.floor(process.uptime())
+  });
 });
+
+
+
+
 
 // =============================================================================
 // RETO 3: LISTAR PRODUCTOS CON FILTROS DINÁMICOS (GET /api/productos?query)
@@ -108,41 +109,54 @@ app.get('/api/status', (req, res) => {
  *   filtrosAplicados: { categoria, q },
  *   datos: <array con los productos filtrados>
  * }
- */
+*/
+app.get('/api/productos', (req, res) => {
+    
+  if(PRODUCTOS){
+  return res.status(200).json({
+    ok: true,
+    total: PRODUCTOS.length,
+    datos: PRODUCTOS
+  });
+}
+
+})
 
 // TODO 3: Implementa aquí el endpoint GET /api/productos
-// app.get('/api/productos', (req, res) => {
-//   const { categoria, q } = req.query;
-//   // Lógica de filtrado con .filter()
-//   res.status(200).json({ ... });
-// });
+app.get('/api/chocolates', (req, res) => {
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+  const { categoria } = req.query;
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+  if(!categoria) {
+  return res.status(404).json({
+    ok: false,
+    error: `producto con ${categoria} no existe`
+  })
+}
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+    let resultado = PRODUCTOS.filter(p => p.categoria.toUpperCase() === categoria.toUpperCase())
 
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  if(!resultado.length){
+  return res.status(404).json({
+    ok: false,
+    error: `no existe ningún producto con la categoria ${categoria}`
+  })
+  }
+
+  
+  // Lógica de filtrado con .filter()
+  res.status(200).json({
+    ok: true,
+    total: resultado.length,
+    filtros: { categoria: categoria || "todos"},
+    datos: resultado
+  })
 });
+
+
+// app.get("/api/chocolates", (req, res) => {
+//   const {categoria}
+// })
 
 // =============================================================================
 // RETO 4: CONSULTAR UN PRODUCTO POR ID (GET /api/productos/:id)
@@ -166,28 +180,24 @@ app.get('/api/peliculas/filtro', (req, res) => {
  */
 
 // TODO 4: Implementa aquí el endpoint GET /api/productos/:id
-// app.get('/api/productos/:id', (req, res) => {
-//   const id = Number(req.params.id);
-//   // Lógica de búsqueda y validación 404
-// });
+app.get('/api/productos/:id', (req, res) => {
+  const idBuscado = Number(req.params.id);
 
-app.get('/api/peliculas/:id', (req, res) => {
-
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
-
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
-
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
+  const producto = PRODUCTOS.find(p => p.id === idBuscado)
+    // Lógica de búsqueda y validación 404
+  if(!producto) {
+    return res.status(404).json({
+      ok: false,
+      error: `producto con ID ${idBuscado} no existe`
     })
+  }
+
+  res.status(200).json({
+    ok: true,
+    dato: producto
+  })
 });
+
 
 // =============================================================================
 // RETO 5: CREAR UN NUEVO PRODUCTO CON VALIDACIÓN (POST /api/productos)
@@ -220,28 +230,29 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/productos', (req, res) => {
+  const { nombre, precio, categoria, stock } = req.body;
 
-    const {nombre, genero, precio, edad} = req.body;
+  if(!nombre || !precio || precio <= 0) {
+    return res.status(400).json({
+    ok: false,
+    error: "el nombre y el precio positivo son obligatorios"
+    })
+  }
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
-
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
-
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
-});
+  const nuevo = {
+    id: PRODUCTOS.length ? Math.max(...PRODUCTOS.map(p => p.id)) + 1 : 1,
+    nombre: nombre.trim(),
+    precio: Number(precio),
+    categoria: (categoria || "general").toUpperCase(),
+    stock: Number(stock) || 0
+  }
+  PRODUCTOS.push(nuevo)
+    res.status(201).json({
+      ok: true,
+      dato: nuevo
+    })
+})
 
 // =============================================================================
 // RETO 6 [NIVEL PRO]: ACTUALIZACIÓN PARCIAL Y MIDDLEWARE 404 GLOBAL
@@ -266,41 +277,36 @@ app.post('/api/peliculas/agregar', (req, res) => {
  */
 
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
-// app.patch('/api/productos/:id/stock', (req, res) => { ... });
+app.patch('/api/productos/:id/stock', (req, res) => {
+  const id = Number(req.params.id)
+  const {nuevoStock} = req.body
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+  const producto = PRODUCTOS.find(p=> p.id === id)
+  if (!producto) {
+    return res.status(404).json({
+      ok: false,
+      error: "producto no encontrado"
+    })
+  }
+  
+  if (typeof nuevoStock !== `number` || nuevoStock < 0) {
+    return res.status(400).json({
+      ok: error,
+      error: "nuevoStock debe ser >= 0"
+    })
+  }
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  const anterior = producto.stock
+  producto.stock = nuevoStock
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
-
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
-
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "stock actualizado correctamente",
+    stockAnterior: anterior,
+    stockActual: producto.stock
+  })
 });
+
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -325,53 +331,47 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
  */
 
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
-// app.delete('/api/productos/:id', (req, res) => { ... });
+app.delete('/api/productos/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const index = PRODUCTOS.findIndex(p => p.id === id)
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+  if (index === -1) {
+    return res.status(404).json ({
+      ok: false,
+      error:`producto con ID ${id} no encontrado para eliminar`
+  })
+  }
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
+  const [eliminado] = PRODUCTOS.splice(index, 1)
 
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
-
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "producto eliminado exitosamente",
+    dato: eliminado
+  })
 });
+
 
 // =============================================================================
 // TODO 6.2: Middleware 404 Global (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 // =============================================================================
-// app.use((req, res) => { ... });
-
 app.use((req, res) => {
     res.status(404).json({
         ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
+        error: "endpoint no encontrado en el servidor arichoc",
         metodo: req.method,
         rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
-});
-
+        surgerencia: "consulte la documentacion de la API en /api/status"
+    })
+})
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

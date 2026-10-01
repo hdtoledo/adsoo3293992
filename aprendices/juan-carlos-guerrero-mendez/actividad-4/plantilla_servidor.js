@@ -4,6 +4,7 @@
  * PROGRAMA: ANÁLISIS Y DESARROLLO DE SOFTWARE (ADSO)
  * FORMACIÓN: NIVELACIÓN TÉCNICA FULL STACK MERN + SQL
  * SESIÓN 04 | DÍA 4: PROTOCOLO HTTP Y SERVIDOR BASE EN EXPRESS
+ * APRENDIZ: JUAN CARLOS GUERRERO MENDEZ  
  * =============================================================================
  * ARCHIVO: plantilla_servidor.js
  * INSTRUCTOR: Ing. Hector David Toledo Garcia
@@ -34,25 +35,30 @@ import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
+
 // TODO 1.2: Habilita el middleware express.json()
 // app.use(...);
 
-// -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
-// -----------------------------------------------------------------------------
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
+// -----------------------------------------------------------------------------
+// BASE DE DATOS EN MEMORIA: _-COMPONENTES-_ (DATASET: TIENDA TECNOLÓGICA SENA CADPH) 
+// -----------------------------------------------------------------------------
+let productos = [
+  { id: 1, sku: "RYZ-01", nombre: "RYZEN 9", categoria: "PROCESADOR", stock: 9, precio: 1200000 },
+  { id: 2, sku: "RYZ-02", nombre: "RYZEN 7", categoria: "PROCESADOR", stock: 10, precio: 120000 },
+  { id: 3, sku: "RYZ-03", nombre: "RYZEN 5", categoria: "PROCESADOR", stock: 6, precio: 90000 },
+  { id: 4, sku: "RYZ-04", nombre: "RYZEN 3", categoria: "PROCESADOR", stock: 40, precio: 56000 },
+  { id: 5, sku: "MON-01", nombre: "Monitor 24 pulg IPS", categoria: "PANTALLA", stock: 40, precio: 580000 },
+  { id: 6, sku: "MON-02", nombre: "Monitor 27 pulg IPS", categoria: "PANTALLA", stock: 6, precio: 680000 },
+  { id: 7, sku: "MON-03", nombre: "Monitor 32 pulg IPS", categoria: "PANTALLA", stock: 9, precio: 780000 },
+  { id: 8, sku: "MON-04", nombre: "Monitor 45 pulg IPS", categoria: "PANTALLA", stock: 2, precio: 880000 },
+  { id: 9, sku: "SSD-01", nombre: "SSD NVMe 1TB PCIe 4.0", categoria: "ALMACENAMIENTO", stock: 60, precio: 320000 },
+  { id: 10, sku: "SSD-02", nombre: "SSD NVMe 2TB PCIe 3.0", categoria: "ALMACENAMIENTO", stock: 50, precio: 300000 },
+  { id: 11, sku: "SSD-03", nombre: "SSD NVMe 4TB PCIe 4.0", categoria: "ALMACENAMIENTO", stock: 20, precio: 460000 },
+  { id: 12, sku: "SSD-04", nombre: "SSD NVMe 5TB PCIe 5.0", categoria: "ALMACENAMIENTO", stock: 10, precio: 850000 }
+];
+
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -80,12 +86,13 @@ let peliculas = [
 // });
 
 app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+  res.status(200).json({
+    ok: true, 
+    mensaje: "Servidor Express ADSO en Funcionamiento",
+    entorno: "desarrollo",
+    timestamp: "<facha ISO actual>",
+    uptimeSegundos: Math.floor(process.uptime())
+  });
 });
 
 // =============================================================================
@@ -117,40 +124,31 @@ app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+app.get('/api/productos', (req, res) => {
+  const { categoria } = req.query;
+  
+  let q = productos;
+  
+  if(categoria){
+    q = productos.filter(p =>
+      p.categoria.toUpperCase() === categoria.toUpperCase()
+    );
+  }
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
-
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
-
-    res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
-    });
+  res.status(200).json({
+    ok: true,
+    total: q.length,
+    filtrosAplicados: { categoria: categoria || "todos" },
+    datos: q 
+  });
 });
-
 // =============================================================================
 // RETO 4: CONSULTAR UN PRODUCTO POR ID (GET /api/productos/:id)
 // =============================================================================
 /**
  * OBJETIVO:
  * Buscar y retornar un único producto a partir del parámetro de ruta req.params.id.
- * 
+ *
  * Verbo: GET
  * Ruta: /api/productos/:id
  * 
@@ -171,22 +169,22 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   // Lógica de búsqueda y validación 404
 // });
 
-app.get('/api/peliculas/:id', (req, res) => {
+app.get('/api/productos/:id', (req, res) => {
+  const idBuscar = Number(req.params.id);
 
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+  const producto = productos.find(p => p.id === idBuscar)
 
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
+  if(!producto) {
+    return res.status(404).json({
+        ok: false,
+        error:  `Producto con ID ${idBuscar} no encontrado`
+    });
+  };
 
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
-    })
+  res.status(200).json({
+    ok: true,
+    datos: producto
+  })
 });
 
 // =============================================================================
@@ -219,29 +217,41 @@ app.get('/api/peliculas/:id', (req, res) => {
 // app.post('/api/productos', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
+app.post('/api/productos', (req,res) => {
+  const { sku, nombre, categoria, stock, precio } = req.body;
 
-app.post('/api/peliculas/agregar', (req, res) => {
+  if (!sku?.trim() || !nombre?.trim() || !categoria?.trim() || stock === undefined || precio === undefined) { 
+    return res.status(400).json({ 
+        ok: false, 
+        error: "Todos los campos (sku, nombre, categoria, stock, precio) son obligatorios" 
+  }); 
+  }
 
-    const {nombre, genero, precio, edad} = req.body;
+  const skuExiste = productos.some(p => p.sku?.trim().toLowerCase() === sku.trim().toLowerCase());
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
+  if(skuExiste) {
+    return res.status(409).json({
+        ok: false,
+        error:  `Producto con ID ${skuExiste} no encontrado`
+    });
+  };
 
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
+  const nuevo = {
+    id: productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1,
+    sku: sku.trim(),
+    nombre: String(nombre).trim(),
+    precio: Number(precio),
+    categoria: (categoria || "GENERAL").toUpperCase(),
+    stock: Number(stock) || 0
+  };
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
-});
+  productos.push(nuevo);
+
+  res.status(201).json({
+    ok:true,
+    dato: nuevo
+  });
+})
 
 // =============================================================================
 // RETO 6 [NIVEL PRO]: ACTUALIZACIÓN PARCIAL Y MIDDLEWARE 404 GLOBAL
@@ -268,39 +278,36 @@ app.post('/api/peliculas/agregar', (req, res) => {
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch('/api/productos/:id/stock', (req, res) => {
+  const id = Number(req.params.id);
+  const { nuevoStock } = req.body;
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  const productoID = productos.find(p => p.id === id);
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
+  if(!productoID){
+    return res.status(404).json({
+      ok: false,
+      error: `bro que mal, ese ID ${id} no existe`
+    })
+  }
 
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
+  if(typeof nuevoStock !== 'number' || nuevoStock <= 0){
+    return res.status(400).json({
+      ok: false,
+      error: `bro ese nuevo stock esta mal, ${nuevoStock}`
+    })
+  }
 
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
+  const anterior = productoID.stock;
+  productoID.stock = nuevoStock;
 
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
-    });
-});
+  res.status(200).json({
+    ok: true,
+    mensaje:"todo bien bro",
+    stockAnterios: anterior,
+    stockNuevo: nuevoStock
+  })
+})
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -327,51 +334,46 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/productos/:id', (req, res) => {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
+  const existeProducto = productos.some(p => p.id === id);
 
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
+  if (existeProducto) {
+    return res.status(404).json({
+      ok: false,
+      error: "PRODUCTO NO ENCONTRADO PARA ELIMINAR"
+    })
+  }
 
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
+  productos = productos.filter((p) => p.id !== id);
 
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
-    });
-});
+  return res.status(200).json({
+    ok: true,
+    mensaje: "Producto eliminido bro eres exitoso",
+    idEliminado: id
+  })
+})
 
 // =============================================================================
 // TODO 6.2: Middleware 404 Global (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 // =============================================================================
 // app.use((req, res) => { ... });
-
 app.use((req, res) => {
-    res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
-        rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
-    });
-});
+  return res.status(404).json({
+    ok: false,
+    error: `La ruta '${req.originalUrl}' con método '${req.method}' no existe en este servidor.`
+  })
+})
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

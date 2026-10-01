@@ -34,25 +34,23 @@ import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 // TODO 1.2: Habilita el middleware express.json()
 // app.use(...);
 
-// -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
-// -----------------------------------------------------------------------------
+app.use(express.json());
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
+// -----------------------------------------------------------------------------
+// BASE DE DATOS EN MEMORIA (DATASET: Discografica)
+// -----------------------------------------------------------------------------
+let canciones = [
+    { id: 1, nombre: "Espresso", artista: "Sabrina Carpenter", genero: "pop", album: "Short n'Sweet", recaudado: "$40000000000" },
+    { id: 2, nombre: "Billie Jean", artista: "Michael Jackson", genero: "dance-pop", album: "Thriller", recaudado: "$46000000000" },
+    { id: 3, nombre: "Kiss Me More", artista: "Doja Cat", genero: "pop-rap", album: "Planet Her", recaudado: "$26000000" },
+    { id: 4, nombre: "M.A.I", artista: "Milo J", genero: "balada-pop/urbana", album: "111", recaudado: "$1800000000" },
+    { id: 5, nombre: "Dacing Queen", artista: "ABBA", genero: "europop", album: "ABBA Gold: Greatest Hits", recaudado: "$2000000000" }
 ]
+
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -82,9 +80,9 @@ let peliculas = [
 app.get('/api/status', (req, res) => {
     res.status(200).json({
         ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
+        mensaje: "Servidor Express ADSO en funcionamiento",
+        uptimeSegundos: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString()
     });
 });
 
@@ -117,30 +115,20 @@ app.get('/api/status', (req, res) => {
 //   res.status(200).json({ ... });
 // });
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+app.get('/api/canciones/filter', (req, res) => {
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
+    const { genero } = req.query;
+    let resultado = canciones;
 
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+    if (genero) {
+        resultado = canciones.filter(c => c.genero.toUpperCase() === genero.toUpperCase());
+    };
 
     res.status(200).json({
-        ok:true,
+        ok: true,
         total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
+        filtro: { genero: genero || "todos" },
+        dato: resultado
     });
 });
 
@@ -171,22 +159,22 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   // Lógica de búsqueda y validación 404
 // });
 
-app.get('/api/peliculas/:id', (req, res) => {
+app.get('/api/canciones/:id', (req, res) => {
 
     const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+    const cancion = canciones.find(c => c.id === idBuscado);
 
-    if (!pelicula) {
+    if (!cancion) {
         return res.status(404).json({
             ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
+            error: `La cancion con ID ${idBuscado} no existe`
+        });
     };
 
     res.status(200).json({
-        ok:true,
-        dato: pelicula
-    })
+        ok: true,
+        dato: cancion
+    });
 });
 
 // =============================================================================
@@ -220,27 +208,31 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/canciones', (req, res) => {
+    const { nombre, artista, genero, album, recaudado } = req.body;
 
-    const {nombre, genero, precio, edad} = req.body;
-
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
+    if (!nombre || !recaudado || recaudado <= 0) {
         return res.status(400).json({
             ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
+            error: "El nombre es invalido y el precio recaudado tiene que ser positivos"
         });
-    }
-
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
     };
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
+    const nuevo = {
+        id: canciones.length ? Math.max(...canciones.map(c => c.id)) + 1 : 1,
+        nombre: nombre.trim(),
+        artista: artista.trim(),
+        genero: (genero || "GENERAL").toUpperCase(),
+        album: album.trim(),
+        recaudado: Number(recaudado)
+    };
+
+    canciones.push(nuevo);
+
+    res.status(201).json({
+        ok: true,
+        dato: nuevo
+    });
 });
 
 // =============================================================================
@@ -268,37 +260,34 @@ app.post('/api/peliculas/agregar', (req, res) => {
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch('/api/canciones/:id/recaudado', (req, res) => {
 
     const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+    const { nuevoRecaudado } = req.body;
 
-    if (!peli) {
+    const cancion = canciones.find(c => c.id === id);
+    if (!cancion) {
         return res.status(404).json({
             ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
+            error: "Cancion no encontrada"
         });
-    }
+    };
 
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
+    if (typeof nuevoRecaudado !== 'number') {
+        return res.status(400).json({
             ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
+            error: "el nuevo recaudado tiene que ser mayor a cero."
         });
-    }
+    };
 
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
+    const anterior = cancion.recaudado;
+    cancion.recaudado = nuevoRecaudado;
 
     res.status(200).json({
         ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
+        mensaje: "El nuevo precio recaudado se a actualizado",
+        anteriorRecaudado: anterior,
+        recaudadoActual: cancion.recaudado
     });
 });
 
@@ -327,24 +316,23 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/canciones/:id', (req, res) => {
 
     const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
+    const index = canciones.findIndex(c => c.id === id);
 
     if (index === -1) {
         return res.status(404).json({
             ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
+            error: `Producto con ${id} no encontrada para eliminar`
         });
-    }
+    };
 
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
+    const [eliminado] = canciones.splice(index, 1);
 
     res.status(200).json({
         ok: true,
-        error: `Pelicula eliminada correctamente`,
+        mensaje: "Se elimino con exito",
         dato: eliminado
     });
 });
@@ -357,10 +345,10 @@ app.delete('/api/peliculas/eliminar/:id', (req, res) => {
 app.use((req, res) => {
     res.status(404).json({
         ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
+        mensaje: "Endpoint no encontrado en el servidor de cacnciones",
         metodo: req.method,
         rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
+        sugerencia: "Consulte la documnetacion de API en el /api/status"
     });
 });
 

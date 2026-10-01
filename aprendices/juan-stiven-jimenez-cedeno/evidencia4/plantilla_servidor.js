@@ -32,27 +32,24 @@ import express from 'express';
 
 // TODO 1: Inicializa express aquí
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 // TODO 1.2: Habilita el middleware express.json()
-// app.use(...);
+
+app.use(express.json());
 
 // -----------------------------------------------------------------------------
-// BASE DE DATOS EN MEMORIA (DATASET: Peliculas de un cine)
+// BASE DE DATOS EN MEMORIA (DATASET: distribudiora de licores  CADPH)
 // -----------------------------------------------------------------------------
+let productos = [
+  { id: 1, sku: "TEC-01", nombre: "cerveza 3 cordilleras", categoria: "cervezas", stock: 100, precio: 7000 },
+  { id: 2, sku: "MON-02", nombre: "vino_tinto", categoria: "vinos", stock: 25, precio: 58000 },
+  { id: 3, sku: "USB-03", nombre: "aguardiente tapa azul", categoria: "guaro", stock: 200, precio: 35000 },
+  { id: 4, sku: "SSD-04", nombre: "moet & chandon", categoria: "Champaña", stock: 5, precio: 320000 },
+  { id: 5, sku: "CAB-05", nombre: "BUCHANAS", categoria: "whisky", stock: 12, precio: 280000 }
+];
 
-let peliculas = [
-    { id: 1, nombre: "28 años despues: el templo de los huesos", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 2, nombre: "Ruta de escape", genero: "accion", precio: "12000", edad_minima: 16 },
-    { id: 3, nombre: "Una novia para mi novia", genero: "romantica", precio: "6000", edad_minima: 8 },
-    { id: 4, nombre: "Backrooms", genero: "ciencia ficcion", precio: "10000", edad_minima: 15 },
-    { id: 5, nombre: "Sexo en la ciudad", genero: "comedia", precio: "14000", edad_minima: 18 },
-    { id: 6, nombre: "Send Help", genero: "comedia", precio: "12000", edad_minima: 16 },
-    { id: 7, nombre: "Hoppers", genero: "comedia", precio: "6000", edad_minima: 8 },
-    { id: 8, nombre: "El Botín", genero: "ciencia ficcion", precio: "12000", edad_minima: 16 },
-    { id: 9, nombre: "Iron Lung", genero: "terror", precio: "12000", edad_minima: 16 },
-    { id: 10, nombre: "Proyecto Salvación", genero: "ciencia ficcion", precio: "8000", edad_minima: 12 }
-]
 
 // =============================================================================
 // RETO 2: ENDPOINT HEALTH-CHECK (GET /api/status)
@@ -80,13 +77,17 @@ let peliculas = [
 // });
 
 app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: "servidor del cine está estable",
-        uptime: Math.floor(process.uptime()) /*dice cuanto tiempo está activo el servidor en segundos*/,
-        timeStamp: new Date() .toISOString() /*toma el dia actual del pc y  lo otro lo convierte en formato ISO (tangamangapio)*/
-    });
+  res.status(200).json({
+    ok: true,
+    mensaje: "Servidor Express ADSO en funcionamiento",
+    entorno: "desarrollo",
+    uptimeSegundos: Math.floor(process.uptime()),
+  timestamp: new Date().toISOString()
+
+  })
+
 });
+
 
 // =============================================================================
 // RETO 3: LISTAR PRODUCTOS CON FILTROS DINÁMICOS (GET /api/productos?query)
@@ -116,33 +117,33 @@ app.get('/api/status', (req, res) => {
 //   // Lógica de filtrado con .filter()
 //   res.status(200).json({ ... });
 // });
+app.get('/api/productos', (req, res) =>{
+  const { categoria, q } = req.query;
+  let productosFiltrados = [... productos] ;
 
-app.get('/api/peliculas/filtro', (req, res) => {
-    //destructuramos el parametro de la consulta
-    const {edad} = req.query;
-    let resultado = peliculas;
-    const edadnum = Number(edad);
+  if (categoria){
+    productosFiltrados = productosFiltrados.filter(p => 
+    p.categoria && p.categoria.toLowerCase() === categoria.toLowerCase() 
+    );
+  }
 
-    if (edad) {
-        resultado = peliculas.filter(p => 
-            p.edad_minima === edadnum
-        );
-    }
-
-    if (resultado.length === 0) {
-        return res.status(404).json({
-            ok: false,
-            mensaje: `No se encontraron peliculas con la edad ${edad}, intentalo de nuevo`,
-        });
-    }
+  if (q) {
+    productosFiltrados = productosFiltrados.filter(p =>
+      p.nombre && p.nombre.toLowerCase().includes(q.toLowerCase())
+    );
+  }
 
     res.status(200).json({
-        ok:true,
-        total: resultado.length,
-        filtro: { edad: edad || "todos" },
-        datos: resultado
+      ok: true,
+      total: productosFiltrados.length,
+      filtrosAplicados: { categoria: categoria || "todos"},
+      datos: productosFiltrados
     });
-});
+  });
+
+  
+
+
 
 // =============================================================================
 // RETO 4: CONSULTAR UN PRODUCTO POR ID (GET /api/productos/:id)
@@ -170,24 +171,24 @@ app.get('/api/peliculas/filtro', (req, res) => {
 //   const id = Number(req.params.id);
 //   // Lógica de búsqueda y validación 404
 // });
+app.get('/api/productos/:id', (req, res ) => {
+  const idBusqeda = Number(req.params.id);
 
-app.get('/api/peliculas/:id', (req, res) => {
+  const producto = productos.find (p => p.id === idBusqeda);
 
-    const idBuscado = Number(req.params.id);
-    const pelicula = peliculas.find(p => p.id === idBuscado);
+  if (!producto){
+    return res.status(404).json({
+      ok: false,
+      error: `Producto con ID ${idBusqeda} no encontrado`
+    });
+  }
 
-    if (!pelicula) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con ID ${idBuscado} no existe, intenta de nuevo`
-        })
-    };
+  res.status(200).json({
+    ok: true,
+    datos: producto
+  });
+})
 
-    res.status(200).json({
-        ok:true,
-        dato: pelicula
-    })
-});
 
 // =============================================================================
 // RETO 5: CREAR UN NUEVO PRODUCTO CON VALIDACIÓN (POST /api/productos)
@@ -220,28 +221,38 @@ app.get('/api/peliculas/:id', (req, res) => {
 //   // Lógica de validación, creación y respuesta 201
 // });
 
-app.post('/api/peliculas/agregar', (req, res) => {
+app.post('/api/productos', (req, res) => {
+  const { sku, nombre, categoria, stock, precio } = req.body
 
-    const {nombre, genero, precio, edad} = req.body;
+  if ( !sku|| !nombre || !categoria || !stock || !precio || precio <= 0 ) {
+    return res.status (400).json ({
+      ok: false,
+      error: "todos los campos (sku, nombre, categoria, stock, precio) son obligatorios"
+    })
+  }
 
-    if (!nombre || !genero || !edad || !precio || precio <= 0) {
-        return res.status(400).json({
-            ok: false,
-            error: "El nombre, genero, edad y precio son obligatorios"
-        });
-    }
+  const productosBuscar = productos.find (p => p.sku === sku) 
+  if (productosBuscar) {
+    return res.status (409).json({
+      ok: false,
+      error: `Ya existe un producto registrado con el SKU '${sku}'`
+    })
+  }
 
-    const nuevo = {
-        id: peliculas.length ? Math.max(...peliculas.map(p => p.id)) + 1 : 1,
-        nombre: nombre.trim(),
-        genero: genero.trim(),
-        edad: Number(edad),
-        precio: Number(precio)
-    };
+  const nuevo = {
+    id: productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1,
+    nombre: nombre.trim(),
+    precio: Number(precio),
+    categoria: (categoria || "GENERAL").toUpperCase(),
+    stock: Number(stock) || 0
+  };
 
-    peliculas.push(nuevo);
-    res.status(201).json({ok: true, dato: nuevo })
-});
+  productos.push(nuevo);
+  // 3. Responder 201 Created
+  res.status(201).json({ ok: true, dato: nuevo });
+
+  
+})
 
 // =============================================================================
 // RETO 6 [NIVEL PRO]: ACTUALIZACIÓN PARCIAL Y MIDDLEWARE 404 GLOBAL
@@ -268,39 +279,35 @@ app.post('/api/peliculas/agregar', (req, res) => {
 // TODO 6.1: Implementa aquí el endpoint PATCH /api/productos/:id/stock
 // app.patch('/api/productos/:id/stock', (req, res) => { ... });
 
-app.patch('/api/peliculas/:id/genero', (req, res) => {
+app.patch ('/api/productos/:id/stock', (req, res) => {
+  const id = Number(req.params.id);
+  const {nuevoStock } = req.body;
 
-    const id = Number(req.params.id);
-    const {nuevoGenero} = req.body;
-    const peli = peliculas.find(p => p.id === id);
-    //array para guardar los generos validos
-    const valido = ['terror', 'comedia', 'accion', 'ciencia ficcion', 'romantico'];
+  const producto = productos.find (p => p.id === id );
+  if (!producto) {
+    return res.status(404).json ({
+      ok: false,
+      error: "producto no encontrado"
+    })
+  }
 
-    if (!peli) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula por el id ${id} no encontrado, intenta de nuevo`
-        });
-    }
-
-    if (typeof /*tipo dee dato*/ nuevoGenero !== 'string' || /*incluye lo del const*/ !valido.includes(nuevoGenero.toLowerCase() /*convierte todo en minuculas*/)) {
-        return res.status(404).json({
-            ok: false,
-            error: `El genero debe ser ${valido}, intenta de nuevo`
-        });
-    }
-
-    const viejo = peli.genero;
-    peli.genero = nuevoGenero;
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Genero actualizado corretamente",
-        Genero_Anterior: viejo,
-        Genero_Nuevo: peli.genero,
-        Datos_Cambiados: peli
+  if (nuevoStock < 0 || typeof nuevoStock !== 'number') {
+    return res.status (400).json ({
+      ok: false, 
+      error: "nuevo stock debe ser >= 0"
     });
+  }
+
+    const anterior = producto.stock;
+    producto.stock = nuevoStock // mutacion contralada
+  res.status(200).json({
+        ok: true,
+        mensaje: "stock actualizado correctamente",
+        stockAnterior: anterior,
+        stockActual: producto.stock
+  })
 });
+
 
 // =============================================================================
 // RETO BONUS [PREPARACIÓN LIVE MOD]: ELIMINAR PRODUCTO POR ID (DELETE)
@@ -327,51 +334,49 @@ app.patch('/api/peliculas/:id/genero', (req, res) => {
 // TODO BONUS: Implementa aquí el endpoint DELETE /api/productos/:id
 // app.delete('/api/productos/:id', (req, res) => { ... });
 
-app.delete('/api/peliculas/eliminar/:id', (req, res) => {
+app.delete('/api/productos/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const index = productos.findIndex(p => p.id === id);
 
-    const id = Number(req.params.id);
-    const index = peliculas.findIndex(p => p.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({
-            ok: false,
-            error: `Pelicula con id ${id} no encontrado, intente de nuevo`
-        });
-    }
-
-    //eliminamos el elemento del array
-    const [eliminado] = peliculas.splice(index, 1); /*splice: cambia el contenido de un array eliminando*/
-
-    res.status(200).json({
-        ok: true,
-        error: `Pelicula eliminada correctamente`,
-        dato: eliminado
+  // 1. Si no existe, responder 404
+  if (index === -1) {
+    return res.status(404).json({
+      ok: false,
+      error: `Producto con ID ${id} no encontrado para eliminar`
     });
+  }
+
+  // 2. Eliminar elemento del array
+  const [eliminado] = productos.splice(index, 1);
+
+  // 3. Responder 200 OK con el registro eliminado
+  res.status(200).json({
+    ok: true,
+    mensaje: "Producto eliminado exitosamente",
+    dato: eliminado
+  });
 });
+
 
 // =============================================================================
 // TODO 6.2: Middleware 404 Global (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 // =============================================================================
-// app.use((req, res) => { ... });
-
-app.use((req, res) => {
-    res.status(404).json({
-        ok: false,
-        error: "Endpoint no encontrado en el servidor Peliculas",
-        metodo: req.method,
-        rutaSolicitada: req.originalUrl,
-        sugerencia: "Consulte la documentación de la API en /api/status"
+  app.use((req, res) => {
+        res.status(404).json({
+          ok: false,
+          error: `La ruta '${req.originalUrl}' con método '${req.method}' no existe en este servidor.`
+        });
     });
-});
+
 
 // =============================================================================
 // INICIAR LA ESCUCHA DEL SERVIDOR
 // =============================================================================
 app.listen(PORT, () => {
-    console.log("=================================================================");
-    console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
-    console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
-    console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
-    console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
-    console.log("=================================================================");
+  console.log("=================================================================");
+  console.log(`🚀 SERVIDOR EXPRESS INICIADO EN: http://localhost:${PORT}`);
+  console.log(`📡 Health Check: http://localhost:${PORT}/api/status`);
+  console.log(`📦 Productos:    http://localhost:${PORT}/api/productos`);
+  console.log("💡 Abre Bruno y carga la colección en: recursos/bruno-collection/");
+  console.log("=================================================================");
 });

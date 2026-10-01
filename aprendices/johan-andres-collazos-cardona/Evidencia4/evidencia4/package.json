@@ -1,0 +1,17 @@
+{
+  "name": "trabajo-actividad4",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "evidencia4.js",
+  "scripts": {
+    "start": "node --watch evidencia4.js",
+    "test:api": "node test_api.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
