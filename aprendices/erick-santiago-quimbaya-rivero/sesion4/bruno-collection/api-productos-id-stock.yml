@@ -1,0 +1,20 @@
+info:
+  name: api-productos-id-stock
+  type: http
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/productos/2/stock"
+  body:
+    type: json
+    data: |-
+      {
+        "nuevoStock": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
