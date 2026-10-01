@@ -1,0 +1,19 @@
+info:
+  name: 03 - Listar con Filtro
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/productos?categoria=HARDWARE"
+  params:
+    - name: categoria
+      value: HARDWARE
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

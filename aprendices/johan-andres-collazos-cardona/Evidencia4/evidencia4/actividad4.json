@@ -1,0 +1,328 @@
+{
+  "version": "1",
+  "name": "actividad4",
+  "items": [
+    {
+      "name": "Catálogo-Completo",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Catálogo-Completo.yml",
+      "pathname": "/home/snow/actividad4/Catálogo-Completo.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00020313262939453125,
+      "depth": 1
+    },
+    {
+      "name": "Crear-Inválido ",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "post",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Crear-Inválido.yml",
+      "pathname": "/home/snow/actividad4/Crear-Inválido.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00030231475830078125,
+      "depth": 1
+    },
+    {
+      "name": "Crear-Válido ",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "post",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Crear-Válido.yml",
+      "pathname": "/home/snow/actividad4/Crear-Válido.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00035190582275390625,
+      "depth": 1
+    },
+    {
+      "name": "Detalle-Existente",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Detalle-Existente.yml",
+      "pathname": "/home/snow/actividad4/Detalle-Existente.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.000286102294921875,
+      "depth": 1
+    },
+    {
+      "name": "Detalle-Inexistente",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Detalle-Inexistente.yml",
+      "pathname": "/home/snow/actividad4/Detalle-Inexistente.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.0002899169921875,
+      "depth": 1
+    },
+    {
+      "name": "Eliminar-Producto",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "delete",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Eliminar-Producto.yml",
+      "pathname": "/home/snow/actividad4/Eliminar-Producto.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00020599365234375,
+      "depth": 1
+    },
+    {
+      "name": "Health-Check",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Health-Check.yml",
+      "pathname": "/home/snow/actividad4/Health-Check.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00019359588623046875,
+      "depth": 1
+    },
+    {
+      "name": "Listar-con-Filtro",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "get",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Listar-con-Filtro.yml",
+      "pathname": "/home/snow/actividad4/Listar-con-Filtro.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.0002117156982421875,
+      "depth": 1
+    },
+    {
+      "name": "Modificar-Stock ",
+      "type": "http",
+      "seq": 1,
+      "tags": [],
+      "request": {
+        "method": "patch",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "auth": {
+          "mode": "none"
+        },
+        "body": {
+          "mode": "none"
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": ""
+      },
+      "settings": {},
+      "filename": "Modificar-Stock.yml",
+      "pathname": "/home/snow/actividad4/Modificar-Stock.yml",
+      "draft": null,
+      "partial": true,
+      "loading": false,
+      "size": 0.00028514862060546875,
+      "depth": 1
+    }
+  ],
+  "environments": [],
+  "runtimeVariables": {},
+  "brunoConfig": {
+    "opencollection": "1.0.0",
+    "name": "actividad4",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "proxy": {
+      "inherit": true,
+      "config": {
+        "protocol": "http",
+        "hostname": "",
+        "port": "",
+        "auth": {
+          "username": "",
+          "password": ""
+        },
+        "bypassProxy": ""
+      }
+    }
+  },
+  "securityConfig": {},
+  "settingsSelectedTab": "overview",
+  "folderLevelSettingsSelectedTab": {},
+  "allTags": [],
+  "format": "yml",
+  "importedAt": 1790647689225,
+  "lastAction": null,
+  "root": {
+    "meta": null,
+    "request": null,
+    "docs": null
+  },
+  "isLoading": false,
+  "globalEnvironmentVariables": {
+    "localUrl": "http://localhost:3000"
+  },
+  "globalEnvSecrets": [],
+  "exportedAt": "2026-09-29T02:08:11.253Z",
+  "exportedUsing": "Bruno VS Code Extension"
+}
