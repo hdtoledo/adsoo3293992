@@ -116,11 +116,7 @@ const formatoCOP = (valor) => `$${Number(valor || 0).toLocaleString("es-CO")} CO
  *    - `despachado`: false.
  *    - `fechaEmision`: la fecha actual en formato ISO.
  * 4. Verifica que `pedidos[0] !== pedidoConImpuestos` (inmutabilidad preservada).
-<<<<<<< HEAD
  */
-=======
- */  
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 console.log("-----------------------------------------------------------------");
 console.log("📌 RETO 1: Desestructuración y Clonación Inmutable");
 console.log("-----------------------------------------------------------------");
@@ -129,46 +125,33 @@ console.log("-----------------------------------------------------------------")
 // const { ... } = pedidos[0];
 // const pedidoConImpuestos = { ... };
 
-let nroPedido, titular, municipio, totalReto1, canalVenta, pedidoConImpuestos;
+let nroPedido, titular1, municipio1, total1, canalVenta, pedidoConImpuestos;
 
-<<<<<<< HEAD
-// TODO: Descomenta e implementa:
-/*
-=======
-
-// TODO: Descomenta e implementa:
-
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 const {
-  id: nroPedidoExt,
-  cliente: { nombre: titularExt, ciudad: municipioExt },
-  total: totalExt,
-  canalVenta: canalVentaExt = "PORTAL_WEB"
+  id: nropedido,
+  cliente: { nombre: titular, ciudad: municipio },
+  total: total,
+  canalVenta: canalventa = "PORTAL_WEB",
 } = pedidos[0];
 
-nroPedido = nroPedidoExt;
-titular = titularExt;
-municipio = municipioExt;
-totalReto1 = totalExt;
-canalVenta = canalVentaExt;
+nroPedido = nropedido;
+titular1 = titular;
+municipio1 = municipio;
+total1 = total;
+canalVenta = canalventa;
 
 pedidoConImpuestos = {
   ...pedidos[0],
   iva: Math.round(pedidos[0].total * 0.19),
-  granTotal: pedidos[0].total + Math.round(pedidos[0].total * 0.19),
+  totaltotaloso: pedidos[0].total + Math.round(pedidos[0].total * 0.19),
   despachado: false,
-  fechaEmision: new Date().toISOString()
+  fechaemision: new Date().toISOString()
 };
-<<<<<<< HEAD
-*/
-=======
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 
-// Verificación:
-if (nroPedido && titular && pedidoConImpuestos && pedidoConImpuestos !== pedidos[0]) {
+if (nroPedido && titular1 && pedidoConImpuestos && pedidoConImpuestos !== pedidos[0]) {
   console.log(`✅ [PASSED] Reto 1 Superado:`);
-  console.log(`   Titular: ${titular} | Sede: ${municipio} | Canal: ${canalVenta}`);
-  console.log(`   Total Base: ${formatoCOP(totalReto1)} | IVA 19%: ${formatoCOP(pedidoConImpuestos.iva)} | Gran Total: ${formatoCOP(pedidoConImpuestos.granTotal)}`);
+  console.log(`   Titular: ${titular1} | Sede: ${municipio1} | Canal: ${canalVenta}`);
+  console.log(`   Total Base: ${formatoCOP(total1)} | IVA 19%: ${formatoCOP(pedidoConImpuestos.iva)} | Gran Total: ${formatoCOP(pedidoConImpuestos.totaltotaloso)}`);
 } else {
   console.log("❌ [FAILED] Reto 1 Pendiente de completar.");
 }
@@ -197,59 +180,31 @@ console.log("-----------------------------------------------------------------")
 console.log("📌 RETO 2: Filtrado y Transformación Funcional (.filter + .map)");
 console.log("-----------------------------------------------------------------");
 
-let pedidosGarzonDTO = [];
-
-// TODO: Escribe tu código aquí:
-<<<<<<< HEAD
-const pedidosPagados = pedidos.filter(
-  pedido => pedido.estado === "pagado"
-); 
-map(pedido => ({
-  id: pedido.id,
-  cliente: pedido.cliente,
-  total: pedido.total
-}));
-
-// pedidosGarzonDTO = pedidos
-//   .filter(...)
-//   .map(...);
-=======
-pedidosGarzonDTO = pedidos.filter(p => p.estado === "PAGADO" && p.cliente.ciudad === "Garzón").map((elemento) =>{
-  return{
-    factura:`FAC-${elemento.id}`,
-    cliente: elemento.cliente.nombre,
-    cantidadArticulos: elemento.items.reduce((acc,actual) =>{
-      return acc + actual.cant
-    }, 0),
-    totalTexto: elemento.total,
-    estado: elemento.estado
-  }
- })
-
-console.log(pedidosGarzonDTO)
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+const pedidosGarzonDTO = pedidos.filter(p => p.estado === "PAGADO" && p.cliente.ciudad === "Garzón")
+  .map(p => {
+    let suma = 0;
+    p.items.map(i => suma += i.cant);;
+    return {
+      factura: `FAC-${p.id}`,
+      cliente: p.cliente.nombre,
+      cantidadArticulos: suma,
+      totalTexto: formatoCOP(p.total)
+    }
+  });
 
 // Verificación:
 if (pedidosGarzonDTO.length === 2 && pedidosGarzonDTO[0].factura && pedidosGarzonDTO[0].totalTexto) {
   console.log("✅ [PASSED] Reto 2 Superado:");
-<<<<<<< HEAD
   console.table(pedidosGarzonDTO);
 } else {
   console.log("❌ [FAILED] Reto 2 Pendiente: Debe retornar 2 pedidos pagados de Garzón estructurados como DTOs.");
 }
 console.log("");
-=======
-  console.table("pedidosGarzonDTO");
-} else {
-  console.log("❌ [FAILED] Reto 2 Pendiente: Debe retornar 2 pedidos pagados de Garzón estructurados como DTOs.");
-}
-console.log("pedidosGarzonDTO");
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
-
 
 // =============================================================================
 // RETO 3: REDUCCIÓN Y ANALÍTICA DE NEGOCIO (.reduce)
 // =============================================================================
+
 /**
  * OBJETIVO:
  * `.reduce()` es el núcleo de la agregación de datos en JavaScript.
@@ -269,31 +224,19 @@ console.log("-----------------------------------------------------------------")
 console.log("📌 RETO 3: Agregaciones Financieras y Conteo con .reduce()");
 console.log("-----------------------------------------------------------------");
 
-let recaudoEfectivo = 0;
-let conteoPorEstado = {};
-let ticketPromedio = 0;
-
 // TODO: Escribe tu código aquí:
-<<<<<<< HEAD
-// recaudoEfectivo = pedidos.reduce(...);
-// conteoPorEstado = pedidos.reduce(...);
-// ticketPromedio = ...;
-=======
-const productopagados = pedidos.filter(f => f.estado === "PAGADO")
-recaudoEfectivo = 
-productopagados.reduce((acc,actual) =>{
-  return acc + actual.total
-}, 0);
-conteoPorEstado = pedidos.reduce((acc,actual) =>{
-  if(!acc[actual.estado]){
-    acc[actual.estado] = 1
-  } else{
-    acc[actual.estado] +=1
-  }
+
+const recaudoEfectivo = pedidos.filter(p => p.estado === "PAGADO").reduce((polo, pedidos) => polo + pedidos.total, 0);
+
+const conteoPorEstado = pedidos.reduce((acc, pedido) => {
+  acc[pedido.estado] = (acc[pedido.estado] || 0) + 1
   return acc
-},{});
-ticketPromedio = recaudoEfectivo/conteoPorEstado.PAGADO
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+}, {});
+
+const totalpagado = pedidos.filter(p => p.estado === "PAGADO");
+const totalsuma = totalpagado.length;
+
+ticketPromedio = recaudoEfectivo / totalsuma;
 
 // Verificación:
 if (recaudoEfectivo === 1583000 && conteoPorEstado.PAGADO === 4 && conteoPorEstado.CANCELADO === 1) {
@@ -345,39 +288,34 @@ function verificarStockBodega(sku, cantidadDeseada) {
   return new Promise((resolve, reject) => {
     // TODO: Implementa aquí la lógica con setTimeout de 300ms
     setTimeout(() => {
-<<<<<<< HEAD
-      reject(new Error("TODO: Implementar verificarStockBodega"));
-    }, 100);
-  });
-=======
-      const item = inventario.find(i => i.sku === sku)
-      if(cantidadDeseada<=0){
-        return reject(new Error ("[400_BAD_REQUEST] La cantidad debe ser mayor a cero."))
+      const polo = inventario.find(p => p.sku === sku)
+
+      if (cantidadDeseada <= 0) {
+        return reject(`new Error("[400_BAD_REQUEST] La cantidad debe ser mayor a cero.")`)
       }
-      if(!item){
-        return reject(new Error("[404_NOT_FOUND] El producto con SKU '${sku}' no existe en bodega."))
+
+      if (!polo) {
+        return reject(`new Error("[404_NOT_FOUND] El producto con SKU '${sku}' no existe en bodega.")`)
       }
-      if(item.stock < cantidadDeseada){
-        return reject(new Error ("[409_OUT_OF_STOCK] stock insuficiente para '${item.nombre}'. disponible: ${item.stock}, solicitando: ${cantidadDeseada}"))
+
+      if (polo.stock < cantidadDeseada) {
+        return reject(`new Error("[409_OUT_OF_STOCK] Stock insuficiente para '${polo.nombre}'. Disponible: ${polo.stock}, Solicitado: ${cantidadDeseada}")`)
       }
+
       resolve(
-           {
-      sku: item.sku,
-     nombre: item.nombre,
-      categoria: item.categoria,
-      cantidad: cantidadDeseada,
-       precioUnitario: item.precio,
-    subtotal: item.precio * cantidadDeseada,
-      disponible: true
-
-
-  }
-  )
-  }, 300);
-        })
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+        {
+          sku: polo.sku,
+          nombre: polo.nombre,
+          categoria: polo.categoria,
+          cantidad: cantidadDeseada,
+          precioUnitario: polo.precio,
+          subtotal: polo.precio * cantidadDeseada,
+          disponible: true
+        }
+      )
+    }, 300);
+  });
 }
-
 console.log("👉 Para probar tu función del Reto 4, se ejecutará dentro del Reto 5 y 6.\n");
 
 
@@ -403,40 +341,21 @@ console.log("-----------------------------------------------------------------")
 console.log("📌 RETO 5: Consumo Asíncrono Defensivo con async/await");
 console.log("-----------------------------------------------------------------");
 
-<<<<<<< HEAD
 async function procesarVentaExpress(sku, cantidad) {
   // TODO: Escribe el bloque try { ... } catch (error) { ... } finally { ... }
-  return { exito: false, motivo: "TODO: Implementar procesarVentaExpress" };
+  try {
+    const resultado = await verificarStockBodega(sku, cantidad)
+    console.log(`✅Cantidad: ${resultado.cantidad} Subtotal: ${resultado.subtotal}`)
+    return { exito: true, datos: resultado }
+  } catch (error) {
+    console.error("❌ Fallo en venta:", error)
+    return { exito: false, motivo: error.message }
+  } finally {
+    console.log("🔒 Auditoría: Operación de bodega finalizada.")
+  }
+
 }
 
-
-=======
-async function
- procesarVentaExpress(sku, cantidad) {
-
-  try{
-    const resultado = await
-    verificarStockBodega(sku,cantidad);
-
-    console.log(`exito la cantidad es: ${resultado.cantidad}`
-    );
-      return {
-        Exito:true,
-        datos: resultado
-      };
-
-  } catch(error){
-    console.error("x fallo en venta", error.message);
-
-    return{
-      Exito:false,
-      motivo: error.menssage
-    };
-  } finally {
-    console.log("auditoria: operacion de bodega finalizada.");
-  }
- }
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 // =============================================================================
 // RETO 6 (NIVEL PRO): VERIFICACIÓN CONCURRENTE EN PARALELO (Promise.all)
 // =============================================================================
@@ -463,32 +382,15 @@ console.log("-----------------------------------------------------------------")
 
 async function validarCarritoCompleto(itemsCarrito) {
   try {
-<<<<<<< HEAD
     // TODO: Ejecuta las promesas concurrentemente con Promise.all:
-    // const promesas = itemsCarrito.map(item => verificarStockBodega(item.sku, item.cantidad));
-    // const resultados = await Promise.all(promesas);
-    // const granTotal = resultados.reduce((acc, curr) => acc + curr.subtotal, 0);
-    // return { ok: true, items: resultados, totalPagar: granTotal };
-    return { ok: false, motivo: "TODO: Implementar validarCarritoCompleto" };
+    const promesas = itemsCarrito.map(item => verificarStockBodega(item.sku, item.cantidad));
+    const resultados = await Promise.all(promesas);
+    const granTotal = resultados.reduce((acc, curr) => acc + curr.subtotal, 0);
+    return { ok: true, items: resultados, totalPagar: granTotal };
   } catch (err) {
     return { ok: false, error: err.message };
   }
 }
-=======
-    const Promesas = 
-    itemsCarrito.map(item => verificarStockBodega(item.sku,item.cantidad));
-    const resultados = await
-    Promise.all(Promesas);
-    const granTotal =
-    resultados.reduce((acc,curr) => acc + curr.subtotal,0);
-    return{ok:true,items:resultados,totalPagar:granTotal};
-     } catch (err) {
-       return { ok: false, error: err.message };
-  }
-}
-   
-    
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 
 
 // =============================================================================
@@ -499,12 +401,16 @@ async function ejecutarSuiteDePruebas() {
 
   console.log(">> Test 5.1: Venta exitosa (Stock suficiente):");
   const t1 = await procesarVentaExpress("TEC-01", 2);
+  console.log(t1);
 
   console.log("\n>> Test 5.2: Venta rechazada (Stock insuficiente):");
   const t2 = await procesarVentaExpress("USB-03", 1);
+  console.log(t2);
+
 
   console.log("\n>> Test 5.3: Venta rechazada (SKU inexistente):");
   const t3 = await procesarVentaExpress("NO-EXISTE", 1);
+  console.log(t3);
 
   console.log("\n-----------------------------------------------------------------");
   console.log(">> Test 6.1: Carrito Concurrente Válido en Paralelo:");
