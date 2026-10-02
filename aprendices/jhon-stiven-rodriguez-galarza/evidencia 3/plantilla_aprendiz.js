@@ -116,11 +116,7 @@ const formatoCOP = (valor) => `$${Number(valor || 0).toLocaleString("es-CO")} CO
  *    - `despachado`: false.
  *    - `fechaEmision`: la fecha actual en formato ISO.
  * 4. Verifica que `pedidos[0] !== pedidoConImpuestos` (inmutabilidad preservada).
-<<<<<<< HEAD
  */
-=======
- */  
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 console.log("-----------------------------------------------------------------");
 console.log("📌 RETO 1: Desestructuración y Clonación Inmutable");
 console.log("-----------------------------------------------------------------");
@@ -131,14 +127,8 @@ console.log("-----------------------------------------------------------------")
 
 let nroPedido, titular, municipio, totalReto1, canalVenta, pedidoConImpuestos;
 
-<<<<<<< HEAD
-// TODO: Descomenta e implementa:
-/*
-=======
-
 // TODO: Descomenta e implementa:
 
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 const {
   id: nroPedidoExt,
   cliente: { nombre: titularExt, ciudad: municipioExt },
@@ -159,10 +149,7 @@ pedidoConImpuestos = {
   despachado: false,
   fechaEmision: new Date().toISOString()
 };
-<<<<<<< HEAD
-*/
-=======
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+
 
 // Verificación:
 if (nroPedido && titular && pedidoConImpuestos && pedidoConImpuestos !== pedidos[0]) {
@@ -200,51 +187,30 @@ console.log("-----------------------------------------------------------------")
 let pedidosGarzonDTO = [];
 
 // TODO: Escribe tu código aquí:
-<<<<<<< HEAD
-const pedidosPagados = pedidos.filter(
-  pedido => pedido.estado === "pagado"
-); 
-map(pedido => ({
-  id: pedido.id,
-  cliente: pedido.cliente,
-  total: pedido.total
-}));
-
 // pedidosGarzonDTO = pedidos
 //   .filter(...)
 //   .map(...);
-=======
-pedidosGarzonDTO = pedidos.filter(p => p.estado === "PAGADO" && p.cliente.ciudad === "Garzón").map((elemento) =>{
-  return{
-    factura:`FAC-${elemento.id}`,
-    cliente: elemento.cliente.nombre,
-    cantidadArticulos: elemento.items.reduce((acc,actual) =>{
-      return acc + actual.cant
-    }, 0),
-    totalTexto: elemento.total,
-    estado: elemento.estado
-  }
- })
 
-console.log(pedidosGarzonDTO)
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+const pedidosFiltrados = pedidos.filter(pedido => pedido.estado === "PAGADO" && pedido.cliente.ciudad === "Garzón");
+
+pedidosGarzonDTO = pedidosFiltrados.map(pedido => {
+  const cantidadArticulos = pedido.items.reduce((acc, item) => acc + item.cant, 0);
+  return {
+    factura: `FAC-${pedido.id}`,
+    cliente: pedido.cliente.nombre,
+    cantidadArticulos: cantidadArticulos,
+    totalTexto: formatoCOP(pedido.total)
+  };
+});
 
 // Verificación:
 if (pedidosGarzonDTO.length === 2 && pedidosGarzonDTO[0].factura && pedidosGarzonDTO[0].totalTexto) {
   console.log("✅ [PASSED] Reto 2 Superado:");
-<<<<<<< HEAD
   console.table(pedidosGarzonDTO);
 } else {
   console.log("❌ [FAILED] Reto 2 Pendiente: Debe retornar 2 pedidos pagados de Garzón estructurados como DTOs.");
 }
 console.log("");
-=======
-  console.table("pedidosGarzonDTO");
-} else {
-  console.log("❌ [FAILED] Reto 2 Pendiente: Debe retornar 2 pedidos pagados de Garzón estructurados como DTOs.");
-}
-console.log("pedidosGarzonDTO");
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 
 
 // =============================================================================
@@ -274,26 +240,18 @@ let conteoPorEstado = {};
 let ticketPromedio = 0;
 
 // TODO: Escribe tu código aquí:
-<<<<<<< HEAD
 // recaudoEfectivo = pedidos.reduce(...);
 // conteoPorEstado = pedidos.reduce(...);
 // ticketPromedio = ...;
-=======
-const productopagados = pedidos.filter(f => f.estado === "PAGADO")
-recaudoEfectivo = 
-productopagados.reduce((acc,actual) =>{
-  return acc + actual.total
-}, 0);
-conteoPorEstado = pedidos.reduce((acc,actual) =>{
-  if(!acc[actual.estado]){
-    acc[actual.estado] = 1
-  } else{
-    acc[actual.estado] +=1
-  }
-  return acc
-},{});
-ticketPromedio = recaudoEfectivo/conteoPorEstado.PAGADO
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
+
+const pedidosPagados = pedidos.filter(pedido => pedido.estado === "PAGADO"); 
+recaudoEfectivo = pedidosPagados.reduce((acc, pedido) => acc + pedido.total, 0);
+conteoPorEstado = pedidos.reduce((acc, pedido) => {
+  acc[pedido.estado] = (acc[pedido.estado] || 0) + 1;
+  return acc;
+}, {});
+
+ticketPromedio = pedidosPagados.length > 0 ? recaudoEfectivo / pedidosPagados.length : 0;
 
 // Verificación:
 if (recaudoEfectivo === 1583000 && conteoPorEstado.PAGADO === 4 && conteoPorEstado.CANCELADO === 1) {
@@ -341,43 +299,32 @@ console.log("-----------------------------------------------------------------")
 console.log("📌 RETO 4: Construcción de Promesa con Latencia y Validación");
 console.log("-----------------------------------------------------------------");
 
+
 function verificarStockBodega(sku, cantidadDeseada) {
   return new Promise((resolve, reject) => {
     // TODO: Implementa aquí la lógica con setTimeout de 300ms
+    const item = inventario.find(producto => producto.sku === sku);
     setTimeout(() => {
-<<<<<<< HEAD
-      reject(new Error("TODO: Implementar verificarStockBodega"));
-    }, 100);
+      if(cantidadDeseada <= 0) {
+        reject(new Error("[400_BAD_REQUEST] la cantidad debe ser mayor a cero."));
+      } else if (!item) {
+        reject(new Error("[404_NOT_FOUND] El producto con SKU '${sku}' no existe en bodega."));
+      } else if (item.stock < cantidadDeseada) {
+        reject(new Error("[409_OUT_OF_STOCK] Stock insuficiente para '${item.nombre}. Disponible: '${item.stock}', Solicitado '${cantidadDeseada}'"));
+      } else {
+        resolve({
+          sku: item.sku,
+          nombre: item.nombre,
+          categoria: item.categoria,
+          cantidad: cantidadDeseada,
+          precioUnitario: item.precio,
+          subtotal: item.precio * cantidadDeseada,
+          disponible: true
+        });
+      }
+    }, 300);
   });
-=======
-      const item = inventario.find(i => i.sku === sku)
-      if(cantidadDeseada<=0){
-        return reject(new Error ("[400_BAD_REQUEST] La cantidad debe ser mayor a cero."))
-      }
-      if(!item){
-        return reject(new Error("[404_NOT_FOUND] El producto con SKU '${sku}' no existe en bodega."))
-      }
-      if(item.stock < cantidadDeseada){
-        return reject(new Error ("[409_OUT_OF_STOCK] stock insuficiente para '${item.nombre}'. disponible: ${item.stock}, solicitando: ${cantidadDeseada}"))
-      }
-      resolve(
-           {
-      sku: item.sku,
-     nombre: item.nombre,
-      categoria: item.categoria,
-      cantidad: cantidadDeseada,
-       precioUnitario: item.precio,
-    subtotal: item.precio * cantidadDeseada,
-      disponible: true
-
-
-  }
-  )
-  }, 300);
-        })
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
-}
-
+};
 console.log("👉 Para probar tu función del Reto 4, se ejecutará dentro del Reto 5 y 6.\n");
 
 
@@ -403,40 +350,22 @@ console.log("-----------------------------------------------------------------")
 console.log("📌 RETO 5: Consumo Asíncrono Defensivo con async/await");
 console.log("-----------------------------------------------------------------");
 
-<<<<<<< HEAD
 async function procesarVentaExpress(sku, cantidad) {
   // TODO: Escribe el bloque try { ... } catch (error) { ... } finally { ... }
-  return { exito: false, motivo: "TODO: Implementar procesarVentaExpress" };
+try {
+const resultado = await verificarStockBodega(sku, cantidad);
+console.log(`Venta exitosa: ${resultado.cantidad} x ${resultado.nombre} | Total: ${formatoCOP(resultado.subtotal)}`);
+return { exito: true, datos: resultado };
+} catch (error) {
+console.error("X Fallo en venta:", error.message);
+return { exito: false, motivo: error.message };
+}
+finally {
+console.log("🔒 Auditoría: Operación de bodega finalizada.");
+}
 }
 
 
-=======
-async function
- procesarVentaExpress(sku, cantidad) {
-
-  try{
-    const resultado = await
-    verificarStockBodega(sku,cantidad);
-
-    console.log(`exito la cantidad es: ${resultado.cantidad}`
-    );
-      return {
-        Exito:true,
-        datos: resultado
-      };
-
-  } catch(error){
-    console.error("x fallo en venta", error.message);
-
-    return{
-      Exito:false,
-      motivo: error.menssage
-    };
-  } finally {
-    console.log("auditoria: operacion de bodega finalizada.");
-  }
- }
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 // =============================================================================
 // RETO 6 (NIVEL PRO): VERIFICACIÓN CONCURRENTE EN PARALELO (Promise.all)
 // =============================================================================
@@ -463,7 +392,17 @@ console.log("-----------------------------------------------------------------")
 
 async function validarCarritoCompleto(itemsCarrito) {
   try {
-<<<<<<< HEAD
+    const promesas = itemsCarrito.map(item => verificarStockBodega(item.sku, item.cantidad))
+    const resultados = await Promise.all(promesas);
+    const totalPagar = resultados.reduce((acumulado, item) => acumulado + item.subtotal, 0);
+    return { ok: true, item: resultados, total: totalPagar};
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+}
+
+async function validarCarritoCompleto(itemsCarrito) {
+  try {
     // TODO: Ejecuta las promesas concurrentemente con Promise.all:
     // const promesas = itemsCarrito.map(item => verificarStockBodega(item.sku, item.cantidad));
     // const resultados = await Promise.all(promesas);
@@ -474,21 +413,6 @@ async function validarCarritoCompleto(itemsCarrito) {
     return { ok: false, error: err.message };
   }
 }
-=======
-    const Promesas = 
-    itemsCarrito.map(item => verificarStockBodega(item.sku,item.cantidad));
-    const resultados = await
-    Promise.all(Promesas);
-    const granTotal =
-    resultados.reduce((acc,curr) => acc + curr.subtotal,0);
-    return{ok:true,items:resultados,totalPagar:granTotal};
-     } catch (err) {
-       return { ok: false, error: err.message };
-  }
-}
-   
-    
->>>>>>> 5e74f701ce5024a7fbaa9fbfce2f73ae32cf8360
 
 
 // =============================================================================

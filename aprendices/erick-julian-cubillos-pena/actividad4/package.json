@@ -1,0 +1,17 @@
+{
+  "name": "actividad4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "plantilla_servidor.js",
+  "scripts": {
+    "start": "node --watch plantilla_servidor.js",
+    "test:api": "node test_api.js"
+  },
+  "keywords": ["server", "js"],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
