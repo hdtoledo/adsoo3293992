@@ -1,0 +1,19 @@
+info:
+  name: Listar con Filtro
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{tallerP}}/api/productos?categoria=Divulgación matemática"
+  params:
+    - name: categoria
+      value: Divulgación matemática
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

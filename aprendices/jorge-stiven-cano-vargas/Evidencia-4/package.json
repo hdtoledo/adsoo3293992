@@ -1,0 +1,11 @@
+{
+  "name": "evidencia-4",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node sesion4.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
